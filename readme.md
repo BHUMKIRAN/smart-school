@@ -73,3 +73,68 @@ curl http://localhost:8080/teachers
   "dev": "nodemon server.js"
 }
 ```
+## 🚀 Features
+
+### 🔐 Authentication & Access
+- Role-Based Login (Admin / Teacher / Student)
+- Secure Authentication
+- Access Control
+
+### 👨‍💼 Admin Panel
+- Admin Dashboard
+- Teacher Management
+- Student Management
+- Notice Management
+- Emergency Notice Management
+- Attendance Monitoring
+- Application Review & Forwarding
+
+### 👩‍🏫 Teacher Panel
+- Teacher Login
+- Live Class Attendance
+- Student Attendance Management
+- Homework Scheduling
+- Homework Review
+- Class & Subject Management
+
+### 🎓 Student Panel
+- Student Login
+- Live Attendance View
+- Homework Access
+- Online Homework Submission
+- Application Submission
+- Application Status Tracking
+
+### 📝 Attendance System
+- Live Attendance Tracking
+- Class-wise Attendance
+- Date-wise Attendance
+- Attendance History
+
+### 📚 Homework Management
+- Homework Assignment
+- Homework Scheduling
+- Deadline Management
+- Online Submission System
+
+### 📩 Application System
+- Online Applications
+- Leave Requests
+- Admin Approval
+- Teacher Forwarding
+
+### 🚨 Notices & Alerts
+- General Notices
+- Emergency Alerts
+- Instant Notifications
+
+### 📊 Reports & Monitoring
+- Attendance Reports
+- Homework Reports
+- Student Overview
+
+### 🌐 General Features
+- Responsive Design
+- Real-Time Updates
+- User-Friendly Interface
+- Scalable Architecture
