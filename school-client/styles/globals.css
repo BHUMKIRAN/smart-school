@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   BASE LAYER
+========================= */
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-800 font-sans;
+    font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+  }
+
+  .nepali-text {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+}
+
+/* =========================
+   COMPONENTS LAYER
+========================= */
+@layer components {
+  .hero-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm transition-all duration-300;
+  }
+
+  .card:hover {
+    @apply -translate-y-1 shadow-md;
+  }
+
+  .accent-bar {
+    @apply w-12 h-1 bg-indigo-500 rounded-full;
+  }
+
+  .btn {
+    @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-500 text-white;
+  }
+
+  .btn-primary:hover {
+    @apply bg-indigo-600 -translate-y-0.5;
+  }
+
+  .stat-card {
+    @apply bg-white p-6 rounded-xl text-center shadow-sm;
+  }
+
+  .stat-number {
+    @apply text-3xl font-bold text-indigo-500;
+  }
+
+  .icon-box {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-50;
+  }
+
+  .attendance-btn {
+    @apply relative px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  }
+
+  .attendance-btn:hover {
+    @apply scale-105 shadow-lg;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .notice-ticker {
+    @apply overflow-hidden bg-amber-100 border-l-4 border-amber-500;
+  }
+
+  .ticker-content {
+    @apply inline-block whitespace-nowrap;
+    animation: scroll 30s linear infinite;
+  }
+
+  .modal-content {
+    @apply bg-white rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
+    animation: modalSlideIn 0.3s ease;
+  }
+
+  .tab-button {
+    @apply px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-all duration-200;
+  }
+
+  .tab-active {
+    @apply bg-indigo-500 text-white;
+  }
+}
+
+/* =========================
+   ANIMATIONS (KEEP AS CSS)
+========================= */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   UTILITY ANIMATIONS
+========================= */
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease;
+}
+
+.animate-modal-slide-in {
+  animation: modalSlideIn 0.3s ease;
+}
