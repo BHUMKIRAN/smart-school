@@ -4,9 +4,13 @@
 ```bash
 npm install -g
 ```
+
 ```bash
+npm create next-app@latest school-client --yes
 npm install express
 npm install mongoose
+npm install bcryptjs jsonwebtoken dotenv cors
+
 ```
 
 ### Initialize the project
@@ -16,6 +20,7 @@ npm init
 ```
 
 ### Start the server locally:
+
 ```bash
 node server.js
 ```
@@ -80,8 +85,6 @@ curl http://localhost:8080/teachers
 - [ ] Emergency Alerts
 - [ ] Instant Notifications
 
----
-
 ### Level 2: Role-Specific Panels
 
 #### 👨‍💼 Admin Panel
@@ -108,8 +111,6 @@ curl http://localhost:8080/teachers
 - [ ] Online Homework Submission
 - [ ] Application Submission
 - [ ] Application Status Tracking
-
----
 
 ### Level 3: Analytics & Interface
 

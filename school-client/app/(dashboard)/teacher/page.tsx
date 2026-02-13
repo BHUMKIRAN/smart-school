@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import TeacherNav from '@/teacherComponents/TeacherNav';
-import StatsCards from '@/teacherComponents/StatsCards';
-import TabButtons from '@/teacherComponents/TabButtons';
-import AttendanceTab from '@/teacherComponents/AttendanceTab';
-import ClassesTab from '@/teacherComponents/ClassesTab';
-import StudentsTab from '@/teacherComponents/StudentsTab';
-import ResourcesSection from '@/teacherComponents/ResourcesSection';
-import QuickLinks from '@/teacherComponents/QuickLinks';
-import SuccessModal from '@/teacherComponents/SuccessModal';
+import TeacherNav from '@/components/features/teacher/TeacherNav';
+import StatsCards from '@/components/features/teacher/StatsCards';
+import TabButtons from '@/components/features/teacher/TabButtons';
+import AttendanceTab from '@/components/features/teacher/AttendanceTab';
+import ClassesTab from '@/components/features/teacher/ClassesTab';
+import StudentsTab from '@/components/features/teacher/StudentsTab';
+import ResourcesSection from '@/components/features/teacher/ResourcesSection';
+import QuickLinks from '@/components/features/teacher/QuickLinks';
+import SuccessModal from '@/components/features/teacher/SuccessModal';
 
 export default function TeachersPanelPage() {
   const [activeTab, setActiveTab] = useState('attendance');

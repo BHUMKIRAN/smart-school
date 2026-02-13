@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import StudentHeader from '@/studentComponents/StudentHeader';
-import WelcomeSection from '@/studentComponents/WelcomeSection';
-import TabButtons from '@/studentComponents/TabButtons';
-import HomeworkTab from '@/studentComponents/HomeworkTab';
-import GradesTab from '@/studentComponents/GradesTab';
-import ApplicationsTab from '@/studentComponents/ApplicationsTab';
-import SupportTab from '@/studentComponents/SupportTab';
-import SubmitModal from '@/studentComponents/SubmitModal';
-import SuccessToast from '@/studentComponents/SuccessToast';
+import StudentHeader from '@/components/features/student/StudentHeader';
+import WelcomeSection from '@/components/features/student/WelcomeSection';
+import TabButtons from '@/components/features/student/TabButtons';
+import HomeworkTab from '@/components/features/student/HomeworkTab';
+import GradesTab from '@/components/features/student/GradesTab';
+import ApplicationsTab from '@/components/features/student/ApplicationsTab';
+import SupportTab from '@/components/features/student/SupportTab';
+import SubmitModal from '@/components/features/student/SubmitModal';
+import SuccessToast from '@/components/features/student/SuccessToast';
 
 export default function StudentDashboardPage() {
   const [activeTab, setActiveTab] = useState('homework');

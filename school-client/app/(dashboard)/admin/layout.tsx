@@ -19,7 +19,7 @@ export default function AdminLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${manrope.className} bg-slate-950 text-slate-100`}>
+      <body className={`${manrope.className} bg-indigo-800 text-slate-100`}>
         {children}
       </body>
     </html>

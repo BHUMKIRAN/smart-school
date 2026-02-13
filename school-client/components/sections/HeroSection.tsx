@@ -8,11 +8,11 @@ export default function HeroSection() {
 
   return (
     <>
-      <section id="home" className="hero-gradient text-white py-20 px-6">
+      <section id="home" className="hero-gradient  text-white py-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-block bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
+              <div className="inline-block bg-gray-300/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
                 <span className="text-sm font-medium nepali-text">स्वागत छ</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4 nepali-text">
@@ -25,18 +25,8 @@ export default function HeroSection() {
                 Building futures through quality education. Excellence in academics, character development, and holistic growth.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button 
-                  onClick={() => setIsAttendanceOpen(true)}
-                  className="attendance-btn"
-                >
-                  <span className="flex items-center gap-2 nepali-text">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                    </svg>
-                    आजको उपस्थिति
-                  </span>
-                </button>
-                <a href="#about" className="btn bg-white text-primary-600 hover:bg-gray-50 nepali-text">
+               
+                <a href="#about" className="btn bg-white text-indigo-500 hover:translate-x-0.5 nepali-text">
                   थप जान्नुहोस्
                 </a>
               </div>
@@ -64,11 +54,6 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
-
-      <AttendanceModal 
-        isOpen={isAttendanceOpen} 
-        onClose={() => setIsAttendanceOpen(false)} 
-      />
     </>
   );
 }

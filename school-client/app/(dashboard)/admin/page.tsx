@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import AdminSidebar from '@/adminComponents/AdminSidebar';
-import AdminHeader from '@/adminComponents/AdminHeader';
-import TeachersTab from '@/adminComponents/TeachersTab';
-import StudentsTab from '@/adminComponents/StudentsTab';
-import NoticesTab from '@/adminComponents/NoticesTab';
-import EmergencyTab from '@/adminComponents/EmergencyTab';
-import AttendanceTab from '@/adminComponents/AttendanceTab';
-import ApplicationsTab from '@/adminComponents/ApplicationsTab';
+import AdminSidebar from '@/components/features/admin/AdminSidebar';
+import AdminHeader from '@/components/features/admin/AdminHeader';
+import TeachersTab from '@/components/features/admin/TeachersTab';
+import StudentsTab from '@/components/features/admin/StudentsTab';
+import NoticesTab from '@/components/features/admin/NoticesTab';
+import EmergencyTab from '@/components/features/admin/EmergencyTab';
+import AttendanceTab from '@/components/features/admin/AttendanceTab';
+import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('teachers');

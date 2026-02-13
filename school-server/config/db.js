@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
+// Function to connect MongoDB
 const connectDB = async () => {
   try {
-    const res = await mongoose.connect("mongodb://127.0.0.1:27017/schoolDB");
-    console.log("MongoDB Connected");
-    // console.log(res)
+    // Connect using MONGO_URI from .env
+    await mongoose.connect(process.env.MONGO_URI);
+
+    console.log("MongoDB Connected Successfully ");
+
   } catch (error) {
-    console.log(error);
+    console.error("Database connection failed ", error.message);
+    process.exit(1); // Stop server if DB fails
   }
 };
 
