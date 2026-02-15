@@ -10,6 +10,7 @@ import ApplicationsTab from '@/components/features/student/ApplicationsTab';
 import SupportTab from '@/components/features/student/SupportTab';
 import SubmitModal from '@/components/features/student/SubmitModal';
 import SuccessToast from '@/components/features/student/SuccessToast';
+import Logout from '@/components/ui/Logout/page';
 
 export default function StudentDashboardPage() {
   const [activeTab, setActiveTab] = useState('homework');
@@ -17,6 +18,9 @@ export default function StudentDashboardPage() {
   const [modalSubject, setModalSubject] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [logout , setLogout] = useState(false);
+
+
 
   const handleOpenModal = (subject: string) => {
     setModalSubject(subject);
@@ -50,7 +54,7 @@ export default function StudentDashboardPage() {
 
   return (
     <div>
-      <StudentHeader />
+      <StudentHeader toggleLogout={setLogout} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <WelcomeSection />
@@ -61,6 +65,7 @@ export default function StudentDashboardPage() {
               <TabButtons activeTab={activeTab} setActiveTab={setActiveTab} />
 
               <div className="mt-6">
+                
                 {activeTab === 'homework' && (
                   <HomeworkTab onOpenModal={handleOpenModal} />
                 )}
@@ -92,6 +97,9 @@ export default function StudentDashboardPage() {
         isVisible={showToast}
         message={toastMessage}
       />
+   
+      {logout && <Logout onClose={()=>setLogout(false) }/>}
+      
     </div>
   );
 }

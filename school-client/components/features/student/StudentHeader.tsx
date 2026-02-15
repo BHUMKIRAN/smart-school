@@ -1,4 +1,9 @@
-export default function StudentHeader() {
+interface StudentHeaderProps {
+  toggleLogout: (value: boolean) => void;
+}
+
+export default function StudentHeader({toggleLogout}: StudentHeaderProps) {
+ 
   return (
     <header className="sticky top-0 z-50 glass-card border-b border-purple-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,10 +35,11 @@ export default function StudentHeader() {
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
                 AT
               </div>
-              <div>
+              <button onClick={()=>toggleLogout(true)}>
                 <p className="text-sm font-semibold text-slate-200">Alex Thompson</p>
                 <p className="text-xs text-slate-400">ID: 2024-10-A-001</p>
-              </div>
+              </button>
+         
             </div>
           </div>
         </div>

@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css"; // adjust path if needed
+import Logout from "@/components/ui/Logout/page";
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: 'Student Dashboard - School Management System',
-  description: 'Student portal for school management',
+  title: "Student Dashboard - School Management System",
+  description: "Student portal for school management",
 };
 
 export default function StudentLayout({
@@ -18,10 +19,9 @@ export default function StudentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} text-slate-100`}>
-        {children}
-      </body>
-    </html>
+    <div className={`${inter.className} text-slate-100 min-h-screen`}>
+      {/* <Logout onClose={()=>null}/> */}
+      {children}
+    </div>
   );
 }

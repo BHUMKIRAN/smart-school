@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function TeacherNav() {
+export default function TeacherNav({setLogout}) {
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
@@ -47,7 +47,8 @@ export default function TeacherNav() {
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
                 SJ
               </div>
-              <div className="hidden md:block">
+              <div className="hidden md:block cursor-pointer"
+              onClick={()=>setLogout(true)}>
                 <p className="text-sm font-semibold text-slate-200">Dr. Sarah Johnson</p>
                 <p className="text-xs text-slate-400">Mathematics Dept.</p>
               </div>

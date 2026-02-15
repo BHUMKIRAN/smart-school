@@ -10,11 +10,13 @@ import StudentsTab from '@/components/features/teacher/StudentsTab';
 import ResourcesSection from '@/components/features/teacher/ResourcesSection';
 import QuickLinks from '@/components/features/teacher/QuickLinks';
 import SuccessModal from '@/components/features/teacher/SuccessModal';
+import Logout from '@/components/ui/Logout/page';
 
 export default function TeachersPanelPage() {
   const [activeTab, setActiveTab] = useState('attendance');
   const [showModal, setShowModal] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState('Not Marked');
+  const [logout , setLogout] = useState(false)
 
   const handleMarkAttendance = (code: string) => {
     if (code.length === 6) {
@@ -27,7 +29,7 @@ export default function TeachersPanelPage() {
 
   return (
     <div className="min-h-screen">
-      <TeacherNav />
+      <TeacherNav setLogout={setLogout} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
@@ -63,6 +65,7 @@ export default function TeachersPanelPage() {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       />
+      {logout && <Logout onClose={()=>setLogout(false)}/>}
     </div>
   );
 }

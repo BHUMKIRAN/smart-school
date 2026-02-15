@@ -27,14 +27,14 @@ apiWithAuth.interceptors.request.use((config) => {
 // Login function
 export const login = async ({ email, password }: { email: string; password: string }) => {
   try {
-    const res = await api.post("/api/auth/login", { email, password });
+    const res = await api.post("/login", { email, password });
 
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("smart-school-user", JSON.stringify(res.data.user));
 
     return res.data;
-  } catch (err: any) {
-    throw new Error(err.response?.data?.message || "Login failed");
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Login failed");
   }
 };
 /* ================================
@@ -52,7 +52,7 @@ export const register = async ({
   role: "admin" | "teacher" | "student";
 }) => {
   try {
-    const res = await api.post("/api/auth/register", {
+    const res = await api.post("/register", {
       name,
       email,
       password,

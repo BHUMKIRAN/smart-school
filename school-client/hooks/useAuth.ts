@@ -15,14 +15,27 @@ export default function useAuth(redirectToLogin = true) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   useEffect(() => {
+  const checkAuth = async () => {
+
     const storedUser = localStorage.getItem("smart-school-user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Invalid user data");
+        localStorage.removeItem("smart-school-user");
+        router.push("/login");
+      }
     } else if (redirectToLogin) {
       router.push("/login");
     }
+
     setLoading(false);
-  }, []);
+  };
+
+  checkAuth();
+}, [router, redirectToLogin]);
 
   const logout = () => {
     libLogout();

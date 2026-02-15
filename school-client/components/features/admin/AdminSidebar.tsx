@@ -1,4 +1,6 @@
 'use client';
+import React, { useState } from "react";
+import Logout from "@/components/ui/Logout/page";
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -12,6 +14,7 @@ export default function AdminSidebar({
   setActiveTab,
   sidebarOpen,
   setSidebarOpen,
+  setLogout,
 }: AdminSidebarProps) {
   const navItems = [
     {
@@ -123,10 +126,13 @@ export default function AdminSidebar({
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-900 font-bold">
             A
           </div>
-          <div className="flex-1">
+          <button className="flex-1 "
+          
+          onClick={()=> setLogout(true)}>
             <p className="text-sm font-medium text-slate-200">Admin User</p>
             <p className="text-xs text-slate-500">admin@school.com</p>
-          </div>
+          
+          </button>
         </div>
       </div>
     </aside>

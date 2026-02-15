@@ -9,10 +9,12 @@ import NoticesTab from '@/components/features/admin/NoticesTab';
 import EmergencyTab from '@/components/features/admin/EmergencyTab';
 import AttendanceTab from '@/components/features/admin/AttendanceTab';
 import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
+import Logout from '@/components/ui/Logout/page';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('teachers');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [logout ,  setLogout ] = useState(false);
 
   const tabTitles: Record<string, { title: string; subtitle: string }> = {
     teachers: { title: 'Teacher Management', subtitle: 'Manage and monitor your teachers' },
@@ -30,6 +32,7 @@ export default function AdminDashboardPage() {
         setActiveTab={setActiveTab}
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        setLogout={setLogout}
       />
 
       <main
@@ -51,6 +54,7 @@ export default function AdminDashboardPage() {
           {activeTab === 'attendance' && <AttendanceTab />}
           {activeTab === 'applications' && <ApplicationsTab />}
         </div>
+        {logout && <Logout onClose={()=> setLogout(false)}/>}
       </main>
     </div>
   );

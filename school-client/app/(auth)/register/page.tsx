@@ -19,7 +19,7 @@ export default function RegisterPage() {
       await register({ name, email, password, role });
       setMessage("Registration successful! Redirecting to login...");
       setError("");
-      setTimeout(() => router.push("/auth/login"), 2000);
+      setTimeout(() => router.push("/login"), 2000);
     } catch (err: any) {
       setError(err.message);
       setMessage("");
@@ -27,22 +27,22 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
-      <div className="bg-white/20 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-md border border-white/30">
-        
+    <div className="min-h-screen flex items-center justify-center  px-4">
+      <div className="bg-white/20 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-md border border-slate-300/30">
+
         {/* Icon */}
         <div className="flex justify-center mb-4">
-          <div className="bg-white/30 p-4 rounded-full">
+          <div className="bg-gradient-to-br from-indigo-600  via-purple-600 to-purple-500 p-4 rounded-full">
             <UserPlus className="text-white" size={32} />
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-white text-center mb-6">
+        <h1 className="text-3xl font-bold text-black text-center mb-6">
           Smart School Register
         </h1>
 
         {error && (
-          <p className="text-red-200 bg-red-500/20 p-2 rounded mb-4 text-sm text-center">
+          <p className="text-red-500 bg-red-500/10 p-2 rounded mb-4 text-sm text-center">
             {error}
           </p>
         )}
@@ -57,7 +57,7 @@ export default function RegisterPage() {
         <input
           type="text"
           placeholder="Full Name"
-          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white transition"
+          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-black placeholder-black/70 border focus:outline-none focus:ring-2 focus:ring-black transition"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -66,7 +66,7 @@ export default function RegisterPage() {
         <input
           type="email"
           placeholder="Email Address"
-          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white transition"
+          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-black placeholder-black/70 border focus:outline-none focus:ring-2 focus:ring-black transition"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -75,23 +75,23 @@ export default function RegisterPage() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white transition"
+          className="w-full p-3 mb-4 rounded-lg bg-white/30 text-black placeholder-black/70 border focus:outline-none focus:ring-2 focus:ring-black transition"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-    
+
 
         {/* Button */}
         <button
           onClick={handleRegister}
-          className="w-full py-3 rounded-lg bg-white text-indigo-700 font-semibold hover:bg-indigo-100 transition-all duration-300 shadow-lg hover:scale-105"
+          className="w-full py-3 rounded-lg bg-indigo-500  text-white font-semibold hover:bg-indigo-700 transition-all duration-300 shadow-lg hover:scale-105"
         >
           Create Account
         </button>
 
         {/* Footer */}
-        <p className="text-white text-sm text-center mt-6">
+        <p className="text-black text-sm text-center mt-6">
           Already have an account?{" "}
           <span
             onClick={() => router.push("/login")}
