@@ -9,7 +9,7 @@ import NoticesTab from '@/components/features/admin/NoticesTab';
 import EmergencyTab from '@/components/features/admin/EmergencyTab';
 import AttendanceTab from '@/components/features/admin/AttendanceTab';
 import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
-import Logout from '@/components/ui/Logout/page';
+import Logout from '@/components/ui/modal/LogoutModal';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('teachers');

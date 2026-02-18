@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from "react";
-import Logout from "@/components/ui/Logout/page";
+import Logout from "@/components/ui/modal/LogoutModal";
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -76,13 +76,13 @@ export default function AdminSidebar({
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-full bg-indigo-800 backdrop-blur-xl border-r border-amber-500/20 transition-all duration-300 z-50 ${
+      className={`fixed left-0 top-0 h-full  backdrop-blur-xl border-r border-gray-500/20 transition-all duration-300 z-50 ${
         sidebarOpen ? 'w-72' : 'w-20'
       }`}
     >
-      <div className="flex items-center justify-between p-6 border-b border-amber-500/20">
+      <div className="flex items-center justify-between p-6 border-b border-gray-500/20">
         <h1
-          className={`text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent ${
+          className={`text-2xl font-bold bg-gray-600 bg-clip-text text-transparent ${
             !sidebarOpen && 'hidden'
           }`}
         >
@@ -90,9 +90,9 @@ export default function AdminSidebar({
         </h1>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 rounded-lg hover:bg-amber-500/10 transition-colors"
+          className="p-2 rounded-lg hover:bg-gray-500/10 transition-colors"
         >
-          <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {sidebarOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
             ) : (
@@ -109,8 +109,8 @@ export default function AdminSidebar({
             onClick={() => setActiveTab(item.id)}
             className={`nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
               activeTab === item.id
-                ? 'bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400 shadow-lg shadow-amber-500/20'
-                : 'text-slate-400 hover:text-amber-400 hover:bg-slate-800/50'
+                ? 'bg-indigo-600  shadow-lg shadow-amber-500/20'
+                : 'text-gray-600 hover:text-black hover:scale-95'
             }`}
           >
             {item.icon}
@@ -122,15 +122,15 @@ export default function AdminSidebar({
       </nav>
 
       <div className={`absolute bottom-0 left-0 right-0 p-4 border-t border-amber-500/20 ${!sidebarOpen && 'hidden'}`}>
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-900 font-bold">
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg ring-2 bg-gray-500">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold">
             A
           </div>
           <button className="flex-1 "
           
           onClick={()=> setLogout(true)}>
-            <p className="text-sm font-medium text-slate-200">Admin User</p>
-            <p className="text-xs text-slate-500">admin@school.com</p>
+            <p className="text-sm font-medium ">Admin User</p>
+            <p className="text-xs ">admin@school.com</p>
           
           </button>
         </div>

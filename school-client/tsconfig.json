@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/Navbar", "components/AttendanceModal.tsx"  ],
+, "components/Navbar", "components/ui/modal/AttendanceModal.tsx"  ],
   "exclude": ["node_modules"]
 }

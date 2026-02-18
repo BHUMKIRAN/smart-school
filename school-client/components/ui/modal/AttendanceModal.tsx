@@ -88,7 +88,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
 
   return (
     <div 
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn"
+      className="fixed inset-0 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn"
       onClick={onClose}
     >
       <div 

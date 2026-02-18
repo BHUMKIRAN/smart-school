@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import './provider'
+import Providers from './provider';
 
 export const metadata: Metadata = {
   title: 'श्री पञ्चावती आधारभूत विद्यालय - भदौरे',
@@ -13,7 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ne">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

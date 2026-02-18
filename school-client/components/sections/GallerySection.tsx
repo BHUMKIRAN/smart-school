@@ -1,5 +1,6 @@
 'use client';
 
+import { ValueOf } from 'next/dist/shared/lib/constants';
 import { useState } from 'react';
 
 export default function GallerySection() {
@@ -27,7 +28,7 @@ export default function GallerySection() {
   };
 
   return (
-    <section id="gallery" className="py-16 px-6 bg-gray-50">
+    <section id="gallery" className="py-16 px-6 bg-gray-100">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3 nepali-text">फोटो ग्यालरी</h2>

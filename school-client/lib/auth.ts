@@ -61,6 +61,9 @@ export const register = async ({
 
     return res.data;
   } catch (error: any) {
+    console.log("Full error:", error);
+  console.log("Response:", error.response);
+  console.log("Data:", error.response?.data);
     throw new Error(
       error.response?.data?.message || "Registration failed"
     );

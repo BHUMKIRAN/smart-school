@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css"; // adjust path if needed
-import Logout from "@/components/ui/Logout/page";
+
 
 const inter = Inter({
   subsets: ["latin"],
