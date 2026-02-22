@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import AttendanceModal from '@/components/ui/modal/AttendanceModal';
+import AttendanceModal from '@/modals/AttendanceModal';
 import { useSettings } from '@/context/context';
 
 export default function Navbar() {

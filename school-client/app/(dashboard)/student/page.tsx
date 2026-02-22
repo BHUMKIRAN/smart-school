@@ -10,7 +10,7 @@ import ApplicationsTab from '@/components/features/student/ApplicationsTab';
 import SupportTab from '@/components/features/student/SupportTab';
 import SubmitModal from '@/components/features/student/SubmitModal';
 import SuccessToast from '@/components/features/student/SuccessToast';
-import Logout from '@/components/ui/modal/LogoutModal';
+import Logout from '@/modals/LogoutModal';
 
 export default function StudentDashboardPage() {
   const [activeTab, setActiveTab] = useState('homework');

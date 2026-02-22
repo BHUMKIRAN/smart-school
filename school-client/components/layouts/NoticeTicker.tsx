@@ -1,9 +1,22 @@
+"use client";
+import { useEffect, useState } from "react";
+
 export default function NoticeTicker() {
-  const notices = [
-    "नयाँ शैक्षिक सत्र २०८१ को प्रवेश फारम खुला छ",
-    "वार्षिक खेलकुद कार्यक्रम: माघ २५-२७",
-    "अभिभावक-शिक्षक बैठक: माघ १५ गते"
-  ];
+  const [notices, setNotices] = useState([]);
+
+  const fetchNotices = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/notices");
+      const data = await res.json();
+      setNotices(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotices();
+  }, []);
 
   return (
     <div className="notice-ticker py-3 px-6">
@@ -16,14 +29,14 @@ export default function NoticeTicker() {
         </div>
         <div className="flex-1 overflow-hidden">
           <div className="ticker-content">
-            {notices.map((notice, index) => (
+            {notices.map((n, index) => (
               <span key={index} className="inline-block mr-12 text-sm text-yellow-900 nepali-text">
-                {notice}
+                {n.title} {/* or use n.message if you prefer */}
               </span>
             ))}
-            {notices.map((notice, index) => (
+            {notices.map((n, index) => (
               <span key={`duplicate-${index}`} className="inline-block mr-12 text-sm text-yellow-900 nepali-text">
-                {notice}
+                {n.title}
               </span>
             ))}
           </div>

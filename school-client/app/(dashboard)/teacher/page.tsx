@@ -10,7 +10,7 @@ import StudentsTab from '@/components/features/teacher/StudentsTab';
 import ResourcesSection from '@/components/features/teacher/ResourcesSection';
 import QuickLinks from '@/components/features/teacher/QuickLinks';
 import SuccessModal from '@/components/features/teacher/SuccessModal';
-import Logout from '@/components/ui/modal/LogoutModal';
+import Logout from '@/modals/LogoutModal';
 
 export default function TeachersPanelPage() {
   const [activeTab, setActiveTab] = useState('attendance');

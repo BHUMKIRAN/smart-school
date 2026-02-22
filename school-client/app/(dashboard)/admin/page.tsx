@@ -9,12 +9,14 @@ import NoticesTab from '@/components/features/admin/NoticesTab';
 import EmergencyTab from '@/components/features/admin/EmergencyTab';
 import AttendanceTab from '@/components/features/admin/AttendanceTab';
 import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
-import Logout from '@/components/ui/modal/LogoutModal';
+import Logout from '@/modals/LogoutModal';
+import TeacherModal from '@/modals/teacherModals';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('teachers');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [logout ,  setLogout ] = useState(false);
+  const [isOpen , setisOpen] = useState(false);
 
   const tabTitles: Record<string, { title: string; subtitle: string }> = {
     teachers: { title: 'Teacher Management', subtitle: 'Manage and monitor your teachers' },
@@ -44,6 +46,7 @@ export default function AdminDashboardPage() {
         <AdminHeader
           title={tabTitles[activeTab].title}
           subtitle={tabTitles[activeTab].subtitle}
+          setisOpen={setisOpen}
         />
 
         <div className="p-8">
@@ -55,6 +58,7 @@ export default function AdminDashboardPage() {
           {activeTab === 'applications' && <ApplicationsTab />}
         </div>
         {logout && <Logout onClose={()=> setLogout(false)}/>}
+        {isOpen && <TeacherModal isOpen={isOpen} onClose={() => setisOpen(false)} onSubmit={(data) => console.log(data)} />}
       </main>
     </div>
   );

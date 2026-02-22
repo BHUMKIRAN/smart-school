@@ -1,71 +1,139 @@
-export default function StudentsTab() {
-  const stats = [
-    { value: '856', label: 'Total Students', change: '+12 this week', gradient: 'from-cyan-500 to-cyan-600' },
-    { value: '812', label: 'Active Students', change: '94.9% active', gradient: 'from-green-500 to-green-600' },
-    { value: '32', label: 'New Admissions', change: 'this month', gradient: 'from-blue-500 to-blue-600' },
-    { value: '12', label: 'Pending Applications', change: 'awaiting review', gradient: 'from-amber-500 to-amber-600' },
-  ];
+'use client';
 
-  const students = [
-    { name: 'Emma Wilson', initial: 'E', grade: 'Grade 10-A', email: 'emma.w@school.com', attendance: '96%', gpa: '3.8' },
-    { name: 'James Miller', initial: 'J', grade: 'Grade 10-B', email: 'james.m@school.com', attendance: '92%', gpa: '3.6' },
-    { name: 'Sophia Brown', initial: 'S', grade: 'Grade 11-A', email: 'sophia.b@school.com', attendance: '88%', gpa: '3.9' },
-  ];
+import { useEffect, useState } from "react";
+
+interface Student {
+  _id: string;
+  name: string;
+  grade: string;
+  email: string;
+  attendance?: number;
+  gpa?: number;
+  status?: string;
+}
+
+export default function StudentsTab() {
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // ===============================
+  // FETCH STUDENTS
+  // ===============================
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/students");
+      if (!response.ok) throw new Error("Failed to fetch students");
+
+      const data: Student[] = await response.json();
+      setStudents(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      setStudents([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  // ===============================
+  // STATS
+  // ===============================
+  const totalStudents = students.length;
+  const activeStudents = students.filter(
+    (s) => s.status?.toLowerCase() === "active"
+  ).length;
+  const newAdmissions = students.filter(
+    (s) => s.status?.toLowerCase() === "new"
+  ).length;
+  const pendingApplications = students.filter(
+    (s) => s.status?.toLowerCase() === "pending"
+  ).length;
+
+  if (loading) {
+    return <p className="text-center p-6 text-black">Loading students...</p>;
+  }
 
   return (
-    <div>
+    <div className="space-y-6">
+
+      {/* ===============================
+          STATS SECTION
+      =============================== */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-slate-800/50 backdrop-blur-sm border border-amber-500/20 rounded-xl p-6">
-            <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.gradient} flex items-center justify-center mb-4`}>
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-              </svg>
-            </div>
-            <h3 className="text-3xl font-bold text-slate-100 mb-1">{stat.value}</h3>
-            <p className="text-sm text-slate-400">{stat.label}</p>
-            <p className="text-xs text-amber-400 mt-2">{stat.change}</p>
-          </div>
-        ))}
+        <StatCard value={totalStudents} label="Total Students" />
+        <StatCard value={activeStudents} label="Active Students" />
+        <StatCard value={newAdmissions} label="New Admissions" />
+        <StatCard value={pendingApplications} label="Pending Applications" />
       </div>
 
-      <div className="bg-slate-800/50 backdrop-blur-sm border border-amber-500/20 rounded-xl overflow-hidden">
+      {/* ===============================
+          TABLE SECTION
+      =============================== */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-900/50 border-b border-amber-500/20">
+          <table className="w-full text-sm text-left text-gray-600">
+            <thead className="bg-gray-100 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-amber-400 uppercase">Student</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-amber-400 uppercase">Grade</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-amber-400 uppercase">Email</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-amber-400 uppercase">Attendance</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-amber-400 uppercase">GPA</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-amber-400 uppercase">Actions</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs">Student</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs">Grade</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs">Email</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs">Attendance</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs">GPA</th>
+                <th className="px-6 py-4 uppercase font-semibold text-xs text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/50">
-              {students.map((student, i) => (
-                <tr key={i} className="hover:bg-slate-700/20 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
-                        {student.initial}
+
+            <tbody className="divide-y divide-gray-200">
+              {students.length > 0 ? (
+                students.map((student) => (
+                  <tr key={student._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white font-bold">
+                          {student.name?.charAt(0).toUpperCase() || "S"}
+                        </div>
+                        <span className="text-sm font-medium text-black">{student.name}</span>
                       </div>
-                      <span className="text-sm font-medium text-slate-200">{student.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">{student.grade}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">{student.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">{student.attendance}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">{student.gpa}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <button className="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 rounded-lg text-xs font-medium transition-colors">View Details</button>
+                    </td>
+
+                    <td className="px-6 py-4">{student.grade || "N/A"}</td>
+                    <td className="px-6 py-4">{student.email || "N/A"}</td>
+                    <td className="px-6 py-4">{student.attendance !== undefined ? `${student.attendance}%` : "N/A"}</td>
+                    <td className="px-6 py-4">{student.gpa !== undefined ? student.gpa.toFixed(2) : "N/A"}</td>
+
+                    <td className="px-6 py-4 text-right">
+                      <button className="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 rounded-lg text-xs font-medium transition-colors">
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center p-6 text-gray-500">
+                    No students found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ===============================
+// STAT CARD COMPONENT
+// ===============================
+function StatCard({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+      <h3 className="text-3xl font-bold text-black mb-1">{value}</h3>
+      <p className="text-sm text-gray-600">{label}</p>
     </div>
   );
 }
