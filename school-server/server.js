@@ -1,31 +1,33 @@
 import express from "express";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import cors from "cors";
-import protect from "./middleware/auth.js";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import studentRoutes from "./routes/student.js";
 import teacherRoutes from "./routes/teacher.js";
+import noticeRoutes from "./routes/notice.js";
 
-// 1️⃣ Load env variables first
 dotenv.config();
-
-// 2️⃣ Connect DB
-connectDB(); 
+connectDB();
 
 const app = express();
 const port = 8080;
 
-// 3️⃣ Middleware
-app.use(cors());          // Allow frontend requests
-app.use(express.json());  // Parse JSON body
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET','POST','PUT','DELETE']
+}));
 
-// 4️⃣ Routes
-app.use("/students", protect , studentRoutes);
-app.use("/teachers", protect , teacherRoutes);
-app.use("/api/auth", protect ,authRoutes);
+app.use(express.json());
 
-// 5️⃣ Start server
+// ✅ Public Auth Routes
+app.use("/", authRoutes);
+
+// ✅ Protected Routes
+app.use("/students", studentRoutes);
+app.use("/teachers",  teacherRoutes);
+app.use("/notices", noticeRoutes)
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

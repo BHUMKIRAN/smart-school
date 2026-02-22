@@ -1,36 +1,30 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
-// Middleware to protect routes
 const protect = (req, res, next) => {
-  let token;
+  try {
+    // 1️⃣ Check if Authorization header exists
+    const authHeader = req.headers.authorization;
 
-  // Check if Authorization header exists
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    // Extract token from "Bearer token_here"
-    token = req.headers.authorization.split(" ")[1];
-
-    try {
-      // Verify token using JWT_SECRET
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Attach user info to request
-      req.user = decoded;
-
-      next(); // Continue to next middleware or route
-
-    } catch (error) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
-        message: "Token invalid ",
+        message: "No token provided",
       });
     }
-  }
 
-  if (!token) {
+    // 2️⃣ Extract token
+    const token = authHeader.split(" ")[1];
+
+    // 3️⃣ Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // 4️⃣ Attach decoded user info to request
+    req.user = decoded;
+
+    next(); // continue
+
+  } catch (error) {
     return res.status(401).json({
-      message: "No token provided ",
+      message: "Token invalid",
     });
   }
 };
