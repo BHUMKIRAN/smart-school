@@ -11,12 +11,18 @@ import AttendanceTab from '@/components/features/admin/AttendanceTab';
 import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
 import Logout from '@/modals/LogoutModal';
 import TeacherModal from '@/modals/teacherModals';
+import StudentModal from '@/modals/studentModal';
+// import StudentModal from '@/modals/studentModal'; // ✅ import student modal
 
 export default function AdminDashboardPage() {
+
   const [activeTab, setActiveTab] = useState('teachers');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [logout ,  setLogout ] = useState(false);
-  const [isOpen , setisOpen] = useState(false);
+  const [logout, setLogout] = useState(false);
+
+  const [modalType, setModalType] = useState<
+    "teacher" | "student" | null
+  >(null);
 
   const tabTitles: Record<string, { title: string; subtitle: string }> = {
     teachers: { title: 'Teacher Management', subtitle: 'Manage and monitor your teachers' },
@@ -29,6 +35,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen">
+
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -38,15 +45,20 @@ export default function AdminDashboardPage() {
       />
 
       <main
-        id="mainContent"
-        className={`transition-all duration-300 ${
-          sidebarOpen ? 'ml-72' : 'ml-20'
-        }`}
+        className={`transition-all duration-300 ${sidebarOpen ? 'ml-72' : 'ml-20'
+          }`}
       >
+
         <AdminHeader
           title={tabTitles[activeTab].title}
           subtitle={tabTitles[activeTab].subtitle}
-          setisOpen={setisOpen}
+          onAdd={() => {
+            if (activeTab === "teachers") {
+              setModalType("teacher");
+            } else if (activeTab === "students") {
+              setModalType("student");
+            }
+          }}
         />
 
         <div className="p-8">
@@ -57,8 +69,30 @@ export default function AdminDashboardPage() {
           {activeTab === 'attendance' && <AttendanceTab />}
           {activeTab === 'applications' && <ApplicationsTab />}
         </div>
-        {logout && <Logout onClose={()=> setLogout(false)}/>}
-        {isOpen && <TeacherModal isOpen={isOpen} onClose={() => setisOpen(false)} onSubmit={(data) => console.log(data)} />}
+
+        {/* ✅ CORRECT MODAL RENDERING */}
+
+        {modalType === "teacher" && (
+          <TeacherModal
+            isOpen={true}
+            onClose={() => setModalType(null)}
+            mode="create"
+            teacherData={null}
+            refreshTeachers={() => window.location.reload()}
+          />
+        )}
+
+        {modalType === "student" && (
+          <StudentModal
+            isOpen={true}
+            mode="create"
+            onClose={() => setModalType(null)}
+            refreshStudents={() => window.location.reload()}
+          />
+        )}
+
+        {logout && <Logout onClose={() => setLogout(false)} />}
+
       </main>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-interface Student {
+export interface Student {
   _id: string;
   name: string;
   grade: string;
@@ -12,7 +12,14 @@ interface Student {
   status?: string;
 }
 
-export default function StudentsTab() {
+interface StudentsTabProps {
+  // Optional props if you want to control modal later
+  isOpen?: boolean;
+  onClose?: () => void;
+  refreshStudents?: () => void;
+}
+
+export default function StudentsTab({ isOpen, onClose, refreshStudents }: StudentsTabProps) {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +65,6 @@ export default function StudentsTab() {
 
   return (
     <div className="space-y-6">
-
       {/* ===============================
           STATS SECTION
       =============================== */}
