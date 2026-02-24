@@ -10,16 +10,16 @@ export default function AdminHeader({
   onAdd,
 }: AdminHeaderProps) {
   return (
-    <header className="bg-white backdrop-blur-sm border-b border-gray-200 sticky top-0 z-40">
+    <header className="dash-nav">
       <div className="px-8 py-6">
         <div className="flex items-center justify-between">
-          
+
           {/* Left Side */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold dash-text">
               {title}
             </h2>
-            <p className="text-sm mt-1 text-gray-500">
+            <p className="text-sm mt-1 dash-text-muted">
               {subtitle}
             </p>
           </div>
@@ -30,7 +30,7 @@ export default function AdminHeader({
             {/* Search */}
             <div className="relative">
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 dash-text-muted"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -46,7 +46,7 @@ export default function AdminHeader({
               <input
                 type="text"
                 placeholder="Search..."
-                className="pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="dash-input pl-10 pr-4"
               />
             </div>
 

@@ -1,19 +1,46 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode : ["class"],
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./modals/**/*.{js,ts,jsx,tsx,mdx}",
+    "./context/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
+        /* ── Semantic surface tokens (auto-switch via CSS vars) ── */
         background: "var(--background)",
         foreground: "var(--foreground)",
+        card: "var(--card-bg)",
+        "card-border": "var(--card-border)",
+        muted: "var(--muted-bg)",
+        "muted-foreground": "var(--muted-text)",
+
+        /* ── Brand ── */
         primary: "var(--primary)",
-        primaryDark: "var(--primary-dark)",
+        "primary-dark": "var(--primary-dark)",
+        secondary: "var(--secondary)",
+        accent: "var(--accent)",
+
+        /* ── Semantic feedback ── */
+        success: "var(--success)",
+        warning: "var(--warning)",
+        error: "var(--error)",
+        info: "var(--info)",
+
+        /* ── Nav ── */
+        "nav-bg": "var(--nav-bg)",
+        "nav-border": "var(--nav-border)",
+        "nav-text": "var(--nav-text)",
+
+        /* ── Input ── */
+        "input-bg": "var(--input-bg)",
+        "input-border": "var(--input-border)",
+        "input-text": "var(--input-text)",
       },
       fontFamily: {
         devanagari: ['"Noto Sans Devanagari"', "sans-serif"],

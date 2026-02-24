@@ -18,12 +18,12 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 px-6 bg-white">
+    <section id="contact" className="section-bg py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3 nepali-text">सम्पर्क गर्नुहोस्</h2>
           <div className="accent-bar mx-auto mb-4"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Get in touch with us for admissions, inquiries, or any other information
           </p>
         </div>
@@ -95,7 +95,7 @@ export default function ContactSection() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition nepali-text"
+                  className="w-full px-4 py-2.5 rounded-lg border border-input-border bg-input-bg text-input-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition nepali-text"
                   placeholder="तपाईंको नाम"
                   required
                 />
@@ -106,7 +106,7 @@ export default function ContactSection() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition"
+                  className="w-full px-4 py-2.5 rounded-lg border border-input-border bg-input-bg text-input-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
                   placeholder="your@email.com"
                   required
                 />
@@ -117,7 +117,7 @@ export default function ContactSection() {
                   type="text"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition nepali-text"
+                  className="w-full px-4 py-2.5 rounded-lg border border-input-border bg-input-bg text-input-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition nepali-text"
                   placeholder="सन्देशको विषय"
                   required
                 />
@@ -128,7 +128,7 @@ export default function ContactSection() {
                   rows={3}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition nepali-text"
+                  className="w-full px-4 py-2.5 rounded-lg border border-input-border bg-input-bg text-input-text focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition nepali-text"
                   placeholder="तपाईंको सन्देश..."
                   required
                 />

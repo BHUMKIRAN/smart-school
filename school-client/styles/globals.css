@@ -5,11 +5,16 @@
 @tailwind utilities;
 
 /* =========================
-   CSS VARIABLES
+   LIGHT MODE (DEFAULT)
 ========================= */
 :root {
+  /* Surface */
   --background: #f9fafb;
   --foreground: #1f2937;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --muted-bg: #f3f4f6;
+  --muted-text: #6b7280;
 
   /* Brand Colors */
   --primary: #6366f1;
@@ -29,6 +34,93 @@
   --gray-200: #e5e7eb;
   --gray-600: #4b5563;
   --gray-800: #1f2937;
+
+  /* Nav */
+  --nav-bg: rgba(255, 255, 255, 0.98);
+  --nav-border: #e5e7eb;
+  --nav-text: #1f2937;
+
+  /* Input */
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-text: #1f2937;
+
+  /* Ticker */
+  --ticker-bg: #fef3c7;
+  --ticker-border: #f59e0b;
+
+  /* ── Dashboard / Portal ── */
+  --dash-bg: #f1f5f9;
+  --dash-surface: #ffffff;
+  --dash-surface-2: #f8fafc;
+  --dash-border: #e2e8f0;
+  --dash-text: #1e293b;
+  --dash-text-muted: #64748b;
+  --dash-sidebar-bg: #ffffff;
+  --dash-sidebar-border: #e2e8f0;
+  --dash-sidebar-active: #6366f1;
+  --dash-sidebar-hover: #f1f5f9;
+  --dash-glass: rgba(255, 255, 255, 0.80);
+  --dash-glass-border: rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   DARK MODE OVERRIDES
+========================= */
+html.dark {
+  /* Surface */
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --muted-bg: #1e293b;
+  --muted-text: #94a3b8;
+
+  /* Brand Colors (slightly brighter for dark bg) */
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --secondary: #a78bfa;
+  --accent: #f472b6;
+
+  /* Semantic Colors */
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --info: #60a5fa;
+
+  /* Neutral Palette */
+  --gray-50: #1e293b;
+  --gray-100: #1e293b;
+  --gray-200: #334155;
+  --gray-600: #94a3b8;
+  --gray-800: #e2e8f0;
+
+  /* Nav */
+  --nav-bg: rgba(15, 23, 42, 0.98);
+  --nav-border: #334155;
+
+  /* Input */
+  --input-bg: #1e293b;
+  --input-border: #475569;
+  --input-text: #e2e8f0;
+
+  /* Ticker */
+  --ticker-bg: #1c1917;
+  --ticker-border: #d97706;
+
+  /* ── Dashboard / Portal (dark overrides) ── */
+  --dash-bg: #0f172a;
+  --dash-surface: #1e293b;
+  --dash-surface-2: #162032;
+  --dash-border: #334155;
+  --dash-text: #e2e8f0;
+  --dash-text-muted: #94a3b8;
+  --dash-sidebar-bg: #1e293b;
+  --dash-sidebar-border: #334155;
+  --dash-sidebar-active: #6366f1;
+  --dash-sidebar-hover: #334155;
+  --dash-glass: rgba(30, 41, 59, 0.85);
+  --dash-glass-border: rgba(255, 255, 255, 0.08);
 }
 
 /* =========================
@@ -39,18 +131,41 @@
     @apply m-0 p-0 box-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-800 font-sans;
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   .nepali-text {
     font-family: 'Noto Sans Devanagari', sans-serif;
   }
 
-.dark body {
-  @apply bg-gray-800 text-gray-100;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--foreground);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+  }
 }
 
 /* =========================
@@ -61,54 +176,72 @@
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   }
 
+  /* ── Card ── */
   .card {
-    @apply bg-white rounded-xl shadow-sm transition-all duration-300;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    @apply rounded-xl shadow-sm transition-all duration-300;
   }
 
   .card:hover {
     @apply -translate-y-1 shadow-md;
   }
 
-  .accent-bar {
-    @apply w-12 h-1 bg-indigo-500 rounded-full;
+  /* ── Stat Card ── */
+  .stat-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    @apply p-6 rounded-xl text-center shadow-sm transition-colors duration-300;
   }
 
+  .stat-number {
+    color: var(--primary);
+    @apply text-3xl font-bold;
+  }
+
+  /* ── Icon Box ── */
+  .icon-box {
+    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+    @apply w-12 h-12 rounded-xl flex items-center justify-center;
+  }
+
+  /* ── Accent Bar ── */
+  .accent-bar {
+    background-color: var(--primary);
+    @apply w-12 h-1 rounded-full;
+  }
+
+  /* ── Buttons ── */
   .btn {
     @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300;
   }
 
   .btn-primary {
-    @apply bg-indigo-500 text-white;
+    background-color: var(--primary);
+    @apply text-white;
   }
 
   .btn-primary:hover {
-    @apply bg-indigo-600 -translate-y-0.5;
+    background-color: var(--primary-dark);
+    @apply -translate-y-0.5;
   }
 
-  .stat-card {
-    @apply bg-white p-6 rounded-xl text-center shadow-sm;
-  }
-
-  .stat-number {
-    @apply text-3xl font-bold text-indigo-500;
-  }
-
-  .icon-box {
-    @apply w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-50;
-  }
-
+  /* ── Attendance Button ── */
   .attendance-btn {
     @apply relative px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
   }
 
   .attendance-btn:hover {
     @apply scale-105 shadow-lg;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
   }
 
+  /* ── Notice Ticker ── */
   .notice-ticker {
-    @apply overflow-hidden bg-amber-100 border-l-4 border-amber-500;
+    background-color: var(--ticker-bg);
+    border-left: 4px solid var(--ticker-border);
+    @apply overflow-hidden;
   }
 
   .ticker-content {
@@ -116,21 +249,183 @@
     animation: scroll 30s linear infinite;
   }
 
+  /* ── Modal ── */
   .modal-content {
-    @apply bg-white rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--foreground);
+    @apply rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
     animation: modalSlideIn 0.3s ease;
   }
 
+  /* ── Tab Buttons ── */
   .tab-button {
-    @apply px-4 py-2 text-sm font-medium text-gray-600 rounded-lg transition-all duration-200;
+    color: var(--muted-text);
+    @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200;
   }
 
   .tab-active {
-    @apply bg-indigo-500 text-white;
+    background-color: var(--primary);
+    @apply text-white;
   }
 
+  /* ── Glass Card ── */
   .glass-card {
-    @apply bg-white/5 backdrop-blur-md;
+    background-color: color-mix(in srgb, var(--card-bg) 10%, transparent);
+    @apply backdrop-blur-md;
+  }
+
+  /* ── Navbar ── */
+  .navbar {
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    @apply sticky top-0 z-50 backdrop-blur-lg;
+  }
+
+  /* ── Muted Surface ── */
+  .surface-muted {
+    background-color: var(--muted-bg);
+    color: var(--muted-text);
+  }
+
+  /* ── Section ── */
+  .section-bg {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  .section-alt {
+    background-color: var(--muted-bg);
+    color: var(--foreground);
+  }
+
+  /* ── Theme Toggle Button ── */
+  .theme-toggle {
+    background-color: var(--primary);
+    color: #ffffff;
+    @apply px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--primary-dark);
+    @apply -translate-y-0.5 shadow-md;
+  }
+
+  /* =========================================
+     DASHBOARD / PORTAL COMPONENT CLASSES
+  ========================================= */
+
+  /* ── Glass Panel (replaces glass-effect / glass-card) ── */
+  .glass-panel {
+    background-color: var(--dash-glass);
+    border: 1px solid var(--dash-glass-border);
+    @apply backdrop-blur-xl transition-colors duration-300;
+  }
+
+  /* ── Dashboard Page Background ── */
+  .dash-page {
+    background-color: var(--dash-bg);
+    color: var(--dash-text);
+    @apply min-h-screen transition-colors duration-300;
+  }
+
+  /* ── Dashboard Nav ── */
+  .dash-nav {
+    background-color: var(--dash-glass);
+    border-bottom: 1px solid var(--dash-border);
+    @apply sticky top-0 z-50 backdrop-blur-xl transition-colors duration-300;
+  }
+
+  /* ── Dashboard Sidebar ── */
+  .dash-sidebar {
+    background-color: var(--dash-sidebar-bg);
+    border-right: 1px solid var(--dash-sidebar-border);
+    @apply backdrop-blur-xl transition-all duration-300;
+  }
+
+  /* ── Dashboard Card ── */
+  .dash-card {
+    background-color: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    color: var(--dash-text);
+    @apply rounded-xl transition-colors duration-300;
+  }
+
+  .dash-card-alt {
+    background-color: var(--dash-surface-2);
+    border: 1px solid var(--dash-border);
+    color: var(--dash-text);
+    @apply rounded-xl transition-colors duration-300;
+  }
+
+  /* ── Dashboard Text ── */
+  .dash-text {
+    color: var(--dash-text);
+  }
+
+  .dash-text-muted {
+    color: var(--dash-text-muted);
+  }
+
+  /* ── Dashboard Table ── */
+  .dash-table {
+    @apply w-full text-sm text-left;
+    color: var(--dash-text-muted);
+  }
+
+  .dash-table thead {
+    background-color: var(--dash-surface-2);
+    border-bottom: 1px solid var(--dash-border);
+  }
+
+  .dash-table th {
+    color: var(--dash-text-muted);
+    @apply px-6 py-4 uppercase font-semibold text-xs;
+  }
+
+  .dash-table tbody {
+    @apply divide-y;
+    border-color: var(--dash-border);
+  }
+
+  .dash-table tbody tr {
+    @apply transition-colors;
+  }
+
+  .dash-table tbody tr:hover {
+    background-color: var(--dash-surface-2);
+  }
+
+  .dash-table td {
+    @apply px-6 py-4;
+    color: var(--dash-text);
+  }
+
+  /* ── Dashboard Tabs ── */
+  .dash-tab {
+    color: var(--dash-text-muted);
+    @apply px-6 py-3 rounded-lg font-semibold transition-all;
+  }
+
+  .dash-tab:hover {
+    color: var(--dash-text);
+  }
+
+  /* ── Dashboard Input ── */
+  .dash-input {
+    background-color: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    color: var(--dash-text);
+    @apply px-4 py-2.5 rounded-lg outline-none transition-all;
+  }
+
+  .dash-input::placeholder {
+    color: var(--dash-text-muted);
+  }
+
+  .dash-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
   }
 }
 

@@ -49,18 +49,18 @@ export default function StatsCards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
-        <div key={index} className="glass-effect rounded-xl p-6 border border-blue-500/20 hover:border-blue-500/40 transition-all group">
+        <div key={index} className="dash-card p-6 hover:shadow-md transition-all group">
           <div className="flex items-start justify-between mb-4">
             <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.gradient} bg-opacity-20`}>
               {stat.icon}
             </div>
-            <span className="text-xs px-2 py-1 bg-slate-800/50 rounded-full text-slate-400">
+            <span className="text-xs px-2 py-1 dash-card-alt rounded-full dash-text-muted">
               Live
             </span>
           </div>
-          <h3 className="text-sm font-medium text-slate-400 mb-1">{stat.title}</h3>
-          <p className="text-3xl font-bold text-slate-100 mb-2">{stat.value}</p>
-          <p className="text-xs text-green-400 flex items-center gap-1">
+          <h3 className="text-sm font-medium dash-text-muted mb-1">{stat.title}</h3>
+          <p className="text-3xl font-bold dash-text mb-2">{stat.value}</p>
+          <p className="text-xs text-green-500 flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
             </svg>

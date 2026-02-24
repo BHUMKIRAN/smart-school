@@ -18,21 +18,18 @@ export default function EmergencyTab() {
       )
       alert("Emergency notice submitted successfully")
       console.log("Success:", res.data)
-
-      // e.currentTarget.reset()
-
     } catch (error) {
       console.error("Error submitting emergency notice:", error)
     }
   }
 
   return (
-    <div className="bg-white border border-red-200 rounded-xl p-6 shadow-sm">
+    <div className="dash-card border-red-500/20 p-6 shadow-sm">
 
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full bg-red-500/15 flex items-center justify-center">
           <svg
-            className="w-6 h-6 text-red-600"
+            className="w-6 h-6 text-red-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -47,10 +44,10 @@ export default function EmergencyTab() {
         </div>
 
         <div>
-          <h3 className="text-xl font-bold text-black">
+          <h3 className="text-xl font-bold dash-text">
             Emergency Alert System
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm dash-text-muted">
             Send critical notifications to all users
           </p>
         </div>
@@ -59,28 +56,28 @@ export default function EmergencyTab() {
       <form onSubmit={handleSubmit} className="space-y-4">
 
         <div>
-          <label className="block text-sm font-medium text-black mb-2">
+          <label className="block text-sm font-medium dash-text mb-2">
             Alert Title
           </label>
           <input
-            name="title"   // ✅ IMPORTANT
+            name="title"
             type="text"
             required
             placeholder="Enter emergency alert title"
-            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="dash-input w-full focus:ring-2 focus:ring-red-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-black mb-2">
+          <label className="block text-sm font-medium dash-text mb-2">
             Alert Message
           </label>
           <textarea
-            name="message"   // ✅ IMPORTANT
+            name="message"
             rows={4}
             required
             placeholder="Enter critical information"
-            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+            className="dash-input w-full resize-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 

@@ -39,12 +39,12 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-16 px-6 bg-white">
+    <section id="about" className="section-bg py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3 nepali-text">विद्यालयको परिचय</h2>
           <div className="accent-bar mx-auto mb-4"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Empowering young minds since establishment, we are committed to providing quality education that shapes future leaders.
           </p>
         </div>
@@ -52,10 +52,10 @@ export default function AboutSection() {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="card p-6">
             <h3 className="text-xl font-bold mb-4 nepali-text">हाम्रो दृष्टिकोण</h3>
-            <p className="text-gray-600 leading-relaxed mb-4">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               To be a center of educational excellence, nurturing responsible citizens who contribute positively to society through knowledge, character, and innovation.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed">
               We believe in holistic development that goes beyond textbooks, preparing students for real-world challenges while maintaining strong moral and ethical values.
             </p>
           </div>
@@ -67,25 +67,25 @@ export default function AboutSection() {
                 <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-600">Provide quality education accessible to all</span>
+                <span className="text-muted-foreground">Provide quality education accessible to all</span>
               </li>
               <li className="flex gap-3">
                 <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-600">Foster critical thinking and creativity</span>
+                <span className="text-muted-foreground">Foster critical thinking and creativity</span>
               </li>
               <li className="flex gap-3">
                 <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-600">Build character and ethical values</span>
+                <span className="text-muted-foreground">Build character and ethical values</span>
               </li>
               <li className="flex gap-3">
                 <svg className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-gray-600">Create a safe and inclusive environment</span>
+                <span className="text-muted-foreground">Create a safe and inclusive environment</span>
               </li>
             </ul>
           </div>
@@ -99,7 +99,7 @@ export default function AboutSection() {
                 {feature.icon}
               </div>
               <h4 className="font-semibold mb-2 nepali-text">{feature.title}</h4>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
+              <p className="text-muted-foreground text-sm">{feature.description}</p>
             </div>
           ))}
         </div>

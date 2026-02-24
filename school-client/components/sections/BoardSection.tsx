@@ -28,12 +28,12 @@ export default function BoardSection() {
   ];
 
   return (
-    <section id="board" className="py-16 px-6 bg-gray-50">
+    <section id="board" className="section-alt py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3 nepali-text">विद्यालय व्यवस्थापन समिति</h2>
           <div className="accent-bar mx-auto mb-4"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Dedicated leaders committed to the school&apos;s vision and continuous improvement
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function BoardSection() {
               </div>
               <h3 className="font-bold mb-1 nepali-text">{member.name}</h3>
               <p className="text-primary-600 font-semibold text-sm mb-2 nepali-text">{member.position}</p>
-              <p className="text-gray-600 text-xs">{member.description}</p>
+              <p className="text-muted-foreground text-xs">{member.description}</p>
             </div>
           ))}
         </div>

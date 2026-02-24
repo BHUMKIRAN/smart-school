@@ -11,10 +11,10 @@ export default function GradesTab() {
   return (
     <div className="tab-content space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-slate-200">Current Semester</h3>
+        <h3 className="text-lg font-semibold dash-text">Current Semester</h3>
         <div className="text-right">
-          <p className="text-xs text-slate-400">Overall GPA</p>
-          <p className="text-2xl font-bold text-purple-400">3.8</p>
+          <p className="text-xs dash-text-muted">Overall GPA</p>
+          <p className="text-2xl font-bold text-purple-500">3.8</p>
         </div>
       </div>
 
@@ -22,7 +22,7 @@ export default function GradesTab() {
         {subjects.map((subject, index) => (
           <div
             key={index}
-            className="glass-card rounded-xl p-5 border border-purple-500/20 hover:border-purple-500/30 transition-all"
+            className="dash-card p-5 hover:shadow-md transition-all"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -32,11 +32,11 @@ export default function GradesTab() {
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-200">{subject.name}</h4>
-                  <p className="text-sm text-slate-400">Score: {subject.score}%</p>
+                  <h4 className="font-semibold dash-text">{subject.name}</h4>
+                  <p className="text-sm dash-text-muted">Score: {subject.score}%</p>
                 </div>
               </div>
-              <div className="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div className="w-24 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--dash-border)' }}>
                 <div
                   className={`h-full ${subject.color.replace('text-', 'bg-')} rounded-full`}
                   style={{ width: `${subject.score}%` }}
@@ -47,20 +47,20 @@ export default function GradesTab() {
         ))}
       </div>
 
-      <div className="glass-card rounded-xl p-6 border border-purple-500/20">
-        <h4 className="font-semibold text-slate-200 mb-4">Grade Distribution</h4>
+      <div className="dash-card p-6">
+        <h4 className="font-semibold dash-text mb-4">Grade Distribution</h4>
         <div className="space-y-3">
           {['A+/A', 'A-/B+', 'B/B-'].map((range, index) => (
             <div key={index} className="flex items-center justify-between">
-              <span className="text-sm text-slate-400">{range}</span>
+              <span className="text-sm dash-text-muted">{range}</span>
               <div className="flex items-center gap-2">
-                <div className="w-32 h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="w-32 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--dash-border)' }}>
                   <div
                     className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
                     style={{ width: `${[75, 20, 5][index]}%` }}
                   ></div>
                 </div>
-                <span className="text-sm text-slate-300 w-12 text-right">
+                <span className="text-sm dash-text w-12 text-right">
                   {[75, 20, 5][index]}%
                 </span>
               </div>

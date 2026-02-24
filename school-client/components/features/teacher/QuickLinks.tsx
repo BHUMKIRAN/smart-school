@@ -47,8 +47,8 @@ export default function QuickLinks() {
   ];
 
   return (
-    <div className="glass-effect rounded-xl p-6 border border-blue-500/20">
-      <h3 className="text-xl font-bold text-slate-100 mb-4">Quick Links</h3>
+    <div className="dash-card p-6">
+      <h3 className="text-xl font-bold dash-text mb-4">Quick Links</h3>
       <div className="grid grid-cols-2 gap-3">
         {links.map((link, index) => (
           <button
@@ -56,7 +56,7 @@ export default function QuickLinks() {
             className={`p-4 bg-gradient-to-br ${link.gradient} border ${link.border} rounded-lg ${link.hoverBorder} transition-all text-left group`}
           >
             {link.icon}
-            <p className="text-sm font-semibold text-slate-200">{link.title}</p>
+            <p className="text-sm font-semibold dash-text">{link.title}</p>
           </button>
         ))}
       </div>

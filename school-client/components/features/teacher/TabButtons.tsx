@@ -11,16 +11,15 @@ export default function TabButtons({ activeTab, setActiveTab }: TabButtonsProps)
   ];
 
   return (
-    <div className="flex gap-2 border-b border-slate-700 pb-2">
+    <div className="flex gap-2 border-b pb-2" style={{ borderColor: 'var(--dash-border)' }}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
-          className={`tab-btn px-6 py-3 rounded-lg font-semibold transition-all ${
-            activeTab === tab.id
-              ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30'
-              : 'text-slate-400 hover:text-slate-200'
-          }`}
+          className={`dash-tab ${activeTab === tab.id
+              ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-500 border border-blue-500/30'
+              : 'hover:opacity-80'
+            }`}
         >
           <span className="mr-2">{tab.icon}</span>
           {tab.label}

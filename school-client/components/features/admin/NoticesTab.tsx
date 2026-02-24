@@ -8,7 +8,6 @@ export default function NoticesTab() {
 
   const [notices, setNotices] = useState([]);
 
-  // Fetch notices
   const fetchNotices = async () => {
     try {
       const res = await fetch("http://localhost:8080/notices");
@@ -19,21 +18,15 @@ export default function NoticesTab() {
     }
   };
 
-  // Create notice
   const createNotice = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://localhost:8080/notices", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) throw new Error("Failed to create notice");
-
       setFormData({ title: "", message: "" });
       fetchNotices();
     } catch (error) {
@@ -41,21 +34,13 @@ export default function NoticesTab() {
     }
   };
 
-  // Delete notice
   const deleteNotice = async (id) => {
     try {
-      const res = await fetch(
-        `http://localhost:8080/notices/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
+      const res = await fetch(`http://localhost:8080/notices/${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Failed to delete notice");
-
-      setNotices((prev) =>
-        prev.filter((notice) => notice._id !== id)
-      );
+      setNotices((prev) => prev.filter((notice) => notice._id !== id));
     } catch (error) {
       console.error("Failed to delete notice", error);
     }
@@ -69,14 +54,14 @@ export default function NoticesTab() {
     <div>
       {/* Create Notice Form */}
       <div className="mb-6">
-        <div className="bg-white border border-amber-500/20 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-black mb-4">
+        <div className="dash-card p-6">
+          <h3 className="text-lg font-semibold dash-text mb-4">
             Create New Notice
           </h3>
 
           <form className="space-y-4" onSubmit={createNotice}>
             <div>
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-medium dash-text mb-2">
                 Notice Title
               </label>
               <input
@@ -86,12 +71,12 @@ export default function NoticesTab() {
                   setFormData({ ...formData, title: e.target.value })
                 }
                 placeholder="Enter notice title"
-                className="w-full px-4 py-3 border rounded-lg text-black"
+                className="dash-input w-full"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-black mb-2">
+              <label className="block text-sm font-medium dash-text mb-2">
                 Message
               </label>
               <textarea
@@ -101,13 +86,13 @@ export default function NoticesTab() {
                   setFormData({ ...formData, message: e.target.value })
                 }
                 placeholder="Enter notice message"
-                className="w-full px-4 py-3 border rounded-lg text-black resize-none"
+                className="dash-input w-full resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="px-6 py-3 bg-amber-500 text-black rounded-lg font-semibold"
+              className="px-6 py-3 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-all"
             >
               Publish Notice
             </button>
@@ -116,8 +101,8 @@ export default function NoticesTab() {
       </div>
 
       {/* Recent Notices */}
-      <div className="bg-white border border-amber-500/20 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-black mb-4">
+      <div className="dash-card p-6">
+        <h3 className="text-lg font-semibold dash-text mb-4">
           Recent Notices
         </h3>
 
@@ -125,22 +110,20 @@ export default function NoticesTab() {
           {notices.map((notice) => (
             <div
               key={notice._id}
-              className="p-4 bg-gray-50 border rounded-lg"
+              className="p-4 dash-card-alt rounded-lg"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-medium text-black">
+                  <h4 className="font-medium dash-text">
                     {notice.title}
                   </h4>
 
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs dash-text-muted mt-1">
                     Posted on{" "}
-                    {new Date(
-                      notice.createdAt
-                    ).toLocaleDateString()}
+                    {new Date(notice.createdAt).toLocaleDateString()}
                   </p>
 
-                  <p className="text-sm text-gray-700 mt-1">
+                  <p className="text-sm dash-text-muted mt-1">
                     {notice.message}
                   </p>
                 </div>

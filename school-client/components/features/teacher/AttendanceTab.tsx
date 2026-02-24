@@ -28,16 +28,16 @@ export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: At
   return (
     <div className="tab-content space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-xl p-6">
+        <div className="dash-card bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-500/20 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-slate-200">Today&apos;s Attendance</h3>
-            <span id="attendanceStatus" className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium">
+            <h3 className="text-lg font-semibold dash-text">Today&apos;s Attendance</h3>
+            <span id="attendanceStatus" className="px-3 py-1 bg-green-500/20 text-green-500 rounded-full text-sm font-medium">
               {attendanceStatus}
             </span>
           </div>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-slate-400 mb-2">Enter Attendance Code</label>
+              <label className="block text-sm dash-text-muted mb-2">Enter Attendance Code</label>
               <input
                 id="attendanceCode"
                 type="text"
@@ -46,7 +46,7 @@ export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: At
                 onKeyPress={handleKeyPress}
                 maxLength={6}
                 placeholder="XXXXXX"
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:border-blue-500 focus:outline-none transition-all text-center text-2xl font-bold tracking-widest"
+                className="dash-input w-full text-center text-2xl font-bold tracking-widest"
               />
             </div>
             <button
@@ -58,16 +58,16 @@ export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: At
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border border-purple-500/20 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-slate-200 mb-4">This Week Summary</h3>
+        <div className="dash-card bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-500/20 p-6">
+          <h3 className="text-lg font-semibold dash-text mb-4">This Week Summary</h3>
           <div className="space-y-3">
             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((day, index) => (
-              <div key={day} className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg">
-                <span className="text-sm text-slate-300">{day}</span>
+              <div key={day} className="flex items-center justify-between p-3 dash-card-alt rounded-lg">
+                <span className="text-sm dash-text">{day}</span>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-slate-200">{92 + index}%</span>
-                  <div className="w-20 h-2 bg-slate-700 rounded-full overflow-hidden">
-                    <div 
+                  <span className="text-sm font-semibold dash-text">{92 + index}%</span>
+                  <div className="w-20 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--dash-border)' }}>
+                    <div
                       className="h-full bg-gradient-to-r from-green-500 to-green-600 rounded-full"
                       style={{ width: `${92 + index}%` }}
                     ></div>
@@ -79,17 +79,17 @@ export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: At
         </div>
       </div>
 
-      <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-slate-200 mb-4">Recent Attendance Records</h3>
+      <div className="dash-card p-6">
+        <h3 className="text-lg font-semibold dash-text mb-4">Recent Attendance Records</h3>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="dash-table">
             <thead>
-              <tr className="border-b border-slate-700">
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-400">Date</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-400">Class</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-400">Present</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-400">Absent</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-slate-400">Percentage</th>
+              <tr>
+                <th>Date</th>
+                <th>Class</th>
+                <th>Present</th>
+                <th>Absent</th>
+                <th>Percentage</th>
               </tr>
             </thead>
             <tbody>
@@ -98,15 +98,14 @@ export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: At
                 { date: 'Feb 11, 2024', class: 'Math 101-B', present: 25, absent: 5, percentage: 83.3 },
                 { date: 'Feb 10, 2024', class: 'Math 201-A', present: 30, absent: 0, percentage: 100 },
               ].map((record, index) => (
-                <tr key={index} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition-all">
-                  <td className="py-3 px-4 text-sm text-slate-300">{record.date}</td>
-                  <td className="py-3 px-4 text-sm text-slate-200 font-medium">{record.class}</td>
-                  <td className="py-3 px-4 text-sm text-green-400">{record.present}</td>
-                  <td className="py-3 px-4 text-sm text-red-400">{record.absent}</td>
-                  <td className="py-3 px-4 text-sm">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      record.percentage >= 90 ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'
-                    }`}>
+                <tr key={index}>
+                  <td>{record.date}</td>
+                  <td className="font-medium">{record.class}</td>
+                  <td className="text-green-500">{record.present}</td>
+                  <td className="text-red-500">{record.absent}</td>
+                  <td>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${record.percentage >= 90 ? 'bg-green-500/20 text-green-500' : 'bg-amber-500/20 text-amber-500'
+                      }`}>
                       {record.percentage}%
                     </span>
                   </td>

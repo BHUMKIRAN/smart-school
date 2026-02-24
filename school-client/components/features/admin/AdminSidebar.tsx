@@ -77,14 +77,14 @@ export default function AdminSidebar({
   ];
 
   return (
-    <aside className={`fixed left-0 top-0 h-full backdrop-blur-xl border-r border-gray-500/20 transition-all duration-300 z-50 ${sidebarOpen ? 'w-72' : 'w-20'}`}>
+    <aside className={`dash-sidebar fixed left-0 top-0 h-full z-50 ${sidebarOpen ? 'w-72' : 'w-20'}`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-500/20">
-        <h1 className={`text-2xl font-bold bg-gray-600 bg-clip-text text-transparent ${!sidebarOpen && 'hidden'}`}>
+      <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid var(--dash-border)' }}>
+        <h1 className={`text-2xl font-bold dash-text ${!sidebarOpen && 'hidden'}`}>
           Admin Panel
         </h1>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-lg hover:bg-gray-500/10 transition-colors">
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-lg hover:opacity-70 transition-colors">
+          <svg className="w-5 h-5 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {sidebarOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -100,11 +100,11 @@ export default function AdminSidebar({
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-              activeTab === item.id
-                ? 'bg-indigo-600 shadow-lg shadow-amber-500/20 text-white'
-                : 'text-gray-600 hover:text-black hover:scale-95'
-            }`}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${activeTab === item.id
+                ? 'bg-indigo-600 shadow-lg shadow-indigo-500/20 text-white'
+                : 'dash-text-muted hover:opacity-80'
+              }`}
+            style={activeTab !== item.id ? { backgroundColor: 'transparent' } : {}}
           >
             {item.icon}
             <span className={`font-medium text-sm ${!sidebarOpen && 'hidden'}`}>{item.label}</span>
@@ -113,12 +113,12 @@ export default function AdminSidebar({
       </nav>
 
       {/* Logout Section */}
-      <div className={`absolute bottom-0 left-0 right-0 p-4 border-t border-amber-500/20 ${!sidebarOpen && 'hidden'}`}>
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg ring-2 bg-gray-500">
+      <div className={`absolute bottom-0 left-0 right-0 p-4 ${!sidebarOpen && 'hidden'}`} style={{ borderTop: '1px solid var(--dash-border)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg dash-card-alt">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold">A</div>
           <button className="flex-1 text-left" onClick={() => setLogout(true)}>
-            <p className="text-sm font-medium">Admin User</p>
-            <p className="text-xs">admin@school.com</p>
+            <p className="text-sm font-medium dash-text">Admin User</p>
+            <p className="text-xs dash-text-muted">admin@school.com</p>
           </button>
         </div>
       </div>

@@ -33,11 +33,11 @@ export default function ResourcesSection() {
   ];
 
   return (
-    <div className="glass-effect rounded-xl p-6 border border-blue-500/20">
+    <div className="dash-card p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-slate-100">Teaching Resources</h3>
-        <button className="p-2 hover:bg-slate-700/50 rounded-lg transition-all">
-          <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <h3 className="text-xl font-bold dash-text">Teaching Resources</h3>
+        <button className="p-2 hover:opacity-70 rounded-lg transition-all">
+          <svg className="w-5 h-5 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
           </svg>
         </button>
@@ -45,22 +45,22 @@ export default function ResourcesSection() {
 
       <div className="space-y-3 mb-4">
         {resources.map((resource, index) => (
-          <div key={index} className="flex items-center gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-700/30 transition-all">
+          <div key={index} className="flex items-center gap-3 p-3 dash-card-alt rounded-lg hover:opacity-90 transition-all">
             <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
               {resource.icon}
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-slate-200">{resource.title}</p>
-              <p className="text-xs text-slate-400">{resource.type} • {resource.size}</p>
+              <p className="text-sm font-semibold dash-text">{resource.title}</p>
+              <p className="text-xs dash-text-muted">{resource.type} • {resource.size}</p>
             </div>
-            <button className="p-2 hover:bg-slate-700/50 rounded-lg transition-all">
+            <button className="p-2 hover:opacity-70 rounded-lg transition-all">
               {index === 2 ? (
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                 </svg>
               )}
@@ -69,7 +69,7 @@ export default function ResourcesSection() {
         ))}
       </div>
 
-      <button className="w-full px-4 py-3 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
+      <button className="w-full px-4 py-3 bg-blue-500/20 hover:bg-blue-500/30 text-blue-500 rounded-lg font-medium transition-all flex items-center justify-center gap-2">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
         </svg>

@@ -29,11 +29,11 @@ export default function ClassesTab() {
   return (
     <div className="tab-content space-y-4">
       {classes.map((classItem, index) => (
-        <div key={index} className="bg-slate-800/30 border border-slate-700 rounded-xl p-6 hover:border-blue-500/30 transition-all group">
+        <div key={index} className="dash-card p-6 hover:shadow-md transition-all group">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-slate-200 mb-2">{classItem.name}</h3>
-              <div className="flex flex-wrap gap-4 text-sm text-slate-400">
+              <h3 className="text-lg font-semibold dash-text mb-2">{classItem.name}</h3>
+              <div className="flex flex-wrap gap-4 text-sm dash-text-muted">
                 <span className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -55,18 +55,18 @@ export default function ClassesTab() {
                 </span>
               </div>
             </div>
-            <span className={`px-3 py-1 bg-${classItem.statusColor}-500/20 text-${classItem.statusColor}-400 rounded-full text-sm font-medium`}>
+            <span className={`px-3 py-1 bg-${classItem.statusColor}-500/20 text-${classItem.statusColor}-500 rounded-full text-sm font-medium`}>
               {classItem.status}
             </span>
           </div>
           <div className="flex gap-3">
-            <button className="flex-1 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg font-medium transition-all">
+            <button className="flex-1 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-500 rounded-lg font-medium transition-all">
               View Details
             </button>
-            <button className="flex-1 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg font-medium transition-all">
+            <button className="flex-1 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-500 rounded-lg font-medium transition-all">
               Take Attendance
             </button>
-            <button className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg font-medium transition-all">
+            <button className="flex-1 px-4 py-2 dash-card-alt hover:opacity-80 dash-text-muted rounded-lg font-medium transition-all">
               Manage
             </button>
           </div>

@@ -44,26 +44,26 @@ export default function WelcomeSection() {
 
   return (
     <div className="mb-8 animate-slide-up">
-      <div className="glass-card rounded-2xl p-8 border border-purple-500/20 relative overflow-hidden">
+      <div className="dash-card rounded-2xl p-8 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
-        
+
         <div className="relative z-10">
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-slate-100 mb-2">Welcome back, Alex! 👋</h2>
-              <p className="text-slate-400 mb-6">Here&apos;s what&apos;s happening with your courses today</p>
-              
+              <h2 className="text-3xl font-bold dash-text mb-2">Welcome back, Alex! 👋</h2>
+              <p className="dash-text-muted mb-6">Here&apos;s what&apos;s happening with your courses today</p>
+
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {stats.map((stat, index) => (
-                  <div key={index} className="glass-card rounded-lg p-4 border border-purple-500/20">
+                  <div key={index} className="dash-card-alt rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <div className={`w-8 h-8 rounded-lg ${stat.bgColor} flex items-center justify-center`}>
                         {stat.icon}
                       </div>
                     </div>
-                    <p className="text-xs text-slate-400 mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold text-slate-100">{stat.value}</p>
+                    <p className="text-xs dash-text-muted mb-1">{stat.label}</p>
+                    <p className="text-2xl font-bold dash-text">{stat.value}</p>
                   </div>
                 ))}
               </div>

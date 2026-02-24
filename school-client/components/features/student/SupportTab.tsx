@@ -23,15 +23,15 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
   return (
     <div className="tab-content space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-slate-200 mb-4">Report an Issue</h3>
+        <h3 className="text-lg font-semibold dash-text mb-4">Report an Issue</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium dash-text mb-2">
               Category
             </label>
             <select
               required
-              className="w-full px-4 py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              className="dash-input w-full"
             >
               <option value="">Select a category</option>
               <option value="technical">Technical Issue</option>
@@ -42,7 +42,7 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium dash-text mb-2">
               Priority Level
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -51,11 +51,10 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
                   key={priority}
                   type="button"
                   onClick={() => handlePrioritySelect(priority)}
-                  className={`priority-btn px-4 py-3 glass-card border rounded-lg font-medium transition-all ${
-                    selectedPriority === priority
-                      ? 'ring-2 ring-purple-500 border-purple-500/50 text-purple-400'
-                      : 'border-purple-500/30 text-slate-300 hover:border-purple-500/50'
-                  }`}
+                  className={`priority-btn px-4 py-3 dash-card rounded-lg font-medium transition-all ${selectedPriority === priority
+                      ? 'ring-2 ring-purple-500 border-purple-500/50 text-purple-500'
+                      : 'dash-text-muted hover:opacity-80'
+                    }`}
                 >
                   {priority}
                 </button>
@@ -64,26 +63,26 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium dash-text mb-2">
               Subject
             </label>
             <input
               type="text"
               required
               placeholder="Brief description of the issue"
-              className="w-full px-4 py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+              className="dash-input w-full"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium dash-text mb-2">
               Description
             </label>
             <textarea
               rows={5}
               required
               placeholder="Please provide detailed information about your issue..."
-              className="w-full px-4 py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
+              className="dash-input w-full resize-none"
             ></textarea>
           </div>
 
@@ -96,23 +95,23 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
         </form>
       </div>
 
-      <div className="glass-card rounded-xl p-6 border border-purple-500/20">
-        <h4 className="font-semibold text-slate-200 mb-4">Your Recent Tickets</h4>
+      <div className="dash-card p-6">
+        <h4 className="font-semibold dash-text mb-4">Your Recent Tickets</h4>
         <div className="space-y-3">
           {[
-            { id: '#12345', subject: 'Portal Login Issue', status: 'Resolved', color: 'text-green-400' },
-            { id: '#12344', subject: 'Assignment Upload Problem', status: 'In Progress', color: 'text-blue-400' },
-            { id: '#12343', subject: 'Grade Query', status: 'Pending', color: 'text-amber-400' },
+            { id: '#12345', subject: 'Portal Login Issue', status: 'Resolved', color: 'text-green-500' },
+            { id: '#12344', subject: 'Assignment Upload Problem', status: 'In Progress', color: 'text-blue-500' },
+            { id: '#12343', subject: 'Grade Query', status: 'Pending', color: 'text-amber-500' },
           ].map((ticket, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg"
+              className="flex items-center justify-between p-3 dash-card-alt rounded-lg"
             >
               <div>
-                <p className="text-sm font-medium text-slate-200">{ticket.subject}</p>
-                <p className="text-xs text-slate-400">{ticket.id}</p>
+                <p className="text-sm font-medium dash-text">{ticket.subject}</p>
+                <p className="text-xs dash-text-muted">{ticket.id}</p>
               </div>
-              <span className={`px-3 py-1 glass-card rounded-full text-xs font-medium ${ticket.color}`}>
+              <span className={`px-3 py-1 dash-card-alt rounded-full text-xs font-medium ${ticket.color}`}>
                 {ticket.status}
               </span>
             </div>

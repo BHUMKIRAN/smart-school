@@ -44,12 +44,12 @@ export default function AdministrationSection() {
   ];
 
   return (
-    <section id="administration" className="py-16 px-6 bg-white">
+    <section id="administration" className="section-bg py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3 nepali-text">प्रशासनिक संरचना</h2>
           <div className="accent-bar mx-auto mb-4"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Experienced leadership ensuring smooth operations and quality education delivery
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function AdministrationSection() {
                 <p className="text-primary-600 font-semibold text-sm text-center mb-3 nepali-text">
                   {staff.position}
                 </p>
-                <div className="space-y-1 text-center text-sm text-gray-600">
+                <div className="space-y-1 text-center text-sm text-muted-foreground">
                   <p>{staff.qualification}</p>
                   <p className="nepali-text">अनुभव: {staff.experience}</p>
                 </div>
@@ -92,8 +92,8 @@ export default function AdministrationSection() {
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold mb-1 nepali-text">{dept.name}</h4>
-                    <p className="text-sm text-gray-600 mb-2 nepali-text">प्रमुख: {dept.head}</p>
-                    <p className="text-sm text-gray-500">{dept.description}</p>
+                    <p className="text-sm text-muted-foreground mb-2 nepali-text">प्रमुख: {dept.head}</p>
+                    <p className="text-sm text-muted-foreground">{dept.description}</p>
                   </div>
                 </div>
               </div>

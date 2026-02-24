@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 // This tells Next.js that this file runs on the client side
 // (because we are using useEffect, useReducer, localStorage)
 
@@ -31,14 +31,14 @@ interface ContextState {
 // ============================
 
 type Action =
-    | { type: 'toggleTheme' } 
+    | { type: 'toggleTheme' }
     // used to switch between light and dark
 
-    | { type: 'toggleLanguage'; payload: Language } 
+    | { type: 'toggleLanguage'; payload: Language }
     // used to change language manually
 
     | { type: 'initialize'; payload: ContextState };
-    // used to load saved data from localStorage
+// used to load saved data from localStorage
 
 
 // ============================
@@ -78,7 +78,7 @@ export const ContextToUse = createContext<ContextType>({
 
 // Reducer decides how state changes based on action
 const ReducerFunctions = (
-    state: ContextState, 
+    state: ContextState,
     action: Action
 ): ContextState => {
 
@@ -118,20 +118,55 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     // useReducer manages global state
     const [state, dispatch] = useReducer(ReducerFunctions, initialState);
 
+    // ── Load saved theme + language from localStorage on first mount ──
+    useEffect(() => {
+        try {
+            const savedTheme = localStorage.getItem('theme') as Theme | null;
+            const savedLanguage = localStorage.getItem('language') as Language | null;
 
- useEffect(() => {
-  if (state.theme === "dark") {
-    document.documentElement.classList.add("dark");
-    document.documentElement.classList.remove("light");
-  } else {
-    document.documentElement.classList.add("light");
-    document.documentElement.classList.remove("dark");
-  }
-}, [state.theme]);
+            dispatch({
+                type: 'initialize',
+                payload: {
+                    theme: savedTheme ?? 'light',
+                    language: savedLanguage ?? 'EN',
+                },
+            });
+        } catch {
+            // localStorage not available (e.g. SSR / private browsing)
+        }
+    }, []);
+
+    // ── Apply theme class to <html> and save to localStorage ──
+    useEffect(() => {
+        const root = document.documentElement;
+
+        if (state.theme === 'dark') {
+            root.classList.add('dark');
+            root.classList.remove('light');
+        } else {
+            root.classList.add('light');
+            root.classList.remove('dark');
+        }
+
+        try {
+            localStorage.setItem('theme', state.theme);
+        } catch {
+            // ignore
+        }
+    }, [state.theme]);
+
+    // ── Save language to localStorage whenever it changes ──
+    useEffect(() => {
+        try {
+            localStorage.setItem('language', state.language);
+        } catch {
+            // ignore
+        }
+    }, [state.language]);
 
 
     // ============================
-    // 1️⃣1️⃣ Provide State to Whole App
+    // Provide State to Whole App
     // ============================
 
     return (
@@ -139,6 +174,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
             {children}
         </ContextToUse.Provider>
     );
-    
+
 };
-export const useSettings = () => useContext(ContextToUse)
+
+export const useSettings = () => useContext(ContextToUse);
