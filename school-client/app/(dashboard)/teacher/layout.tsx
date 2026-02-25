@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
 
 
-const outfit = Outfit({ 
+const outfit = Outfit({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
 });
@@ -19,7 +19,7 @@ export default function DashboardLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} bg-slate-950 text-slate-100`}>
+      <body className={`${outfit.className} bg-white`}>
         {children}
       </body>
     </html>

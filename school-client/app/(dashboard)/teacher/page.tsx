@@ -16,7 +16,7 @@ export default function TeachersPanelPage() {
   const [activeTab, setActiveTab] = useState('attendance');
   const [showModal, setShowModal] = useState(false);
   const [attendanceStatus, setAttendanceStatus] = useState('Not Marked');
-  const [logout , setLogout] = useState(false)
+  const [logout, setLogout] = useState(false)
 
   const handleMarkAttendance = (code: string) => {
     if (code.length === 6) {
@@ -30,19 +30,19 @@ export default function TeachersPanelPage() {
   return (
     <div className="min-h-screen">
       <TeacherNav setLogout={setLogout} />
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
           <StatsCards />
-          
+
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
-              <div className="glass-effect rounded-xl p-6 border border-blue-500/20">
+              <div className="dash-card rounded-xl p-6 border border-indigo-500/10">
                 <TabButtons activeTab={activeTab} setActiveTab={setActiveTab} />
-                
+
                 <div className="mt-6">
                   {activeTab === 'attendance' && (
-                    <AttendanceTab 
+                    <AttendanceTab
                       onMarkAttendance={handleMarkAttendance}
                       attendanceStatus={attendanceStatus}
                     />
@@ -61,11 +61,11 @@ export default function TeachersPanelPage() {
         </div>
       </main>
 
-      <SuccessModal 
+      <SuccessModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       />
-      {logout && <Logout onClose={()=>setLogout(false)}/>}
+      {logout && <Logout onClose={() => setLogout(false)} />}
     </div>
   );
 }

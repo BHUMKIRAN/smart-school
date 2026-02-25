@@ -9,7 +9,7 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"admin" | "teacher" | "student">("student");
+  const [role] = useState<"admin" | "teacher" | "student">("student");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const router = useRouter();
@@ -20,8 +20,9 @@ export default function RegisterPage() {
       setMessage("Registration successful! Redirecting to login...");
       setError("");
       setTimeout(() => router.push("/login"), 2000);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message);
       setMessage("");
     }
   };

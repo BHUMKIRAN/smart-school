@@ -69,7 +69,7 @@ export default function ApplicationsTab({ onSubmit }: ApplicationsTabProps) {
 
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+            className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all"
           >
             Submit Application
           </button>

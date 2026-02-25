@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState } from 'react';
 
 interface SupportTabProps {
@@ -52,8 +53,8 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
                   type="button"
                   onClick={() => handlePrioritySelect(priority)}
                   className={`priority-btn px-4 py-3 dash-card rounded-lg font-medium transition-all ${selectedPriority === priority
-                      ? 'ring-2 ring-purple-500 border-purple-500/50 text-purple-500'
-                      : 'dash-text-muted hover:opacity-80'
+                    ? 'ring-2 ring-indigo-500 border-indigo-500/50 text-indigo-500'
+                    : 'dash-text-muted hover:opacity-80'
                     }`}
                 >
                   {priority}
@@ -88,7 +89,7 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
 
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+            className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all"
           >
             Submit Issue
           </button>

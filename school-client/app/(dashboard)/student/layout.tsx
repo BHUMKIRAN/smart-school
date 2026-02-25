@@ -19,7 +19,7 @@ export default function StudentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.className} text-slate-100 min-h-screen`}>
+    <div className={`${inter.className} bg-white min-h-screen`}>
       {/* <Logout onClose={()=>null}/> */}
       {children}
     </div>

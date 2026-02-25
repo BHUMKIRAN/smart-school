@@ -37,7 +37,7 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
     <div className="tab-content space-y-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold dash-text">Current Assignments</h3>
-        <span className="px-3 py-1 dash-card-alt rounded-full text-xs font-medium text-purple-500">
+        <span className="px-3 py-1 dash-card-alt rounded-full text-xs font-medium text-indigo-500">
           {assignments.filter(a => a.status === 'pending').length} Pending
         </span>
       </div>
@@ -50,7 +50,7 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
           <div className="flex items-start justify-between mb-4">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-3 py-1 dash-card-alt rounded-full text-xs font-medium text-purple-500">
+                <span className="px-3 py-1 dash-card-alt rounded-full text-xs font-medium text-indigo-500">
                   {assignment.subject}
                 </span>
                 <span className={`text-xs ${assignment.statusColor}`}>
@@ -71,7 +71,7 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
           {assignment.status === 'pending' && (
             <button
               onClick={() => onOpenModal(assignment.title)}
-              className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+              className="w-full px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all"
             >
               Submit Assignment
             </button>

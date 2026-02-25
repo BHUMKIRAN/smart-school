@@ -18,8 +18,8 @@ export default function TabButtons({ activeTab, setActiveTab }: TabButtonsProps)
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
           className={`dash-tab whitespace-nowrap ${activeTab === tab.id
-              ? 'bg-gradient-to-r from-purple-500/20 to-purple-600/20 text-purple-500 border border-purple-500/30'
-              : 'hover:opacity-80'
+            ? 'bg-gradient-to-r from-indigo-500/20 to-indigo-600/20 text-indigo-500 border border-indigo-500/30'
+            : 'hover:opacity-80'
             }`}
         >
           <span className="mr-2">{tab.icon}</span>

@@ -17,8 +17,11 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
 
   useEffect(() => {
     if (!isOpen) {
-      setIsConfirmed(false);
-      setSelectedFiles([]);
+      const timeout = setTimeout(() => {
+        setIsConfirmed(false);
+        setSelectedFiles([]);
+      }, 0);
+      return () => clearTimeout(timeout);
     }
   }, [isOpen]);
 
@@ -83,7 +86,7 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <svg className="w-16 h-16 mx-auto text-purple-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-16 h-16 mx-auto text-indigo-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
               </svg>
               <p className="dash-text mb-2">
@@ -120,7 +123,7 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
               id="confirmSubmit"
               checked={isConfirmed}
               onChange={(e) => setIsConfirmed(e.target.checked)}
-              className="w-4 h-4 rounded border-purple-500/30 text-purple-500 focus:ring-purple-500/50"
+              className="w-4 h-4 rounded border-indigo-500/30 text-indigo-500 focus:ring-indigo-500/50"
             />
             <label htmlFor="confirmSubmit" className="text-sm dash-text">
               I confirm this is my original work
@@ -138,7 +141,7 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
             <button
               type="submit"
               disabled={!isConfirmed}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>

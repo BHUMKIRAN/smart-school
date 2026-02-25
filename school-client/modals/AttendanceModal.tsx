@@ -41,28 +41,14 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
     return () => clearInterval(clockInterval);
   }, []);
 
-  // Real-time attendance updates
-  useEffect(() => {
-    if (isOpen) {
-      updateAttendanceData();
-      
-      // Update every 3 seconds for real-time feel
-      const interval = setInterval(() => {
-        updateAttendanceData();
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [isOpen]);
-
   const updateAttendanceData = () => {
     setIsUpdating(true);
-    
+
     // Simulate real-time data (replace with actual API call)
     const presentStudents = Math.floor(Math.random() * 30) + 455;
     const absentStudents = 486 - presentStudents;
     const studentRate = Math.round((presentStudents / 486) * 100);
-    
+
     setStudentData({
       total: 486,
       present: presentStudents,
@@ -73,7 +59,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
     const presentTeachers = Math.floor(Math.random() * 3) + 26;
     const absentTeachers = 28 - presentTeachers;
     const teacherRate = Math.round((presentTeachers / 28) * 100);
-    
+
     setTeacherData({
       total: 28,
       present: presentTeachers,
@@ -84,14 +70,34 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
     setTimeout(() => setIsUpdating(false), 500);
   };
 
+  // Move to a separate useEffect or wrap in requested pattern
+  useEffect(() => {
+    if (isOpen) {
+      // First update after a small delay to avoid cascading render warning
+      const initialTimeout = setTimeout(() => {
+        updateAttendanceData();
+      }, 0);
+
+      // Update every 3 seconds for real-time feel
+      const interval = setInterval(() => {
+        updateAttendanceData();
+      }, 3000);
+
+      return () => {
+        clearTimeout(initialTimeout);
+        clearInterval(interval);
+      };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn"
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-white rounded-3xl shadow-2xl max-w-md w-full transform transition-all duration-300 animate-slideUp"
         onClick={(e) => e.stopPropagation()}
       >
@@ -117,13 +123,13 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
 
         {/* Content */}
         <div className="p-6 space-y-5">
-          
+
           {/* Student Attendance Card */}
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 p-5 border border-blue-100">
             {isUpdating && (
               <div className="absolute inset-0 bg-blue-500/10 animate-pulse"></div>
             )}
-            
+
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -138,7 +144,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
 
             {/* Progress Bar */}
             <div className="bg-white/70 rounded-full h-3 mb-3 overflow-hidden shadow-inner">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-700 ease-out relative"
                 style={{ width: `${studentData.rate}%` }}
               >
@@ -168,7 +174,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
             {isUpdating && (
               <div className="absolute inset-0 bg-green-500/10 animate-pulse"></div>
             )}
-            
+
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -183,7 +189,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
 
             {/* Progress Bar */}
             <div className="bg-white/70 rounded-full h-3 mb-3 overflow-hidden shadow-inner">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all duration-700 ease-out relative"
                 style={{ width: `${teacherData.rate}%` }}
               >
@@ -218,7 +224,7 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
         </div>
       </div>
 
-     
+
     </div>
   );
 }

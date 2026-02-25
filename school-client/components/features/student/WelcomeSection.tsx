@@ -28,7 +28,7 @@ export default function WelcomeSection() {
       ),
       label: 'Pending Work',
       value: '3',
-      bgColor: 'bg-purple-500/20',
+      bgColor: 'bg-indigo-500/20',
     },
     {
       icon: (
@@ -45,8 +45,8 @@ export default function WelcomeSection() {
   return (
     <div className="mb-8 animate-slide-up">
       <div className="dash-card rounded-2xl p-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
         <div className="relative z-10">
           <div className="flex items-start justify-between">

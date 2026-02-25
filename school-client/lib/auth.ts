@@ -24,6 +24,14 @@ apiWithAuth.interceptors.request.use((config) => {
   return config;
 });
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 // Login function
 export const login = async ({ email, password }: { email: string; password: string }) => {
   try {
@@ -33,8 +41,9 @@ export const login = async ({ email, password }: { email: string; password: stri
     localStorage.setItem("smart-school-user", JSON.stringify(res.data.user));
 
     return res.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Login failed");
+  } catch (error: unknown) {
+    const err = error as ApiError;
+    throw new Error(err.response?.data?.message || "Login failed");
   }
 };
 /* ================================
@@ -60,12 +69,13 @@ export const register = async ({
     });
 
     return res.data;
-  } catch (error: any) {
-    console.log("Full error:", error);
-  console.log("Response:", error.response);
-  console.log("Data:", error.response?.data);
+  } catch (error: unknown) {
+    const err = error as ApiError;
+    console.log("Full error:", err);
+    console.log("Response:", err.response);
+    console.log("Data:", err.response?.data);
     throw new Error(
-      error.response?.data?.message || "Registration failed"
+      err.response?.data?.message || "Registration failed"
     );
   }
 };
@@ -74,4 +84,15 @@ export const register = async ({
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("smart-school-user");
+};
+
+// Forgot Password function
+export const forgotPassword = async ({ email }: { email: string }) => {
+  try {
+    const res = await api.post("/auth/forgot-password", { email });
+    return res.data;
+  } catch (error: unknown) {
+    const err = error as ApiError;
+    throw new Error(err.response?.data?.message || "Forgot password request failed");
+  }
 };

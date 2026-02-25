@@ -13,8 +13,9 @@ export default function ForgotPasswordPage() {
       const res = await forgotPassword({ email });
       setMessage(res.message || "Check your email for reset link!");
       setError("");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message);
       setMessage("");
     }
   };

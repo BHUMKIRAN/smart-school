@@ -18,7 +18,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${manrope.className} bg-white  text-slate-100 min-h-screen`}>
+    <div className={`${manrope.className} bg-white min-h-screen`}>
       {children}
     </div>
   );

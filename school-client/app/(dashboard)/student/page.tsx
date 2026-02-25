@@ -18,7 +18,7 @@ export default function StudentDashboardPage() {
   const [modalSubject, setModalSubject] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  const [logout , setLogout] = useState(false);
+  const [logout, setLogout] = useState(false);
 
 
 
@@ -55,17 +55,17 @@ export default function StudentDashboardPage() {
   return (
     <div>
       <StudentHeader toggleLogout={setLogout} />
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <WelcomeSection />
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <div className="glass-card rounded-2xl p-6 border border-purple-500/20">
+            <div className="dash-card rounded-2xl p-6 border border-indigo-500/10">
               <TabButtons activeTab={activeTab} setActiveTab={setActiveTab} />
 
               <div className="mt-6">
-                
+
                 {activeTab === 'homework' && (
                   <HomeworkTab onOpenModal={handleOpenModal} />
                 )}
@@ -97,9 +97,9 @@ export default function StudentDashboardPage() {
         isVisible={showToast}
         message={toastMessage}
       />
-   
-      {logout && <Logout onClose={()=>setLogout(false) }/>}
-      
+
+      {logout && <Logout onClose={() => setLogout(false)} />}
+
     </div>
   );
 }

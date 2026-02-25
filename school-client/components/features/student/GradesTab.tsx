@@ -2,7 +2,7 @@ export default function GradesTab() {
   const subjects = [
     { name: 'Mathematics', grade: 'A', score: 92, color: 'text-green-400', bgColor: 'bg-green-500/20' },
     { name: 'Physics', grade: 'A-', score: 88, color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
-    { name: 'Chemistry', grade: 'B+', score: 85, color: 'text-purple-400', bgColor: 'bg-purple-500/20' },
+    { name: 'Chemistry', grade: 'B+', score: 85, color: 'text-indigo-400', bgColor: 'bg-indigo-500/20' },
     { name: 'English', grade: 'A', score: 90, color: 'text-green-400', bgColor: 'bg-green-500/20' },
     { name: 'History', grade: 'A-', score: 87, color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
     { name: 'Computer Science', grade: 'A+', score: 95, color: 'text-emerald-400', bgColor: 'bg-emerald-500/20' },
@@ -14,7 +14,7 @@ export default function GradesTab() {
         <h3 className="text-lg font-semibold dash-text">Current Semester</h3>
         <div className="text-right">
           <p className="text-xs dash-text-muted">Overall GPA</p>
-          <p className="text-2xl font-bold text-purple-500">3.8</p>
+          <p className="text-2xl font-bold text-indigo-500">3.8</p>
         </div>
       </div>
 
@@ -56,7 +56,7 @@ export default function GradesTab() {
               <div className="flex items-center gap-2">
                 <div className="w-32 h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--dash-border)' }}>
                   <div
-                    className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
+                    className="h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full"
                     style={{ width: `${[75, 20, 5][index]}%` }}
                   ></div>
                 </div>

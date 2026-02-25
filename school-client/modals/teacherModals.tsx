@@ -3,11 +3,21 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
+interface Teacher {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  department: string;
+  salary: string;
+}
+
 interface TeacherModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: "create" | "edit";
-  teacherData?: any;
+  teacherData?: Teacher;
   refreshTeachers: () => void;
 }
 
@@ -55,7 +65,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
       const url =
         mode === "create"
           ? "http://localhost:8080/teachers"
-          : `http://localhost:8080/teachers/${teacherData._id}`;
+          : `http://localhost:8080/teachers/${teacherData?._id}`;
 
       const method = mode === "create" ? "POST" : "PUT";
 
