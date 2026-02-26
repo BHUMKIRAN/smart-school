@@ -21,13 +21,13 @@ const deleteEmergencyNotice = async (req, res) => {
   }
 };
 
-const getAllEmergencyNotices = async(req,res)=>{
-    try {
-        const notices = await EmergencyNotice.find().sort({ createdAt: -1 }); // latest first
-        res.json(notices);
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
+const getAllEmergencyNotices = async (req, res) => {
+  try {
+    const notices = await EmergencyNotice.find().sort({ createdAt: -1 }); // latest first
+    res.json(notices);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 

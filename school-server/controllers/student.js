@@ -9,8 +9,8 @@ const readStudents = async (req, res) => {
   res.send(students);
 };
 const readStudentById = async (req, res) => {
-  const Student = await Student.findById(req.params.id);
-  res.send(Student);
+  const student = await Student.findById(req.params.id);
+  res.send(student);
 };
 const editStudentById = async (req, res) => {
   await Student.findByIdAndUpdate(req.params.id, req.body);
