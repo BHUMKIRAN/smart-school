@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useState } from 'react';
 
 interface SupportTabProps {
@@ -17,107 +16,82 @@ export default function SupportTab({ onSubmit }: SupportTabProps) {
     setSelectedPriority(null);
   };
 
-  const handlePrioritySelect = (priority: string) => {
-    setSelectedPriority(priority);
-  };
-
   return (
-    <div className="tab-content space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold dash-text mb-4">Report an Issue</h3>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium dash-text mb-2">
-              Category
-            </label>
-            <select
-              required
-              className="dash-input w-full"
-            >
-              <option value="">Select a category</option>
-              <option value="technical">Technical Issue</option>
-              <option value="academic">Academic Query</option>
-              <option value="admin">Administrative</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
+    <div className="animate-fadeIn max-w-3xl mx-auto">
+      <div className="dash-card p-6 md:p-10">
+        <div className="mb-8">
+          <h3 className="text-2xl font-bold text-[var(--foreground)]">Report an Issue</h3>
+          <p className="text-sm opacity-60">Describe the problem you're experiencing and we'll get back to you.</p>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium dash-text mb-2">
-              Priority Level
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              {['Low', 'Medium', 'High'].map((priority) => (
-                <button
-                  key={priority}
-                  type="button"
-                  onClick={() => handlePrioritySelect(priority)}
-                  className={`priority-btn px-4 py-3 dash-card rounded-lg font-medium transition-all ${selectedPriority === priority
-                    ? 'ring-2 ring-indigo-500 border-indigo-500/50 text-indigo-500'
-                    : 'dash-text-muted hover:opacity-80'
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">
+                Category
+              </label>
+              <select required className="dash-input w-full cursor-pointer">
+                <option value="">Select category</option>
+                <option value="technical">Technical</option>
+                <option value="academic">Academic</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">
+                Priority
+              </label>
+              <div className="flex gap-2">
+                {['Low', 'Medium', 'High'].map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setSelectedPriority(p)}
+                    className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all border ${
+                      selectedPriority === p
+                        ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-md'
+                        : 'bg-[var(--background)] border-[var(--dash-border)] text-[var(--dash-text-muted)] hover:border-[var(--primary)]'
                     }`}
-                >
-                  {priority}
-                </button>
-              ))}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">
               Subject
             </label>
             <input
               type="text"
               required
-              placeholder="Brief description of the issue"
+              placeholder="What's the issue about?"
               className="dash-input w-full"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">
               Description
             </label>
             <textarea
               rows={5}
               required
-              placeholder="Please provide detailed information about your issue..."
+              placeholder="Provide details about the problem..."
               className="dash-input w-full resize-none"
             ></textarea>
           </div>
 
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all"
+            className="w-full hero-gradient text-white py-4 rounded-xl font-bold shadow-lg shadow-[var(--primary)]/20 hover:scale-[1.01] transition-all active:scale-[0.98]"
           >
-            Submit Issue
+            Submit Report
           </button>
         </form>
-      </div>
-
-      <div className="dash-card p-6">
-        <h4 className="font-semibold dash-text mb-4">Your Recent Tickets</h4>
-        <div className="space-y-3">
-          {[
-            { id: '#12345', subject: 'Portal Login Issue', status: 'Resolved', color: 'text-green-500' },
-            { id: '#12344', subject: 'Assignment Upload Problem', status: 'In Progress', color: 'text-blue-500' },
-            { id: '#12343', subject: 'Grade Query', status: 'Pending', color: 'text-amber-500' },
-          ].map((ticket, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-3 dash-card-alt rounded-lg"
-            >
-              <div>
-                <p className="text-sm font-medium dash-text">{ticket.subject}</p>
-                <p className="text-xs dash-text-muted">{ticket.id}</p>
-              </div>
-              <span className={`px-3 py-1 dash-card-alt rounded-full text-xs font-medium ${ticket.color}`}>
-                {ticket.status}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

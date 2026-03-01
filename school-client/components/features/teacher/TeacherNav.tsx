@@ -1,59 +1,78 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Calendar, Bell, LogOut, BookOpen } from 'lucide-react';
 
-export default function TeacherNav({ setLogout }) {
+interface TeacherNavProps {
+  setLogout: (logout: boolean) => void;
+}
+
+export default function TeacherNav({ setLogout }: TeacherNavProps) {
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
     const dateOptions: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
+      weekday: 'short',
+      month: 'short',
       day: 'numeric'
     };
     setCurrentDate(new Date().toLocaleDateString('en-US', dateOptions));
   }, []);
 
   return (
-    <nav className="dash-nav">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-              </svg>
+    <nav className="sticky top-0 z-40 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800/60 px-8 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        
+        {/* Left Side: Brand/Identity */}
+        <div className="flex items-center gap-4">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 dark:shadow-none">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest leading-none">
+              Teacher Portal
+            </h1>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
+              AY 2024 • 25
+            </span>
+          </div>
+        </div>
+
+        {/* Right Side: Context & Profile */}
+        <div className="flex items-center gap-6">
+          
+          {/* Date - Hidden on mobile */}
+          <div className="hidden md:flex items-center gap-2 text-slate-400">
+            <Calendar className="w-4 h-4" />
+            <span className="text-[11px] font-black uppercase tracking-widest">
+              {currentDate || 'Loading...'}
+            </span>
+          </div>
+
+          {/* Notification Button */}
+          <button className="relative p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 border-2 border-white dark:border-slate-950 rounded-full"></span>
+          </button>
+
+          {/* Minimal Profile Toggle */}
+          <div className="flex items-center gap-3 pl-6 border-l border-slate-100 dark:border-slate-800">
+            <div className="text-right hidden sm:block">
+              <p className="text-[11px] font-black text-slate-800 dark:text-slate-100 leading-none">
+                Dr. Sarah Johnson
+              </p>
+              <button 
+                onClick={() => setLogout(true)}
+                className="text-[9px] font-black text-rose-500 uppercase tracking-widest hover:text-rose-600 transition-colors flex items-center justify-end gap-1 mt-1"
+              >
+                Sign Out <LogOut className="w-2.5 h-2.5" />
+              </button>
             </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Teacher Portal</h1>
-              <p className="text-xs dash-text-muted">Academic Year 2024-25</p>
+            <div className="w-9 h-9 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 font-black text-xs border border-slate-200 dark:border-slate-700">
+              SJ
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 glass-panel rounded-lg">
-              <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-              </svg>
-              <span className="text-sm font-medium dash-text">{currentDate || 'Loading...'}</span>
-            </div>
-            <button className="relative p-2 glass-panel rounded-lg hover:opacity-80 transition-all">
-              <svg className="w-6 h-6 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-              </svg>
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div className="flex items-center gap-3 glass-panel px-4 py-2 rounded-lg">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
-                SJ
-              </div>
-              <div className="hidden md:block cursor-pointer"
-                onClick={() => setLogout(true)}>
-                <p className="text-sm font-semibold dash-text">Dr. Sarah Johnson</p>
-                <p className="text-xs dash-text-muted">Mathematics Dept.</p>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </nav>

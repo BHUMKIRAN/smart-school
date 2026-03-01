@@ -1,5 +1,18 @@
 'use client';
+
 import React from "react";
+import Logo from "@/components/shared/logo"; // Clean import of your shared logo
+import { 
+  LayoutGrid, 
+  GraduationCap, 
+  Users, 
+  Bell, 
+  AlertTriangle, 
+  ClipboardCheck, 
+  LogOut,
+  ChevronLeft,
+  ChevronRight
+} from "lucide-react";
 
 interface AdminSidebarProps {
   activeTab: string;
@@ -17,109 +30,89 @@ export default function AdminSidebar({
   setLogout,
 }: AdminSidebarProps) {
 
-  // Define tabs dynamically
   const navItems = [
-    {
-      id: 'teachers',
-      label: 'Teacher Management',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-        </svg>
-      ),
-    },
-    {
-      id: 'students',
-      label: 'Student Management',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-    },
-    {
-      id: 'notices',
-      label: 'Notice Management',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-      ),
-    },
-    {
-      id: 'emergency',
-      label: 'Emergency Notices',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
-      ),
-    },
-    {
-      id: 'attendance',
-      label: 'Attendance Monitoring',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      ),
-    },
-    {
-      id: 'applications',
-      label: 'Application Review',
-      icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      ),
-    },
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutGrid className="w-5 h-5" /> },
+    { id: 'teachers', label: 'Teachers', icon: <GraduationCap className="w-5 h-5" /> },
+    { id: 'students', label: 'Students', icon: <Users className="w-5 h-5" /> },
+    { id: 'notices', label: 'Notices', icon: <Bell className="w-5 h-5" /> },
+    { id: 'emergency', label: 'Emergency', icon: <AlertTriangle className="w-5 h-5" /> },
+    { id: 'attendance', label: 'Attendance', icon: <ClipboardCheck className="w-5 h-5" /> },
   ];
 
   return (
-    <aside className={`dash-sidebar fixed left-0 top-0 h-full z-50 ${sidebarOpen ? 'w-72' : 'w-20'}`}>
-      {/* Header */}
-      <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid var(--dash-border)' }}>
-        <h1 className={`text-2xl font-bold dash-text ${!sidebarOpen && 'hidden'}`}>
-          Admin Panel
-        </h1>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-lg hover:opacity-70 transition-colors">
-          <svg className="w-5 h-5 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {sidebarOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+    <aside 
+      className={`fixed left-0 top-0 h-full z-50 transition-all duration-300 bg-white dark:bg-slate-950 border-r border-slate-100 dark:border-slate-800/60
+      ${sidebarOpen ? 'w-72' : 'w-20'}`}
+    >
+      {/* Brand Logo Section */}
+      <div className="flex items-center justify-between px-6 py-8">
+        <div className={`transition-all duration-300 ${!sidebarOpen ? 'scale-0 opacity-0 w-0' : 'scale-100 opacity-100'}`}>
+          <Logo /> 
+        </div>
+        
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)} 
+          className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all border border-transparent hover:border-indigo-100"
+        >
+          {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>
       </div>
 
       {/* Navigation Tabs */}
-      <nav className="p-4 space-y-2">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${activeTab === item.id
-                ? 'bg-indigo-600 shadow-lg shadow-indigo-500/20 text-white'
-                : 'dash-text-muted hover:opacity-80'
-              }`}
-            style={activeTab !== item.id ? { backgroundColor: 'transparent' } : {}}
-          >
-            {item.icon}
-            <span className={`font-medium text-sm ${!sidebarOpen && 'hidden'}`}>{item.label}</span>
-          </button>
-        ))}
+      <nav className="px-4 space-y-2 mt-4">
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group relative
+                ${isActive
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20'
+                  : 'text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-600'
+                }`}
+            >
+              <div className={`${isActive ? 'text-white' : 'text-slate-400 group-hover:text-indigo-500'} transition-colors`}>
+                {item.icon}
+              </div>
+              
+              <span className={`font-bold text-[13px] uppercase tracking-wider transition-opacity duration-300 whitespace-nowrap 
+                ${!sidebarOpen ? 'opacity-0 w-0' : 'opacity-100'}`}>
+                {item.label}
+              </span>
+
+              {!sidebarOpen && (
+                <div className="absolute left-full ml-4 px-3 py-2 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all translate-x-[-10px] group-hover:translate-x-0 z-[60] shadow-xl">
+                  {item.label}
+                </div>
+              )}
+            </button>
+          );
+        })}
       </nav>
 
-      {/* Logout Section */}
-      <div className={`absolute bottom-0 left-0 right-0 p-4 ${!sidebarOpen && 'hidden'}`} style={{ borderTop: '1px solid var(--dash-border)' }}>
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg dash-card-alt">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold">A</div>
-          <button className="flex-1 text-left" onClick={() => setLogout(true)}>
-            <p className="text-sm font-medium dash-text">Admin User</p>
-            <p className="text-xs dash-text-muted">admin@school.com</p>
-          </button>
+      {/* User / Logout Section */}
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <div className={`flex items-center gap-3 p-3 rounded-[1.5rem] bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/50
+          ${!sidebarOpen && 'justify-center bg-transparent border-none'}`}
+        >
+          <div className="relative shrink-0">
+             <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black shadow-inner">
+               A
+             </div>
+             <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-slate-950 rounded-full"></span>
+          </div>
+
+          <div className={`flex-1 min-w-0 transition-all duration-300 ${!sidebarOpen ? 'w-0 opacity-0 hidden' : 'opacity-100'}`}>
+            <p className="text-xs font-black text-slate-800 dark:text-slate-100 truncate uppercase tracking-tight">Admin User</p>
+            <button 
+              onClick={() => setLogout(true)}
+              className="text-[10px] text-rose-500 font-black uppercase tracking-widest hover:text-rose-600 flex items-center gap-1.5 transition-colors"
+            >
+              Sign Out
+              <LogOut className="w-3 h-3" />
+            </button>
+          </div>
         </div>
       </div>
     </aside>

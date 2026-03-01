@@ -20,7 +20,7 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
       const timeout = setTimeout(() => {
         setIsConfirmed(false);
         setSelectedFiles([]);
-      }, 0);
+      }, 300); // Wait for slide-down animation
       return () => clearTimeout(timeout);
     }
   }, [isOpen]);
@@ -30,9 +30,7 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
     setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
+  const handleDragLeave = () => setIsDragging(false);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -50,103 +48,104 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isConfirmed) {
-      onSubmit();
-    }
+    if (isConfirmed) onSubmit();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="dash-card rounded-2xl p-8 max-w-2xl w-full animate-slide-up">
-        <div className="flex items-start justify-between mb-6">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-fadeIn">
+      <div className="dash-card max-w-lg w-full p-6 md:p-8 shadow-2xl animate-slide-up border-[var(--dash-border)]">
+        
+        {/* Header */}
+        <div className="flex items-start justify-between mb-8">
           <div>
-            <h3 className="text-2xl font-bold dash-text mb-2">Submit Homework</h3>
-            <p className="text-sm dash-text-muted">{subject}</p>
+            <h3 className="text-xl font-bold text-[var(--foreground)] tracking-tight">Submit Homework</h3>
+            <p className="text-xs font-bold uppercase tracking-widest opacity-50 mt-1">{subject}</p>
           </div>
-          <button
+          <button 
             onClick={onClose}
-            className="p-2 hover:opacity-70 rounded-lg transition-all"
+            className="p-2 rounded-full hover:bg-[var(--secondary)] transition-colors opacity-50 hover:opacity-100"
           >
-            <svg className="w-6 h-6 dash-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Upload Area */}
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">Upload Your Work</label>
+            <label className="block text-[10px] font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">Upload Files</label>
             <div
-              className={`file-upload-area rounded-lg p-8 text-center cursor-pointer ${isDragging ? 'dragover' : ''
-                }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
+              className={`
+                relative group border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300
+                ${isDragging 
+                  ? 'border-[var(--primary)] bg-[var(--primary)]/5 scale-[0.99]' 
+                  : 'border-[var(--dash-border)] hover:border-[var(--primary)] hover:bg-[var(--secondary)]'
+                }
+              `}
             >
-              <svg className="w-16 h-16 mx-auto text-indigo-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-              </svg>
-              <p className="dash-text mb-2">
-                {selectedFiles.length > 0
-                  ? `${selectedFiles.length} file(s) selected`
-                  : 'Drop your files here or click to browse'}
+              <div className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center transition-colors ${isDragging ? 'bg-[var(--primary)] text-white' : 'bg-[var(--primary)]/10 text-[var(--primary)]'}`}>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+              <p className="text-sm font-bold text-[var(--foreground)]">
+                {selectedFiles.length > 0 ? `${selectedFiles.length} files ready` : 'Click to upload or drag & drop'}
               </p>
-              <p className="text-xs dash-text-muted">PDF, DOC, DOCX, ZIP (max 25MB)</p>
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                accept=".pdf,.doc,.docx,.zip"
-                multiple
-                onChange={handleFileSelect}
-              />
+              <p className="text-[10px] opacity-50 mt-1">PDF, DOCX or ZIP (Max 25MB)</p>
+              <input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleFileSelect} />
             </div>
           </div>
 
+          {/* Comments */}
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">
-              Additional Comments (Optional)
-            </label>
+            <label className="block text-[10px] font-bold uppercase tracking-wider opacity-60 mb-2 ml-1">Comments (Optional)</label>
             <textarea
               rows={3}
-              placeholder="Add any notes or comments about your submission..."
-              className="dash-input w-full resize-none"
-            ></textarea>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="confirmSubmit"
-              checked={isConfirmed}
-              onChange={(e) => setIsConfirmed(e.target.checked)}
-              className="w-4 h-4 rounded border-indigo-500/30 text-indigo-500 focus:ring-indigo-500/50"
+              placeholder="Add a note for your teacher..."
+              className="dash-input w-full resize-none text-sm"
             />
-            <label htmlFor="confirmSubmit" className="text-sm dash-text">
-              I confirm this is my original work
-            </label>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          {/* Confirmation Checkbox */}
+          <label className="flex items-center gap-3 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                checked={isConfirmed}
+                onChange={(e) => setIsConfirmed(e.target.checked)}
+                className="peer h-5 w-5 appearance-none rounded-md border-2 border-[var(--dash-border)] checked:bg-[var(--primary)] checked:border-[var(--primary)] transition-all"
+              />
+              <svg className="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span className="text-xs font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+              I confirm this is my original work.
+            </span>
+          </label>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-2">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 dash-card dash-text-muted rounded-lg font-medium hover:opacity-80 transition-all"
+              className="flex-1 py-3 text-sm font-bold opacity-60 hover:opacity-100 transition-opacity hover:bg-[var(--secondary)] rounded-xl"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={!isConfirmed}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!isConfirmed || selectedFiles.length === 0}
+              className="flex-[2] py-3 hero-gradient text-white rounded-xl font-bold shadow-lg shadow-[var(--primary)]/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Submit Homework
+              Submit Assignment
             </button>
           </div>
         </form>

@@ -1,77 +1,52 @@
+'use client';
+
+import React from "react";
+import { LayoutGrid } from "lucide-react"; // Corrected import
+
 interface AdminHeaderProps {
   title: string;
   subtitle: string;
-  onAdd: () => void;
 }
 
 export default function AdminHeader({
   title,
   subtitle,
-  onAdd,
 }: AdminHeaderProps) {
   return (
-    <header className="dash-nav">
-      <div className="px-8 py-6">
-        <div className="flex items-center justify-between">
-
-          {/* Left Side */}
-          <div>
-            <h2 className="text-2xl font-bold dash-text">
-              {title}
-            </h2>
-            <p className="text-sm mt-1 dash-text-muted">
-              {subtitle}
-            </p>
+    <header className="px-8 py-5 mb-6 border-b border-slate-100 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-30 transition-all">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        
+        {/* Left Side: Modern Typography */}
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+            </span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500/80">
+              System Active
+            </span>
           </div>
+          
+          <h1 className="text-2xl font-black tracking-tight text-slate-800 dark:text-slate-100 leading-none">
+            {title}
+          </h1>
+          <p className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 mt-1 uppercase tracking-wider">
+            {subtitle}
+          </p>
+        </div>
 
-          {/* Right Side */}
-          <div className="flex items-center gap-4">
-
-            {/* Search */}
-            <div className="relative">
-              <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 dash-text-muted"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-
-              <input
-                type="text"
-                placeholder="Search..."
-                className="dash-input pl-10 pr-4"
-              />
-            </div>
-
-            {/* Add Button */}
-            <button
-              onClick={onAdd}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all flex items-center gap-2"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              Add New
-            </button>
+        {/* Right Side: Subtle Status Info */}
+        <div className="flex items-center gap-4 border-l border-slate-100 dark:border-slate-800/60 pl-6 hidden sm:flex">
+          <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+            <LayoutGrid className="w-4 h-4 text-slate-400" />
+          </div>
+          <div className="text-right">
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-tight">Data Integrity</p>
+            <p className="text-[11px] font-bold text-slate-600 dark:text-slate-300">Verified</p>
           </div>
         </div>
+
       </div>
     </header>
   );
