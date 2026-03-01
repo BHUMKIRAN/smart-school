@@ -1,11 +1,19 @@
 import AttendanceCode from "../models/attendanceCode.js";
 import Attendance from "../models/teacherAttendance.js";
+import generateCode from "../utils/CodeGenerator.js";
 
 const getTodayCode = async (req, res) => {
 
   const today = new Date().toISOString().split("T")[0];
 
-  const code = await AttendanceCode.findOne({ date: today });
+  let code = await AttendanceCode.findOne({ date: today });
+
+  if (!code) {
+    code = await AttendanceCode.create({
+      code: generateCode(),
+      date: today
+    });
+  }
 
   res.json(code);
 };

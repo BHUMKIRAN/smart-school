@@ -5,6 +5,6 @@ import {
 
 const router = express.Router();
 
-router.post("/mark", markAttendance);
+router.post("/", markAttendance);
 
 export default router;

@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   LIGHT MODE (DEFAULT)
+========================= */
+:root {
+  /* Surface */
+  --background: #ffffff;
+  --foreground: #1e293b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --muted-bg: #f8fafc;
+  --muted-text: #64748b;
+
+  /* Brand Colors */
+  --primary: #1D63FF;
+  --primary-dark: #106EBE;
+  --secondary: #f1f5f9;
+  --accent: #FFCE32; 
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --warning: #FFCE32;
+  --error: #ef4444;
+  --info: #1D63FF;
+
+  /* Neutral Palette */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-600: #4b5563;
+  --gray-800: #1f2937;
+
+  /* Nav */
+  --nav-bg: rgba(255, 255, 255, 0.98);
+  --nav-border: #e2e8f0;
+  --nav-text: #1e293b;
+
+  /* Input */
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-text: #1e293b;
+
+  /* Ticker */
+  --ticker-bg: #fffbeb;
+  --ticker-border: #FFCE32;
+
+  /* ── Dashboard / Portal ── */
+  --dash-bg: #f1f5f9;
+  --dash-surface: #ffffff;
+  --dash-surface-2: #f8fafc;
+  --dash-border: #e2e8f0;
+  --dash-text: #1e293b;
+  --dash-text-muted: #64748b;
+  --dash-sidebar-bg: #ffffff;
+  --dash-sidebar-border: #e2e8f0;
+  --dash-sidebar-active: #1D63FF;
+  --dash-sidebar-hover: #f1f5f9;
+  --dash-glass: rgba(255, 255, 255, 0.80);
+  --dash-glass-border: rgba(0, 0, 0, 0.05);
+
+  /* Shadcn-like variables */
+  --radius: 0.5rem;
+}
+
+/* =========================
+   DARK MODE OVERRIDES
+========================= */
+html.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --muted-bg: #1e293b;
+  --muted-text: #94a3b8;
+
+  --primary: #3b82f6;
+  --primary-dark: #1D63FF;
+  --secondary: #1e293b;
+  --accent: #FFCE32;
+
+  --success: #34d399;
+  --warning: #FFCE32;
+  --error: #f87171;
+  --info: #60a5fa;
+
+  --nav-bg: rgba(15, 23, 42, 0.98);
+  --nav-border: #334155;
+
+  --dash-bg: #0f172a;
+  --dash-surface: #1e293b;
+  --dash-surface-2: #162032;
+  --dash-border: #334155;
+  --dash-text: #f8fafc;
+  --dash-text-muted: #94a3b8;
+  --dash-sidebar-bg: #1e293b;
+  --dash-sidebar-border: #334155;
+  --dash-sidebar-active: #3b82f6;
+  --dash-sidebar-hover: #334155;
+  --dash-glass: rgba(30, 41, 59, 0.85);
+  --dash-glass-border: rgba(255, 255, 255, 0.08);
+}
+
+/* =========================
+   BASE LAYER
+========================= */
+@layer base {
+  * { @apply m-0 p-0 box-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .nepali-text { font-family: 'Noto Sans Devanagari', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { color: var(--foreground); }
+  a { color: inherit; }
+  input, textarea, select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+  }
+}
+
+/* =========================
+   COMPONENTS LAYER
+========================= */
+@layer components {
+  .hero-gradient {
+    background: linear-gradient(135deg, #1D63FF 0%, #106EBE 100%);
+  }
+
+  .card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    @apply rounded-xl shadow-sm transition-all duration-300;
+  }
+  .card:hover { @apply -translate-y-1 shadow-md; }
+
+  .stat-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    @apply p-6 rounded-xl text-center shadow-sm transition-colors duration-300;
+  }
+  .stat-number { color: var(--primary); @apply text-3xl font-bold; }
+
+  .icon-box {
+    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+    @apply w-12 h-12 rounded-xl flex items-center justify-center;
+  }
+
+  .accent-bar { background-color: var(--accent); @apply w-12 h-1 rounded-full; }
+
+  .btn { @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300; }
+  .btn-primary { background-color: var(--primary); @apply text-white; }
+  .btn-primary:hover { background-color: var(--primary-dark); @apply -translate-y-0.5; }
+
+  .attendance-btn {
+    @apply relative px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  }
+  .attendance-btn:hover { @apply scale-105 shadow-lg; }
+
+  .notice-ticker {
+    background-color: var(--ticker-bg);
+    border-left: 4px solid var(--ticker-border);
+    @apply overflow-hidden;
+  }
+  .ticker-content { @apply inline-block whitespace-nowrap; animation: scroll 30s linear infinite; }
+
+  .modal-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--foreground);
+    @apply rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
+    animation: modalSlideIn 0.3s ease;
+  }
+
+  .tab-button { color: var(--muted-text); @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200; }
+  .tab-active { background-color: var(--primary); @apply text-white; }
+
+  .navbar {
+    background-color: var(--nav-bg);
+    border-bottom: 1px solid var(--nav-border);
+    @apply sticky top-0 z-50 backdrop-blur-lg;
+  }
+
+  /* Dashboard Classes */
+  .dash-page { background-color: var(--dash-bg); color: var(--dash-text); @apply min-h-screen transition-colors duration-300; }
+  .dash-sidebar { background-color: var(--dash-sidebar-bg); border-right: 1px solid var(--dash-sidebar-border); @apply transition-all duration-300; }
+  .dash-card { background-color: var(--dash-surface); border: 1px solid var(--dash-border); @apply rounded-xl transition-colors duration-300; }
+  .dash-table td { @apply px-6 py-4; color: var(--dash-text); }
+  .dash-input {
+    background-color: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    color: var(--dash-text);
+    @apply px-4 py-2.5 rounded-lg outline-none transition-all;
+  }
+  .dash-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(29, 99, 255, 0.2); }
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes modalSlideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.animate-scroll { animation: scroll 30s linear infinite; }
+.animate-fadeIn { animation: fadeIn 0.3s ease; }

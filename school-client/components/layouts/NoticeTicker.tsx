@@ -1,8 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 
+interface Notice {
+  title: string;
+  message?: string;
+}
+
 export default function NoticeTicker() {
-  const [notices, setNotices] = useState([]);
+  const [notices, setNotices] = useState<Notice[]>([]);
 
   const fetchNotices = async () => {
     try {
@@ -10,7 +15,7 @@ export default function NoticeTicker() {
       const data = await res.json();
       setNotices(data);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching notices:", error);
     }
   };
 
@@ -18,26 +23,50 @@ export default function NoticeTicker() {
     fetchNotices();
   }, []);
 
+  if (notices.length === 0) return null;
+
   return (
-    <div className="notice-ticker py-3 px-6">
-      <div className="max-w-6xl mx-auto flex items-center gap-4">
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <svg className="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-          </svg>
-          <span className="font-bold text-sm text-yellow-800 nepali-text">सूचना:</span>
+    <div className="notice-ticker py-2 px-4 shadow-sm relative z-40 overflow-hidden group">
+      <div className="max-w-7xl mx-auto flex items-center">
+        
+        {/* Label: Fixed on the left */}
+        <div className="flex items-center gap-2 flex-shrink-0 bg-accent/20 backdrop-blur-sm pr-4 py-1 border-r border-accent/30 z-10 relative">
+          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center shadow-sm">
+            <svg className="w-5 h-5 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
+            </svg>
+          </div>
+          <span className="font-bold text-sm text-gray-900 uppercase tracking-wider nepali-text hidden sm:inline">
+            सूचना:
+          </span>
         </div>
-        <div className="flex-1 overflow-hidden">
-          <div className="ticker-content">
+
+        {/* Scrolling Content */}
+        <div className="flex-1 overflow-hidden relative">
+          {/* Subtle Fade effect on sides */}
+          <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-ticker-bg to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-ticker-bg to-transparent z-10"></div>
+
+          <div className="ticker-content whitespace-nowrap flex items-center group-hover:[animation-play-state:paused]">
+            {/* First set of notices */}
             {notices.map((n, index) => (
-              <span key={index} className="inline-block mr-12 text-sm text-yellow-900 nepali-text">
-                {n.title} {/* or use n.message if you prefer */}
-              </span>
+              <div key={`notice-${index}`} className="flex items-center">
+                <span className="inline-block text-sm font-semibold text-gray-800 nepali-text px-4">
+                  {n.title}
+                </span>
+                {/* Visual Separator */}
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mx-2"></div>
+              </div>
             ))}
+            
+            {/* Duplicate set for seamless looping */}
             {notices.map((n, index) => (
-              <span key={`duplicate-${index}`} className="inline-block mr-12 text-sm text-yellow-900 nepali-text">
-                {n.title}
-              </span>
+              <div key={`duplicate-${index}`} className="flex items-center">
+                <span className="inline-block text-sm font-semibold text-gray-800 nepali-text px-4">
+                  {n.title}
+                </span>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mx-2"></div>
+              </div>
             ))}
           </div>
         </div>

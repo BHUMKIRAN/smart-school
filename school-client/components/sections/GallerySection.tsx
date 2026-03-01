@@ -7,75 +7,97 @@ export default function GallerySection() {
 
   const galleryItems = {
     events: [
-      { title: 'Annual Sports Day 2081', description: 'Students showcasing their athletic abilities' },
-      { title: 'Science Exhibition', description: 'Innovative projects by young minds' },
-      { title: 'Cultural Program', description: 'Celebrating diversity and tradition' },
-      { title: 'Prize Distribution', description: 'Honoring academic excellence' }
+      { title: 'वार्षिक खेलकुद दिवस २०८१', description: 'विद्यार्थीहरूको खेल कौशल प्रदर्शन', img: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=600' },
+      { title: 'विज्ञान प्रदर्शनी', description: 'साना वैज्ञानिकहरूका नवीन आविष्कार', img: 'https://images.unsplash.com/photo-1564069114553-7215e1ff1890?auto=format&fit=crop&q=80&w=600' },
+      { title: 'सांस्कृतिक कार्यक्रम', description: 'परम्परा र कलाको संरक्षण', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=600' },
+      { title: 'पुरस्कार वितरण', description: 'उत्कृष्ट विद्यार्थीहरूको सम्मान', img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=600' }
     ],
     classroom: [
-      { title: 'Smart Classroom', description: 'Technology-enabled learning environment' },
-      { title: 'Science Lab', description: 'Hands-on practical learning' },
-      { title: 'Computer Lab', description: 'Digital literacy development' },
-      { title: 'Library', description: 'A world of knowledge and imagination' }
+      { title: 'स्मार्ट कक्षाकोठा', description: 'प्रविधिमैत्री सिकाई वातावरण', img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600' },
+      { title: 'विज्ञान प्रयोगशाला', description: 'प्रयोगात्मक अभ्यासको केन्द्र', img: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&q=80&w=600' },
+      { title: 'कम्प्युटर ल्याब', description: 'डिजिटल साक्षरता अभियान', img: 'https://images.unsplash.com/photo-1547082299-de196ea013d6?auto=format&fit=crop&q=80&w=600' },
+      { title: 'पुस्तकालय', description: 'ज्ञान र कल्पनाको संसार', img: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=600' }
     ],
     activities: [
-      { title: 'Art & Craft', description: 'Nurturing creativity and expression' },
-      { title: 'Music Class', description: 'Developing musical talents' },
-      { title: 'Dance Performance', description: 'Cultural and modern dance forms' },
-      { title: 'Debate Competition', description: 'Building communication skills' }
+      { title: 'चित्रकला र हस्तकला', description: 'सिर्जनशीलताको प्रस्फुटन', img: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=600' },
+      { title: 'संगीत कक्षा', description: 'गायन र वादनको अभ्यास', img: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=600' },
+      { title: 'नृत्य प्रस्तुति', description: 'मौलिक र आधुनिक नृत्य कला', img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=600' },
+      { title: 'वक्तृत्व कला', description: 'सञ्चार क्षमताको विकास', img: 'https://images.unsplash.com/photo-1475721027466-a0eb8424fdfe?auto=format&fit=crop&q=80&w=600' }
     ]
   };
 
   return (
-    <section id="gallery" className="section-alt py-16 px-6">
+    <section id="gallery" className="py-16 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3 nepali-text">फोटो ग्यालरी</h2>
-          <div className="accent-bar mx-auto mb-4"></div>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Glimpses of our vibrant school life and memorable moments
+        
+        {/* Compact Header */}
+        <div className="text-center mb-10 space-y-2">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white nepali-text">
+            फोटो <span className="text-blue-600">ग्यालरी</span>
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 text-sm nepali-text max-w-xl mx-auto">
+            "पञ्चावती विद्यालयका जीवन्त र अविस्मरणीय क्षणहरू"
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center gap-3 mb-8 flex-wrap">
-          <button
-            onClick={() => setActiveTab('events')}
-            className={`tab-button ${activeTab === 'events' ? 'tab-active' : ''} nepali-text`}
-          >
-            कार्यक्रमहरू
-          </button>
-          <button
-            onClick={() => setActiveTab('classroom')}
-            className={`tab-button ${activeTab === 'classroom' ? 'tab-active' : ''} nepali-text`}
-          >
-            कक्षाकोठा र सुविधा
-          </button>
-          <button
-            onClick={() => setActiveTab('activities')}
-            className={`tab-button ${activeTab === 'activities' ? 'tab-active' : ''} nepali-text`}
-          >
-            गतिविधिहरू
-          </button>
+        {/* Small Tabs */}
+        <div className="flex justify-center mb-10">
+          <div className="flex p-1 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            {(['events', 'classroom', 'activities'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 nepali-text ${
+                  activeTab === tab 
+                    ? 'bg-blue-600 text-white shadow-md' 
+                    : 'text-slate-500 hover:text-blue-600'
+                }`}
+              >
+                {tab === 'events' ? 'कार्यक्रमहरू' : tab === 'classroom' ? 'कक्षाकोठा' : 'गतिविधिहरू'}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Compact Gallery Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {galleryItems[activeTab as keyof typeof galleryItems].map((item, index) => (
-            <div key={index} className="card overflow-hidden group">
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary-100 to-purple-100 flex items-center justify-center relative overflow-hidden">
-                <svg className="w-12 h-12 text-primary-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></div>
+            <div 
+              key={index} 
+              className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-300"
+            >
+              <div className="aspect-square overflow-hidden relative">
+                <img 
+                  src={item.img} 
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                {/* Minimal Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                   <p className="text-[10px] text-white/90 nepali-text leading-tight line-clamp-2">
+                     {item.description}
+                   </p>
+                </div>
               </div>
-              <div className="p-4">
-                <h4 className="font-semibold mb-1">{item.title}</h4>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
+
+              {/* Minimal Content Box */}
+              <div className="p-3">
+                <h4 className="font-bold text-xs text-slate-800 dark:text-slate-200 nepali-text line-clamp-1">{item.title}</h4>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Simple View More */}
+        <div className="mt-10 text-center">
+           <button className="text-xs font-black text-blue-600 uppercase tracking-widest hover:text-blue-700 transition-colors flex items-center justify-center gap-2 mx-auto group">
+             सबै फोटोहरू हेर्नुहोस्
+             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+             </svg>
+           </button>
+        </div>
+
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css"; // adjust path if needed
+import { DialogDemo } from "@/modals/adminCode";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -19,6 +20,7 @@ export default function AdminLayout({
 }) {
   return (
     <div className={`${manrope.className} bg-white min-h-screen`}>
+      <DialogDemo/>
       {children}
     </div>
   );

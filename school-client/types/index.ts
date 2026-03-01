@@ -90,3 +90,35 @@ export interface Attendance {
   remarks?: string;
   updatedBy?: string;
 }
+
+export interface LandingBoardMember {
+  name: string;
+  position: string;
+  description?: string;
+}
+
+export interface LandingAdminStaff {
+  name: string;
+  position: string;
+  qualification?: string;
+  experience?: string;
+}
+
+export interface LandingDepartment {
+  name: string;
+  head: string;
+  description?: string;
+}
+
+export interface LandingTeacher {
+  name: string;
+  subject?: string;
+  department?: string;
+}
+
+export interface SchoolPageContent {
+  boardMembers: LandingBoardMember[];
+  adminStaff: LandingAdminStaff[];
+  departments: LandingDepartment[];
+  teachers: LandingTeacher[];
+}

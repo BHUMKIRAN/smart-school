@@ -18,13 +18,10 @@ export default function TeachersPanelPage() {
   const [attendanceStatus, setAttendanceStatus] = useState('Not Marked');
   const [logout, setLogout] = useState(false)
 
-  const handleMarkAttendance = (code: string) => {
-    if (code.length === 6) {
-      setShowModal(true);
-      setAttendanceStatus('Marked ✓');
-      return true;
-    }
-    return false;
+  const handleMarkAttendance = () => {
+    setShowModal(true);
+    setAttendanceStatus('Marked ✓');
+    return true;
   };
 
   return (
@@ -69,3 +66,4 @@ export default function TeachersPanelPage() {
     </div>
   );
 }
+

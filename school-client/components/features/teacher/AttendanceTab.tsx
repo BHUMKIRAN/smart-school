@@ -1,22 +1,26 @@
 'use client';
 
+import axios from 'axios';
 import { useState } from 'react';
+import { API_BASE_URL } from '@/lib/endpoints';
 
 interface AttendanceTabProps {
-  onMarkAttendance: (code: string) => boolean;
+  onMarkAttendance: () => boolean;
   attendanceStatus: string;
 }
 
 export default function AttendanceTab({ onMarkAttendance, attendanceStatus }: AttendanceTabProps) {
   const [code, setCode] = useState('');
 
-  const handleSubmit = () => {
-    const success = onMarkAttendance(code);
-    if (success) {
-      setCode('');
-    } else {
-      alert('Please enter a valid 6-digit code');
-    }
+  const handleSubmit = async () => {
+    const trimmedCode = code.trim();
+
+      await axios.post(`${API_BASE_URL}/mark`, {
+        teacherId :1 ,
+        ...(trimmedCode ? { code: trimmedCode } : {}),
+      });
+      onMarkAttendance();
+      alert('Attendance marked successfully');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

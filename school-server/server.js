@@ -10,6 +10,7 @@ import noticeRoutes from "./routes/notice.js";
 import emergencyNoticeRoutes from "./routes/emergencyNotice.js";
 import attendanceRoutes from "./routes/attendance.js";
 import adminRoutes from "./routes/admin.js";
+import publicRoutes from "./routes/public.js";
 import initSocket from "./websocket/socket.js";
 import { setSocket } from "./controllers/attendanceController.js";
 import startCodeGenerator from "./service/CodeAt10.js";
@@ -33,13 +34,14 @@ app.use(express.json());
 
 // ✅ Public Auth Routes
 app.use("/", authRoutes);
+app.use("/public", publicRoutes);
 
 // ✅ Protected Routes
 app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/notices", noticeRoutes);
 app.use("/emergencyNotices", emergencyNoticeRoutes);
-app.use("/attendance", attendanceRoutes);
+app.use("/mark", attendanceRoutes);
 app.use("/admin", adminRoutes);
 
 server.listen(port, () => {
