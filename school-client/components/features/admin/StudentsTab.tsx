@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { StatCard } from "@/components/ui/card/Card";
-import { fetcher } from "@/lib/api";
 import { ENDPOINTS } from "@/lib/endpoints";
 import StudentModal from "@/modals/studentModal"; // Path corrected to your modal location
+import axios from "axios";
 
 export interface Student {
   _id: string;
@@ -28,7 +28,7 @@ export default function StudentsTab() {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const data = await fetcher(ENDPOINTS.STUDENTS);
+      const data = await axios.get(ENDPOINTS.STUDENTS);
       setStudents(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching students:", error);

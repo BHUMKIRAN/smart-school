@@ -1,39 +1,42 @@
-import { logout } from "@/lib/auth";
+
 import { useRouter } from "next/navigation";
 
 const Logout = ({ onClose }) => {
+  const router = useRouter();
 
- const router = useRouter();
   const handleConfirm = () => {
-    logout();              // clear storage
-    router.push("/login");    // redirect to login page
+    localStorage.clear(); // clear storage
+    router.push("/login"); // redirect to login page
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-[9999]  ">
-      <div className="w-80 bg-white rounded-2xl shadow-xl p-6 text-center space-y-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-[9999] backdrop-blur-sm animate-fadeIn">
+      {/* Used .modal-content for global styling and .dash-card for the surface */}
+      <div className="modal-content text-center max-w-sm">
+        
+        <h2 className="text-xl font-bold mb-2">
+          Confirm Logout
+        </h2>
 
-        <h1 className="text-2xl font-bold text-red-500">
-          Logout
-        </h1>
-
-        <p className="text-gray-600">
-          Are you sure you want to logout?
+        <p className="text-[var(--muted-text)] mb-8">
+          Are you sure you want to end your session?
         </p>
 
-        <div className="flex justify-center gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
+          {/* Secondary Action */}
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+            className="px-6 py-2 rounded-lg border border-[var(--dash-border)] text-[var(--muted-text)] hover:bg-[var(--dash-sidebar-hover)] transition-all order-2 sm:order-1"
           >
             Cancel
           </button>
 
+          {/* Primary Brand Action */}
           <button
             onClick={handleConfirm}
-            className="px-5 py-2 rounded-lg bg-red-500 text-white font-medium hover:bg-red-600 transition"
+            className="btn-primary px-6 py-2 order-1 sm:order-2"
           >
-            Confirm
+            Logout
           </button>
         </div>
       </div>

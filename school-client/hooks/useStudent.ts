@@ -21,6 +21,7 @@ export const useStudents = () =>
   useQuery({
     queryKey: ["students"],
     queryFn: readStudents,
+    
     // onError lets us show a toast if the network request fails
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Failed to fetch students");

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Providers from './provider';
+import AppProvider from '@/provider/provider';
 import './globals.css';
 export const metadata: Metadata = {
   title: 'श्री पञ्चावती आधारभूत विद्यालय - भदौरे',
@@ -14,9 +14,9 @@ export default function RootLayout({
   return (
     <html lang="ne" suppressHydrationWarning>
       <body className="bg-background text-foreground transition-colors duration-300">
-        <Providers>
+        <AppProvider>
           {children}
-        </Providers>
+        </AppProvider>
       </body>
     </html>
   );
