@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import "./globals.css"; // adjust path if needed
+
 import { DialogDemo } from "@/modals/adminCode";
 
 const manrope = Manrope({

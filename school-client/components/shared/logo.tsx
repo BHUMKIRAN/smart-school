@@ -26,7 +26,6 @@ export default function Logo() {
         </h1>
         
         <div className="flex items-center gap-1.5 mt-1">
-          <span className="w-1 h-1 bg-yellow-500 rounded-full"></span>
           <p className="text-[10px] uppercase font-black tracking-[0.15em] text-slate-400">
             Bhadure, Nepal
           </p>

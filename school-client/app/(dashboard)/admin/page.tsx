@@ -46,12 +46,7 @@ export default function AdminDashboardPage() {
         
         <AdminHeader
           title={tabTitles[activeTab]?.title || "Dashboard"}
-          subtitle={tabTitles[activeTab]?.subtitle || ""}
-          // Since your new header is minimal, onAdd is handled internally or ignored
-          onAdd={() => {
-            if (activeTab === "teachers") setModalType("teacher");
-            if (activeTab === "students") setModalType("student");
-          }}
+          subtitle={tabTitles[activeTab]?.subtitle || ""}  
         />
 
         <div className="p-8 max-w-7xl mx-auto">
