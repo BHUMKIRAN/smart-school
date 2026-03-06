@@ -33,7 +33,6 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -41,19 +40,13 @@ export default function AdminDashboardPage() {
         setSidebarOpen={setSidebarOpen}
         setLogout={setLogout}
       />
-
       <main className={`transition-all duration-300 ${sidebarOpen ? 'ml-72' : 'ml-20'}`}>
-        
         <AdminHeader
           title={tabTitles[activeTab]?.title || "Dashboard"}
           subtitle={tabTitles[activeTab]?.subtitle || ""}  
         />
-
         <div className="p-8 max-w-7xl mx-auto">
-          {/* Dashboard Home */}
           {activeTab === 'dashboard' && <AdminHome />}
-          
-          {/* Functional Tabs */}
           {activeTab === 'teachers' && <TeachersTab />}
           {activeTab === 'students' && <StudentsTab />}
           {activeTab === 'notices' && <NoticesTab />}
@@ -61,9 +54,6 @@ export default function AdminDashboardPage() {
           {activeTab === 'attendance' && <AttendanceTab />}
           {activeTab === 'applications' && <ApplicationsTab />}
         </div>
-
-        {/* --- Modals --- */}
-        
         {modalType === "teacher" && (
           <TeacherModal
             isOpen={true}
@@ -73,7 +63,6 @@ export default function AdminDashboardPage() {
             refreshTeachers={() => window.location.reload()}
           />
         )}
-
         {modalType === "student" && (
           <StudentModal
             isOpen={true}
@@ -82,9 +71,7 @@ export default function AdminDashboardPage() {
             refreshStudents={() => window.location.reload()}
           />
         )}
-
         {logout && <Logout onClose={() => setLogout(false)} />}
-
       </main>
     </div>
   );

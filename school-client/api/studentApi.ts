@@ -37,7 +37,7 @@ export const readStudentById = async (id) => {
 };
 
 
-export const editStudent = async (id, data) => {
+export const editStudent = async ( id , data) => {
   try {
     const res = await api.put(`/students/${id}`, data);
     toast.success("Student updated successfully!");

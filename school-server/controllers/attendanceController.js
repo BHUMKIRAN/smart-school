@@ -1,13 +1,57 @@
 import Attendance from "../models/teacherAttendance.js";
 import AttendanceCode from "../models/attendanceCode.js";
 
-let io;
+let ioInstance = null;
 
-const setSocket = (socketIO) => {
-  io = socketIO;
+// Set socket instance safely
+export const setSocket = (socketIO) => {
+  ioInstance = socketIO;
 };
 
-const markAttendance = async (req, res) => {
+// Utility: Get today's date in YYYY-MM-DD (safe format)
+const getTodayDate = () => {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
+};
+
+// -----------------------------
+// ADMIN MARK ATTENDANCE
+// -----------------------------
+export const markAttendanceByAdmin = async (teacherId, status) => {
+  if (!teacherId || !status) {
+    throw new Error("teacherId and status are required");
+  }
+
+  const today = getTodayDate();
+
+  const existing = await Attendance.findOne({
+    teacher: teacherId,
+    date: today,
+  });
+
+  if (existing) {
+    return existing; // Prevent duplicate
+  }
+
+  const attendance = await Attendance.create({
+    teacher: teacherId,
+    date: today,
+    status,
+  });
+
+  const populated = await attendance.populate("teacher");
+
+  if (ioInstance) {
+    ioInstance.emit("attendanceMarked", populated);
+  }
+
+  return populated;
+};
+
+// -----------------------------
+// TEACHER MARK ATTENDANCE
+// -----------------------------
+export const markAttendance = async (req, res) => {
   try {
     const { teacherId, code } = req.body;
 
@@ -17,19 +61,20 @@ const markAttendance = async (req, res) => {
       });
     }
 
-    const today = new Date().toISOString().split("T")[0];
+    const today = getTodayDate();
 
-    // Code is optional. If provided, validate against today's code.
+    // Validate attendance code if provided
     if (code) {
       const validCode = await AttendanceCode.findOne({ date: today });
 
       if (!validCode || validCode.code !== code) {
         return res.status(400).json({
-          message: "Invalid Code",
+          message: "Invalid attendance code",
         });
       }
     }
 
+    // Check if already marked
     const existing = await Attendance.findOne({
       teacher: teacherId,
       date: today,
@@ -50,23 +95,22 @@ const markAttendance = async (req, res) => {
 
     const populated = await attendance.populate("teacher");
 
-    if (io) {
-      io.emit("attendanceMarked", populated);
+    // Emit real-time update
+    if (ioInstance) {
+      ioInstance.emit("attendanceMarked", populated);
     }
 
-    return res.json({
-      message: "Attendance Marked",
+    return res.status(201).json({
+      message: "Attendance marked successfully",
       attendance: populated,
     });
+
   } catch (error) {
+    console.error("Mark Attendance Error:", error);
+
     return res.status(500).json({
       message: "Server error while marking attendance",
       error: error.message,
     });
   }
-};
-
-export {
-  markAttendance,
-  setSocket,
 };

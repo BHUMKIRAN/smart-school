@@ -29,7 +29,10 @@ setSocket(io);
 // Start Cron Service
 startCodeGenerator();
 
-app.use(cors());
+app.use(cors(
+   {origin: "http://localhost:3000", // your frontend
+  credentials: true}
+));
 app.use(express.json());
 
 // ✅ Public Auth Routes
@@ -41,7 +44,7 @@ app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/notices", noticeRoutes);
 app.use("/emergencyNotices", emergencyNoticeRoutes);
-app.use("/mark", attendanceRoutes);
+app.use("/", attendanceRoutes);
 app.use("/admin", adminRoutes);
 
 server.listen(port, () => {

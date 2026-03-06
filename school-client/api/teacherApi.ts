@@ -33,7 +33,7 @@ export const readById = async (id) => {
   }
 };
 
-export const editTeacher = async (id, data) => {
+export const editTeacher = async (id , data) => {
   try {
     const res = await api.put(`/teachers/${id}`, data);
     toast.success("Teacher updated successfully"); // Move toast BEFORE return

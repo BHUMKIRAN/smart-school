@@ -60,7 +60,7 @@ export const useCreateTeacher = () => {
 export const useEditTeacher = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: editTeacher,
+    mutationFn: (variables: any) => editTeacher(variables._id, variables),
     onSuccess: (_data, variables) => {
       toast.success("Teacher updated successfully");
       // Invalidate the list as well as the individual cache if desired
