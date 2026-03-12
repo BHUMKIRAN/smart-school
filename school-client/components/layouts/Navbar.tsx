@@ -160,17 +160,7 @@ export default function Navbar() {
                         ))}
                       </div>
 
-                      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-                        <Link
-                          href="/admission"
-                          className="flex items-center gap-3 p-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20"
-                        >
-                          <UserPlus size={18} />
-                          <span className="nepali-text font-bold text-sm">
-                            नयाँ भर्ना (Register)
-                          </span>
-                        </Link>
-                      </div>
+                 
                     </div>
                   )}
                 </div>

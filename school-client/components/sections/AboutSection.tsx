@@ -49,9 +49,7 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* --- Section Header --- */}
         <div className="text-center mb-20 space-y-4">
-          <div className="inline-block px-4 py-1.5 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-full mb-2">
-            <span className="text-blue-600 dark:text-blue-400 text-sm font-bold tracking-widest uppercase nepali-text">हाम्रो बारेमा</span>
-          </div>
+        
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             विद्यालयको <span className="text-blue-600 dark:text-blue-400">परिचय</span>
           </h2>

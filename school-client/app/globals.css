@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -17,16 +17,16 @@
   --muted-text: #64748b;
 
   /* Brand Colors */
-  --primary: #1D63FF;
-  --primary-dark: #106EBE;
+  --primary: #1d63ff;
+  --primary-dark: #106ebe;
   --secondary: #f1f5f9;
-  --accent: #FFCE32; 
+  --accent: #ffce32;
 
   /* Semantic Colors */
   --success: #10b981;
-  --warning: #FFCE32;
+  --warning: #ffce32;
   --error: #ef4444;
-  --info: #1D63FF;
+  --info: #1d63ff;
 
   /* Neutral Palette */
   --gray-50: #f9fafb;
@@ -47,7 +47,7 @@
 
   /* Ticker */
   --ticker-bg: #fffbeb;
-  --ticker-border: #FFCE32;
+  --ticker-border: #ffce32;
 
   /* ── Dashboard / Portal ── */
   --dash-bg: #f1f5f9;
@@ -58,9 +58,9 @@
   --dash-text-muted: #64748b;
   --dash-sidebar-bg: #ffffff;
   --dash-sidebar-border: #e2e8f0;
-  --dash-sidebar-active: #1D63FF;
+  --dash-sidebar-active: #1d63ff;
   --dash-sidebar-hover: #f1f5f9;
-  --dash-glass: rgba(255, 255, 255, 0.80);
+  --dash-glass: rgba(255, 255, 255, 0.8);
   --dash-glass-border: rgba(0, 0, 0, 0.05);
 
   /* Shadcn-like variables */
@@ -79,12 +79,12 @@ html.dark {
   --muted-text: #94a3b8;
 
   --primary: #3b82f6;
-  --primary-dark: #1D63FF;
+  --primary-dark: #1d63ff;
   --secondary: #1e293b;
-  --accent: #FFCE32;
+  --accent: #ffce32;
 
   --success: #34d399;
-  --warning: #FFCE32;
+  --warning: #ffce32;
   --error: #f87171;
   --info: #60a5fa;
 
@@ -104,23 +104,50 @@ html.dark {
   --dash-glass: rgba(30, 41, 59, 0.85);
   --dash-glass-border: rgba(255, 255, 255, 0.08);
 }
+@layer {
+  body {
+    @apply transition-colors duration-300;
+    background-color: var(--primary);
+    color: var(--foreground);
+    font-family: "Inter", "Noto Sans Devanagari", sans-serif;
+  }
+}
 
 /* =========================
    BASE LAYER
 ========================= */
 @layer base {
-  * { @apply m-0 p-0 box-border; }
-  html { scroll-behavior: smooth; }
+  * {
+    @apply m-0 p-0 box-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: "Inter", "Noto Sans Devanagari", sans-serif;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
-  .nepali-text { font-family: 'Noto Sans Devanagari', sans-serif; }
-  h1, h2, h3, h4, h5, h6 { color: var(--foreground); }
-  a { color: inherit; }
-  input, textarea, select {
+  .nepali-text {
+    font-family: "Noto Sans Devanagari", sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--foreground);
+  }
+  a {
+    color: inherit;
+  }
+  input,
+  textarea,
+  select {
     background-color: var(--input-bg);
     border-color: var(--input-border);
     color: var(--input-text);
@@ -132,7 +159,7 @@ html.dark {
 ========================= */
 @layer components {
   .hero-gradient {
-    background: linear-gradient(135deg, #1D63FF 0%, #106EBE 100%);
+    background: linear-gradient(135deg, #1d63ff 0%, #106ebe 100%);
   }
 
   .card {
@@ -140,38 +167,59 @@ html.dark {
     border: 1px solid var(--card-border);
     @apply rounded-xl shadow-sm transition-all duration-300;
   }
-  .card:hover { @apply -translate-y-1 shadow-md; }
+  .card:hover {
+    @apply -translate-y-1 shadow-md;
+  }
 
   .stat-card {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     @apply p-6 rounded-xl text-center shadow-sm transition-colors duration-300;
   }
-  .stat-number { color: var(--primary); @apply text-3xl font-bold; }
+  .stat-number {
+    color: var(--primary);
+    @apply text-3xl font-bold;
+  }
 
   .icon-box {
     background-color: color-mix(in srgb, var(--primary) 15%, transparent);
     @apply w-12 h-12 rounded-xl flex items-center justify-center;
   }
 
-  .accent-bar { background-color: var(--accent); @apply w-12 h-1 rounded-full; }
+  .accent-bar {
+    background-color: var(--accent);
+    @apply w-12 h-1 rounded-full;
+  }
 
-  .btn { @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300; }
-  .btn-primary { background-color: var(--primary); @apply text-white; }
-  .btn-primary:hover { background-color: var(--primary-dark); @apply -translate-y-0.5; }
+  .btn {
+    @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300;
+  }
+  .btn-primary {
+    background-color: var(--primary);
+    @apply text-white;
+  }
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
+    @apply -translate-y-0.5;
+  }
 
   .attendance-btn {
     @apply relative px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   }
-  .attendance-btn:hover { @apply scale-105 shadow-lg; }
+  .attendance-btn:hover {
+    @apply scale-105 shadow-lg;
+  }
 
   .notice-ticker {
     background-color: var(--ticker-bg);
     border-left: 4px solid var(--ticker-border);
     @apply overflow-hidden;
   }
-  .ticker-content { @apply inline-block whitespace-nowrap; animation: scroll 30s linear infinite; }
+  .ticker-content {
+    @apply inline-block whitespace-nowrap;
+    animation: scroll 30s linear infinite;
+  }
 
   .modal-content {
     background-color: var(--card-bg);
@@ -181,8 +229,14 @@ html.dark {
     animation: modalSlideIn 0.3s ease;
   }
 
-  .tab-button { color: var(--muted-text); @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200; }
-  .tab-active { background-color: var(--primary); @apply text-white; }
+  .tab-button {
+    color: var(--muted-text);
+    @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200;
+  }
+  .tab-active {
+    background-color: var(--primary);
+    @apply text-white;
+  }
 
   .navbar {
     background-color: var(--nav-bg);
@@ -191,25 +245,70 @@ html.dark {
   }
 
   /* Dashboard Classes */
-  .dash-page { background-color: var(--dash-bg); color: var(--dash-text); @apply min-h-screen transition-colors duration-300; }
-  .dash-sidebar { background-color: var(--dash-sidebar-bg); border-right: 1px solid var(--dash-sidebar-border); @apply transition-all duration-300; }
-  .dash-card { background-color: var(--dash-surface); border: 1px solid var(--dash-border); @apply rounded-xl transition-colors duration-300; }
-  .dash-table td { @apply px-6 py-4; color: var(--dash-text); }
+  .dash-page {
+    background-color: var(--dash-bg);
+    color: var(--dash-text);
+    @apply min-h-screen transition-colors duration-300;
+  }
+  .dash-sidebar {
+    background-color: var(--dash-sidebar-bg);
+    border-right: 1px solid var(--dash-sidebar-border);
+    @apply transition-all duration-300;
+  }
+  .dash-card {
+    background-color: var(--dash-surface);
+    border: 1px solid var(--dash-border);
+    @apply rounded-xl transition-colors duration-300;
+  }
+  .dash-table td {
+    @apply px-6 py-4;
+    color: var(--dash-text);
+  }
   .dash-input {
     background-color: var(--dash-surface);
     border: 1px solid var(--dash-border);
     color: var(--dash-text);
     @apply px-4 py-2.5 rounded-lg outline-none transition-all;
   }
-  .dash-input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(29, 99, 255, 0.2); }
+  .dash-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(29, 99, 255, 0.2);
+  }
 }
 
 /* =========================
    ANIMATIONS
 ========================= */
-@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-@keyframes modalSlideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-.animate-scroll { animation: scroll 30s linear infinite; }
-.animate-fadeIn { animation: fadeIn 0.3s ease; }
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease;
+}

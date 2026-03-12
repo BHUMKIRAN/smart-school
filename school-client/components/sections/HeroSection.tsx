@@ -4,7 +4,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-[95vh] flex items-center bg-white overflow-hidden pt-24 pb-12"
+      className="relative min-h-[95vh] flex items-center  dark:bg-slate-950  overflow-hidden pt-24 pb-12"
     >
       {/* --- High-End Background Accents --- */}
       <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/80 -skew-x-12 translate-x-1/4 -z-10"></div>
@@ -16,12 +16,7 @@ export default function HeroSection() {
           {/* --- Left Column: Typography & Action --- */}
           <div className="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-100">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-              <span className="text-xs font-bold text-blue-700 tracking-[0.2em] uppercase nepali-text">
-                स्वागत छ — भदौरे, नेपाल
-              </span>
-            </div>
+          
 
             {/* Main Heading */}
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight">

@@ -66,9 +66,7 @@ export default function BoardSection() {
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] font-black tracking-widest uppercase rounded-full mb-3">
-            School Governance
-          </div>
+       
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             विद्यालय <span className="text-blue-600 relative inline-block">व्यवस्थापन समिति
               <svg className="absolute -bottom-1 left-0 w-full h-1.5 text-yellow-400" viewBox="0 0 100 10" preserveAspectRatio="none">

@@ -49,9 +49,7 @@ export default function AdministrationSection() {
         
         {/* Section Header */}
         <div className="text-center mb-24 space-y-4">
-          <span className="inline-block px-4 py-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-xs font-black tracking-widest uppercase rounded-full">
-            Faculty & Staff
-          </span>
+        
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             हाम्रो <span className="text-blue-600 relative">शिक्षण टोली
               <svg className="absolute -bottom-2 left-0 w-full h-2 text-yellow-400" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4"/></svg>
