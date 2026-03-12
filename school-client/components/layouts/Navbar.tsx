@@ -39,19 +39,19 @@ export default function Navbar() {
   const portals = [
     {
       name: 'शिक्षक पोर्टल',
-      href: '/login/teacher',
+      href: '/login?role=teacher',
       icon: <Users size={18} />,
       color: 'text-blue-600',
     },
     {
       name: 'विद्यार्थी पोर्टल',
-      href: '/login/student',
+      href: '/login?role=student',
       icon: <GraduationCap size={18} />,
       color: 'text-emerald-600',
     },
     {
       name: 'एडमिन पोर्टल',
-      href: '/login/admin',
+      href: '/login?role=admin',
       icon: <ShieldCheck size={18} />,
       color: 'text-rose-600',
     },

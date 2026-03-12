@@ -14,10 +14,7 @@ const userSchema = new mongoose.Schema(
       unique: true, // no duplicate emails allowed
     },
 
-    password: {
-      type: String,
-      required: true, // must store hashed password
-    },
+ 
 
     role: {
       type: String,

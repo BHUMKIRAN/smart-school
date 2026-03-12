@@ -4,6 +4,10 @@ const teacherSchema = new Schema(
   {
     name: String,
     email: String,
+    password: {
+      type: String,
+      required: true, // must store hashed password
+    },
     phone: String,
     subject: String,
     department: String,

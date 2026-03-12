@@ -1,28 +1,53 @@
 'use client';
 
-import { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, GraduationCap, Users, ShieldCheck, Loader2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import {
+  GraduationCap,
+  Users,
+  ShieldCheck,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  Loader2,
+} from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { credentials } from '@/store/authSlice';
 import { login } from '@/api/auth';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import Logo from '@/components/shared/logo';
 
 export default function LoginPage() {
-  const [role, setRole] = useState<'Student' | 'Teacher' | 'Admin'>('Student');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const roleParam = searchParams.get('role')?.toLowerCase() as
+    | 'student'
+    | 'teacher'
+    | 'admin'
+    | undefined;
+
+  // Initialize role from query param
+  const [role, setRole] = useState<'student' | 'teacher' | 'admin'>(roleParam || 'student');
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const router = useRouter();
+  // Update role if query param changes
+  useEffect(() => {
+    if (roleParam && roleParam !== role) {
+      setRole(roleParam);
+    }
+  }, [roleParam]);
 
   const roles = [
-    { id: 'Student', name: 'विद्यार्थी', icon: <GraduationCap size={20} />, color: 'blue' },
-    { id: 'Teacher', name: 'शिक्षक', icon: <Users size={20} />, color: 'emerald' },
-    { id: 'Admin', name: 'प्रशासक', icon: <ShieldCheck size={20} />, color: 'rose' },
+    { id: 'student', name: 'विद्यार्थी', icon: <GraduationCap size={20} /> },
+    { id: 'teacher', name: 'शिक्षक', icon: <Users size={20} /> },
+    { id: 'admin', name: 'प्रशासक', icon: <ShieldCheck size={20} /> },
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -30,24 +55,15 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // We pass role along with credentials so the backend knows which table to check
-      type LoginResponse = { user: any; token: string };
-      const data: LoginResponse = await login({ email, password, role });
-
-      dispatch(
-        credentials({
-          user: data.user,
-          token: data.token,
-        })
-      );
-
+      const data = await login({ email, password, role });
+      dispatch(credentials({ user: data.user, token: data.token }));
       toast.success(`स्वागत छ, ${data.user.name}!`);
 
       const nextPath =
-        role === 'Admin' ? '/admin' : role === 'Teacher' ? '/teacher' : '/student';
+        role === 'admin' ? '/admin' : role === 'teacher' ? '/teacher' : '/student';
       router.push(nextPath);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "लगइन असफल भयो। विवरण जाँच गर्नुहोस्।");
+      toast.error(err.response?.data?.message || 'लगइन असफल भयो। विवरण जाँच गर्नुहोस्।');
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +72,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6">
       <div className="w-full max-w-[450px] space-y-8">
-
         <div className="flex justify-center">
           <Logo />
         </div>
@@ -66,7 +81,9 @@ export default function LoginPage() {
             <h2 className="text-2xl font-black text-slate-900 dark:text-white nepali-text">
               स्वागत छ!
             </h2>
-            <p className="text-slate-500 text-sm mt-1 font-medium">अगाडि बढ्न आफ्नो विवरण भर्नुहोस्</p>
+            <p className="text-slate-500 text-sm mt-1 font-medium">
+              अगाडि बढ्न आफ्नो विवरण भर्नुहोस्
+            </p>
           </div>
 
           {/* Role Switcher */}
@@ -76,10 +93,11 @@ export default function LoginPage() {
                 key={r.id}
                 type="button"
                 onClick={() => setRole(r.id as any)}
-                className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${role === r.id
-                  ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
-                  : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
-                  }`}
+                className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${
+                  role === r.id
+                    ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
+                    : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
+                }`}
               >
                 {r.icon}
                 <span className="text-[10px] font-black nepali-text uppercase">{r.name}</span>
@@ -90,7 +108,9 @@ export default function LoginPage() {
           {/* Form */}
           <form className="space-y-5" onSubmit={handleLogin}>
             <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-widest">Email / Username</label>
+              <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-widest">
+                Email / Username
+              </label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                 <input
@@ -106,13 +126,17 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Password</label>
-                <button type="button" onClick={() => router.push('/forget-password')} className="text-[11px] font-bold text-blue-600 hover:underline">बिर्सनुभयो?</button>
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                  Password
+                </label>
+                <button type="button" onClick={() => router.push('/forget-password')} className="text-[11px] font-bold text-blue-600 hover:underline">
+                  बिर्सनुभयो?
+                </button>
               </div>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -128,6 +152,7 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
+
             <button
               type="submit"
               disabled={isLoading}

@@ -49,7 +49,7 @@
   --ticker-bg: #fffbeb;
   --ticker-border: #ffce32;
 
-  /* ── Dashboard / Portal ── */
+  /* Dashboard / Portal */
   --dash-bg: #f1f5f9;
   --dash-surface: #ffffff;
   --dash-surface-2: #f8fafc;
@@ -104,14 +104,6 @@ html.dark {
   --dash-glass: rgba(30, 41, 59, 0.85);
   --dash-glass-border: rgba(255, 255, 255, 0.08);
 }
-@layer {
-  body {
-    @apply transition-colors duration-300;
-    background-color: var(--primary);
-    color: var(--foreground);
-    font-family: "Inter", "Noto Sans Devanagari", sans-serif;
-  }
-}
 
 /* =========================
    BASE LAYER
@@ -120,37 +112,37 @@ html.dark {
   * {
     @apply m-0 p-0 box-border;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
-    background-color: var(--background);
+    background-color: var(--primary);
     color: var(--foreground);
     font-family: "Inter", "Noto Sans Devanagari", sans-serif;
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
   }
+
   .nepali-text {
     font-family: "Noto Sans Devanagari", sans-serif;
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+
+  h1, h2, h3, h4, h5, h6 {
     color: var(--foreground);
   }
+
   a {
     color: inherit;
   }
-  input,
-  textarea,
-  select {
+
+  input, textarea, select {
     background-color: var(--input-bg);
     border-color: var(--input-border);
     color: var(--input-text);
+    @apply outline-none;
   }
 }
 
@@ -280,35 +272,24 @@ html.dark {
    ANIMATIONS
 ========================= */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
+
 @keyframes modalSlideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
 }
+
 .animate-fadeIn {
   animation: fadeIn 0.3s ease;
 }

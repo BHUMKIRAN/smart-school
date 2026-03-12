@@ -6,10 +6,7 @@ export default function HeroSection() {
       id="home"
       className="relative min-h-[95vh] flex items-center  dark:bg-slate-950  overflow-hidden pt-24 pb-12"
     >
-      {/* --- High-End Background Accents --- */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/80 -skew-x-12 translate-x-1/4 -z-10"></div>
-      <div className="absolute top-20 left-10 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -z-10"></div>
-      
+
       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           
