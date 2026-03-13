@@ -4,7 +4,7 @@ import { toast } from "sonner";
 // Mark/Create Teacher Attendance
 export const markTeacherAttendance = async (data) => {
   try {
-    const res = await api.post("/attendance/teachers", data);
+    const res = await api.post("/teacherAttendance/", data);
     toast.success("Teacher attendance marked");
     return res.data;
   } catch (err) {
@@ -16,7 +16,7 @@ export const markTeacherAttendance = async (data) => {
 // Get All Teacher Attendance
 export const getTeacherAttendance = async (params) => {
   try {
-    const res = await api.get("/attendance/teachers", { params });
+    const res = await api.get("/ateacherAttendance/", { params });
     return res.data;
   } catch (err) {
     console.error(err);
@@ -27,7 +27,7 @@ export const getTeacherAttendance = async (params) => {
 // Update Teacher Attendance
 export const updateTeacherAttendance = async (id, data) => {
   try {
-    const res = await api.put(`/attendance/teachers/${id}`, data);
+    const res = await api.put(`/teacherAttendance/`, data);
     toast.success("Teacher attendance updated");
     return res.data;
   } catch (err) {

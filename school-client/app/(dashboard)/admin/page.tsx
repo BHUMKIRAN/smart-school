@@ -15,7 +15,6 @@ import StudentModal from '@/modals/studentModal';
 import AdminHome from '@/components/features/admin/AdminHome';
 
 export default function AdminDashboardPage() {
-  // Set 'dashboard' as default active tab
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [logout, setLogout] = useState(false);
@@ -32,7 +31,9 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 flex">
+
+      {/* Sidebar */}
       <AdminSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -40,12 +41,33 @@ export default function AdminDashboardPage() {
         setSidebarOpen={setSidebarOpen}
         setLogout={setLogout}
       />
-      <main className={`transition-all duration-300 ${sidebarOpen ? 'ml-72' : 'ml-20'}`}>
+
+      {/* Mobile overlay when sidebar open */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <main
+        className={`
+          flex-1 transition-all duration-300
+          lg:ml-72
+          ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'}
+        `}
+      >
+        {/* Header */}
         <AdminHeader
           title={tabTitles[activeTab]?.title || "Dashboard"}
-          subtitle={tabTitles[activeTab]?.subtitle || ""}  
+          subtitle={tabTitles[activeTab]?.subtitle || ""}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
         />
-        <div className="p-8 max-w-7xl mx-auto">
+
+        {/* Page Content */}
+        <div className="px-4 py-6 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {activeTab === 'dashboard' && <AdminHome />}
           {activeTab === 'teachers' && <TeachersTab />}
           {activeTab === 'students' && <StudentsTab />}
@@ -54,6 +76,8 @@ export default function AdminDashboardPage() {
           {activeTab === 'attendance' && <AttendanceTab />}
           {activeTab === 'applications' && <ApplicationsTab />}
         </div>
+
+        {/* Teacher Modal */}
         {modalType === "teacher" && (
           <TeacherModal
             isOpen={true}
@@ -63,6 +87,8 @@ export default function AdminDashboardPage() {
             refreshTeachers={() => window.location.reload()}
           />
         )}
+
+        {/* Student Modal */}
         {modalType === "student" && (
           <StudentModal
             isOpen={true}
@@ -71,6 +97,8 @@ export default function AdminDashboardPage() {
             refreshStudents={() => window.location.reload()}
           />
         )}
+
+        {/* Logout Modal */}
         {logout && <Logout onClose={() => setLogout(false)} />}
       </main>
     </div>

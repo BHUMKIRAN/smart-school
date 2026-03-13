@@ -1,24 +1,30 @@
 import mongoose, { Schema } from "mongoose";
 
 const studentSchema = new Schema(
-  {
-    name: String,
-    rollNumber: String,
-    email: String,
-    password: {
-      type: String,
-      required: true, // must store hashed password
-    },
-    phone: String,
-    class: String,
-    section: String,
-    address: String,
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+{
+  name: String,
+  email: String,
+  password: String,
+
+  grade: String,
+
+  attendance: {
+    type: Number,
+    default: 0
   },
-  { timestamps: true },
+
+  gpa: {
+    type: Number,
+    default: 0
+  },
+
+  status: {
+    type: String,
+    enum: ["Active","New","Pending"],
+    default: "Active"
+  }
+},
+{ timestamps: true }
 );
 
 const Student = mongoose.model("Student", studentSchema);

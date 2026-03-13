@@ -9,6 +9,7 @@ interface Student {
   name: string;
   grade: string;
   email: string;
+  password?: string;
   attendance?: number;
   gpa?: number;
   status?: string;
@@ -33,14 +34,17 @@ const StudentModal: React.FC<StudentModalProps> = ({
   const createStudent = useCreateStudent();
   const updateStudent = useUpdateStudent();
 
-  const [formData, setFormData] = useState<Student>({
+  const initialState: Student = {
     name: "",
     grade: "",
     email: "",
+    password: "",
     attendance: undefined,
     gpa: undefined,
     status: "Active",
-  });
+  };
+
+  const [formData, setFormData] = useState<Student>(initialState);
 
   /* ------------------------------
      PREFILL FORM IN EDIT MODE
@@ -50,6 +54,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
       setFormData({
         name: studentData.name || "",
         email: studentData.email || "",
+        password: "", // do not prefill password
         grade: studentData.grade || "",
         attendance: studentData.attendance,
         gpa: studentData.gpa,
@@ -58,14 +63,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
     }
 
     if (mode === "create") {
-      setFormData({
-        name: "",
-        grade: "",
-        email: "",
-        attendance: undefined,
-        gpa: undefined,
-        status: "Active",
-      });
+      setFormData(initialState);
     }
   }, [mode, studentData]);
 
@@ -95,24 +93,32 @@ const StudentModal: React.FC<StudentModalProps> = ({
     e.preventDefault();
 
     try {
+
       if (mode === "create") {
         await createStudent.mutateAsync(formData);
-      } else {
-        if (!studentData?._id) {
-          console.error("Student ID missing");
-          return;
+      }
+
+      if (mode === "edit") {
+        if (!studentData?._id) return;
+
+        const updatePayload = { ...formData };
+
+        // remove empty password when editing
+        if (!updatePayload.password) {
+          delete updatePayload.password;
         }
 
         await updateStudent.mutateAsync({
           id: studentData._id,
-          data: formData,
+          data: updatePayload,
         });
       }
 
-      refreshStudents?.();
+      // refreshStudents();
       onClose();
+
     } catch (err) {
-      console.error(err);
+      console.error("Student submit error:", err);
     }
   };
 
@@ -120,7 +126,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fadeIn">
-      
+
       <div className="dash-card w-full max-w-lg shadow-2xl overflow-hidden">
 
         {/* Header */}
@@ -139,7 +145,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          
+
           <div className="grid grid-cols-2 gap-4">
 
             {/* NAME */}
@@ -173,8 +179,24 @@ const StudentModal: React.FC<StudentModalProps> = ({
               />
             </div>
 
+            {/* PASSWORD */}
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Password {mode === "edit" && "(Leave blank to keep current)"}
+              </label>
+              <input
+                name="password"
+                type="password"
+                value={formData.password || ""}
+                onChange={handleChange}
+                className="dash-input w-full"
+                placeholder="••••••••"
+                required={mode === "create"}
+              />
+            </div>
+
             {/* GRADE */}
-            <div className="col-span-1">
+            <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Grade
               </label>
@@ -189,7 +211,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
             </div>
 
             {/* STATUS */}
-            <div className="col-span-1">
+            <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Status
               </label>
@@ -206,7 +228,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
             </div>
 
             {/* ATTENDANCE */}
-            <div className="col-span-1">
+            <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Attendance %
               </label>
@@ -221,7 +243,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
             </div>
 
             {/* GPA */}
-            <div className="col-span-1">
+            <div>
               <label className="text-sm font-medium mb-1.5 block">
                 GPA
               </label>
@@ -259,6 +281,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
           </div>
 
         </form>
+
       </div>
     </div>
   );

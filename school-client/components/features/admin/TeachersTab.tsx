@@ -4,12 +4,12 @@ import { useState } from "react";
 import {
   UserPlus, Users, Search,
   Edit3, Trash2, GraduationCap,
-  Check, X, MoreVertical, Mail
+  Check, X, Mail
 } from "lucide-react";
 
 import TeacherModal from "@/modals/teacherModals";
-import { useTeachers } from "@/hooks/useTeacher";
-import { useTeacherAttendance } from "@/hooks/useTeacherAttendance";
+import { useTeachers, useDeleteTeacher } from "@/hooks/useTeacher";
+import { useMarkTeacherAttendance, useTeacherAttendance } from "@/hooks/useAdmin";
 
 export interface Teacher {
   _id: string;
@@ -24,15 +24,13 @@ export interface Teacher {
 
 export default function TeachersTab() {
 
-  // ✅ GET teachers (React Query controls everything)
-  const {
-    data: teachers = [],
-    isLoading,
-    isError
-  } = useTeachers();
+  // ✅ GET teachers
+  const { data: teachers = [], isLoading, isError } = useTeachers();
+  const deleteTeacher = useDeleteTeacher();
 
-  // ✅ Attendance Mutation
-  const attendanceMutation = useTeacherAttendance();
+  // ✅ Attendance hooks
+  const teacherAttendance = useMarkTeacherAttendance(); // mutate function for marking attendance
+  const attendanceList = useTeacherAttendance(); // optional, if you want to fetch attendance separately
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,31 +40,21 @@ export default function TeachersTab() {
   // ----------------------------
   // OPEN MODAL
   // ----------------------------
-  const handleOpenModal = (
-    teacher: Teacher | null,
-    mode: "create" | "edit"
-  ) => {
+  const handleOpenModal = (teacher: Teacher | null, mode: "create" | "edit") => {
     setSelectedTeacher(teacher);
     setModalMode(mode);
     setIsModalOpen(true);
   };
 
   // ----------------------------
-  // MARK ATTENDANCE
+  // QUICK ATTENDANCE
   // ----------------------------
-  const markQuickAttendance = (
-    teacherId: string,
-    status: "present" | "absent"
-  ) => {
-    attendanceMutation.mutate({
-      teacherId,
-      status,
-      date: new Date().toISOString().split("T")[0],
-    });
+  const markQuickAttendance = (teacherId: string, status: "Present" | "Absent") => {
+    teacherAttendance.mutate({ teacherId, status }); // ✅ send object matching your mutation
   };
 
   // ----------------------------
-  // FILTERING (from React Query data)
+  // FILTERING
   // ----------------------------
   const filteredTeachers = teachers.filter((t: Teacher) =>
     t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -104,24 +92,16 @@ export default function TeachersTab() {
         <div className="bg-white p-6 rounded-3xl border flex items-center gap-5">
           <Users className="w-6 h-6 text-indigo-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">
-              Total Faculty
-            </p>
-            <h3 className="text-2xl font-black">
-              {teachers.length}
-            </h3>
+            <p className="text-xs font-bold uppercase text-slate-400">Total Faculty</p>
+            <h3 className="text-2xl font-black">{teachers.length}</h3>
           </div>
         </div>
 
         <div className="bg-white p-6 rounded-3xl border flex items-center gap-5">
           <GraduationCap className="w-6 h-6 text-emerald-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">
-              Active Today
-            </p>
-            <h3 className="text-2xl font-black">
-              {teachers.length}
-            </h3>
+            <p className="text-xs font-bold uppercase text-slate-400">Active Today</p>
+            <h3 className="text-2xl font-black">{teachers.length}</h3>
           </div>
         </div>
 
@@ -131,12 +111,8 @@ export default function TeachersTab() {
         >
           <UserPlus className="w-6 h-6 text-indigo-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">
-              New Hire
-            </p>
-            <h3 className="text-sm font-bold">
-              Add Entry
-            </h3>
+            <p className="text-xs font-bold uppercase text-slate-400">New Hire</p>
+            <h3 className="text-sm font-bold">Add Entry</h3>
           </div>
         </div>
       </div>
@@ -179,21 +155,19 @@ export default function TeachersTab() {
                 </td>
 
                 {/* SUBJECT */}
-                <td className="text-center px-6 py-4">
-                  {teacher.subject}
-                </td>
+                <td className="text-center px-6 py-4">{teacher.subject}</td>
 
                 {/* ATTENDANCE */}
                 <td className="text-center px-6 py-4 space-x-2">
                   <button
-                    onClick={() => markQuickAttendance(teacher._id, "present")}
+                    onClick={() => markQuickAttendance(teacher._id, "Present")}
                     className="p-2 bg-emerald-100 rounded-lg"
                   >
                     <Check className="w-4 h-4 text-emerald-600" />
                   </button>
 
                   <button
-                    onClick={() => markQuickAttendance(teacher._id, "absent")}
+                    onClick={() => markQuickAttendance(teacher._id, "Absent")}
                     className="p-2 bg-rose-100 rounded-lg"
                   >
                     <X className="w-4 h-4 text-rose-600" />
@@ -202,13 +176,11 @@ export default function TeachersTab() {
 
                 {/* ACTIONS */}
                 <td className="text-right px-6 py-4 space-x-2">
-                  <button
-                    onClick={() => handleOpenModal(teacher, "edit")}
-                  >
+                  <button onClick={() => handleOpenModal(teacher, "edit")}>
                     <Edit3 className="w-4 h-4 text-indigo-600" />
                   </button>
 
-                  <button>
+                  <button onClick={() => deleteTeacher.mutate(teacher._id)}>
                     <Trash2 className="w-4 h-4 text-rose-600" />
                   </button>
                 </td>

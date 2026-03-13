@@ -1,16 +1,22 @@
 import express from "express";
-import { createTeacher, deleteTeacher, editTeacher, readTeacher, readTeachers } from "../controllers/teacher.js";
+import {
+  createTeachers,
+  readTeachers,
+  readTeacherById,
+  editTeacherById,
+  deleteTeacherById,
+} from "../controllers/teacher.js";
 
 const router = express.Router();
 
-router.post("/", createTeacher );
+router.post("/", createTeachers);
 
 router.get("/", readTeachers);
 
-router.get("/:id", readTeacher);
+router.get("/:id", readTeacherById);
 
-router.put("/:id", editTeacher);
+router.put("/:id", editTeacherById);
 
-router.delete("/:id", deleteTeacher);
+router.delete("/:id", deleteTeacherById);
 
 export default router;

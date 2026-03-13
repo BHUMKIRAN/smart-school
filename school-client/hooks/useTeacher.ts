@@ -78,14 +78,18 @@ export const useEditTeacher = () => {
 // DELETE TEACHER
 export const useDeleteTeacher = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: deleteTeacher,
+    mutationFn: (id: string) => deleteTeacher(id),
+
     onSuccess: () => {
       toast.success("Teacher deleted successfully");
+
       queryClient.invalidateQueries({
         queryKey: ["teachers"],
       });
     },
+
     onError: (error: any) => {
       toast.error(error?.response?.data?.message || "Delete failed");
     },

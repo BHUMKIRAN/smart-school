@@ -10,6 +10,7 @@ export interface Student {
   name: string;
   grade: string;
   email: string;
+  password: string;
   attendance?: number;
   gpa?: number;
   status?: string;

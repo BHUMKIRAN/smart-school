@@ -1,108 +1,73 @@
-import User from "../models/user.js";
+import Student from "../models/student.js";
+import Teacher from "../models/teacher.js";
+import Admin from "../models/admin.js"; // if you have admin model
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-// ===============================
-// 🔹 REGISTER USER (Admin Creates)
-// ===============================
-const register = async (req, res) => {
-  try {
-    // Get data sent from frontend
-    const { name, email, password, role } = req.body;
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists ",
-      });
-    }
-
-    // Hash password before saving
-    // bcrypt.hash(password, saltRounds)
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    //  Create new user in database
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword, // Store hashed password
-      role,
-    });
-
-    res.status(201).json({
-      message: "User created successfully ",
-      user: newUser,
-      //    {
-      //     id: newUser._id,
-      //     name: newUser.name,
-      //     email: newUser.email,
-      //     role: newUser.role,
-      //   },
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Server Error ",
-      error: error.message,
-    });
-  }
-};
-
-// ===============================
-// 🔹 LOGIN USER
-// ===============================
 const login = async (req, res) => {
   try {
-    const { email, password ,role  } = req.body;
+    const { email, password, role } = req.body;
 
-    // Find user by email
-    const user = await User.findOne({ email });
+    let user;
 
-    if (!user) {
+    // Select model based on role
+    if (role === "student") {
+      user = await Student.findOne({ email });
+    } else if (role === "teacher") {
+      user = await Teacher.findOne({ email });
+    } else if (role === "admin") {
+      user = await Admin.findOne({ email });
+    } else {
       return res.status(400).json({
-        message: "Invalid email ",
+        message: "Invalid role",
       });
     }
 
-    // Compare entered password with hashed password
+    // Check if user exists
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid email",
+      });
+    }
+
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(400).json({
-        message: "Invalid  password",
+        message: "Invalid password",
       });
     }
 
-    // Generate JWT token
+    // Generate JWT
     const token = jwt.sign(
       {
-        id: user.id,
-        role: user.role,
+        id: user._id,
+        role: role,
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "7d", // Token valid for 7 days
-      },
+        expiresIn: "7d",
+      }
     );
 
-    res.json({
-      message: "Login successful ",
+    res.status(200).json({
+      message: "Login successful",
       token,
-      user: user,
-      //   {
-      //     id: user._id,
-      //     name: user.name,
-      //     email: user.email,
-      //     role: user.role,
-      //   },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: role,
+      },
     });
+
   } catch (error) {
     res.status(500).json({
-      message: "Server Error ",
+      message: "Server Error",
       error: error.message,
     });
   }
 };
 
-export { login, register };
+export { login };

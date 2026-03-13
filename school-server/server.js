@@ -12,7 +12,6 @@ import attendanceRoutes from "./routes/attendance.js";
 import adminRoutes from "./routes/admin.js";
 import publicRoutes from "./routes/public.js";
 import initSocket from "./websocket/socket.js";
-import { setSocket } from "./controllers/attendanceController.js";
 import startCodeGenerator from "./service/CodeAt10.js";
 
 dotenv.config();
@@ -23,16 +22,17 @@ const server = http.createServer(app);
 const port = 8080;
 
 // Initialize Socket.io
-const io = initSocket(server);
-setSocket(io);
+initSocket(server);
 
 // Start Cron Service
 startCodeGenerator();
 
-app.use(cors(
-   {origin: "http://localhost:3000", // your frontend
-  credentials: true}
-));
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your frontend
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 // ✅ Public Auth Routes
@@ -45,7 +45,8 @@ app.use("/teachers", teacherRoutes);
 app.use("/notices", noticeRoutes);
 app.use("/emergencyNotices", emergencyNoticeRoutes);
 app.use("/", attendanceRoutes);
-app.use("/admin", adminRoutes);
+app.use("/attendanceTeacher", adminRoutes);
+app.use("/", adminRoutes);
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

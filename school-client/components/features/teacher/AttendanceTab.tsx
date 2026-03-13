@@ -3,15 +3,29 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Calendar, Fingerprint, ArrowUpRight, Loader2 } from 'lucide-react';
 import { toast, Toaster } from 'sonner';
+import { useCreateTeacherAttendance } from "@/hooks/useTeacherAttendance"; 
+import { useSelector } from 'react-redux';
 
 export default function MarkAttendance() {
   const [code, setCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const monthlyProgress = 88; 
+  const createTeacherAttendance = useCreateTeacherAttendance();
+
+  // Get teacher info from Redux store
+  const teacher = useSelector((state: any) => state.auth.user); // adjust path if needed
+  const teacherId = teacher?.id;
 
   const handleMarkAttendance = async () => {
-    if (code.length < 6) {
+    const trimmedCode = code.trim();
+
+    if (!teacherId) {
+      toast.error('User not found', { description: 'Please login first.' });
+      return;
+    }
+
+    if (trimmedCode.length !== 6) {
       toast.error('Invalid Code', {
         description: 'Please enter the 6-digit code for this session.',
       });
@@ -19,20 +33,37 @@ export default function MarkAttendance() {
     }
 
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSubmitting(false);
-    toast.success('Attendance Marked', {
-      description: 'Your presence has been successfully recorded.',
-      icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" />,
-    });
-    setCode('');
+
+    // Call your mutation with proper callbacks
+    createTeacherAttendance.mutate(
+      {
+        code: trimmedCode,
+        status: "Present",
+        teacherId: teacherId,
+      },
+      {
+        onSuccess: (data) => {
+          setIsSubmitting(false);
+          toast.success('Attendance Marked', {
+            description: 'Your presence has been successfully recorded.',
+            icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" />,
+          });
+          setCode('');
+        },
+        onError: (error: any) => {
+          setIsSubmitting(false);
+          toast.error(
+            error?.response?.data?.message || 'Failed to mark attendance'
+          );
+        },
+      }
+    );
   };
 
   return (
     <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 p-4">
       <Toaster position="top-center" richColors />
-      
+
       {/* Action Card */}
       <div className="md:col-span-7 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
         <div className="flex items-center gap-4 mb-10">
@@ -40,8 +71,12 @@ export default function MarkAttendance() {
             <Fingerprint className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-tight">Mark Your Attendance</h2>
-            <p className="text-xs text-slate-500 font-medium">Confirm your presence for today&apos;s session</p>
+            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-tight">
+              Mark Your Attendance
+            </h2>
+            <p className="text-xs text-slate-500 font-medium">
+              Confirm your presence for today&apos;s session
+            </p>
           </div>
         </div>
 
@@ -88,7 +123,9 @@ export default function MarkAttendance() {
             </div>
 
             <div className="space-y-1">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Monthly Consistency</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                Monthly Consistency
+              </p>
               <h3 className="text-6xl font-black text-slate-900 dark:text-slate-50 tracking-tighter">
                 {monthlyProgress}<span className="text-2xl text-slate-300 dark:text-slate-700">%</span>
               </h3>

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Create schema (structure of user document)
-const userSchema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -14,17 +14,13 @@ const userSchema = new mongoose.Schema(
       unique: true, // no duplicate emails allowed
     },
 
- 
-
-    role: {
+    password: {
       type: String,
-      enum: ["admin", "teacher", "student"], 
-      // Only these 3 roles allowed
-      default: "student",
+      required: true, // must store hashed password
     },
   },
-  { timestamps: true } // Automatically adds createdAt & updatedAt
+  { timestamps: true }, // Automatically adds createdAt & updatedAt
 );
 
 // Export model
-export default mongoose.model("user", userSchema)
+export default mongoose.model("admin", adminSchema);
