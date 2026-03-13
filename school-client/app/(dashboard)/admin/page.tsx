@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import AdminSidebar from '@/components/features/admin/AdminSidebar';
 import AdminHeader from '@/components/features/admin/AdminHeader';
+import AdminNavbar from '@/components/features/admin/AdminNavbar';
 import TeachersTab from '@/components/features/admin/TeachersTab';
-import StudentsTab from '@/components/features/admin/StudentsTab';
+import StudentsTab, { Student } from '@/components/features/admin/StudentsTab';
 import NoticesTab from '@/components/features/admin/NoticesTab';
 import EmergencyTab from '@/components/features/admin/EmergencyTab';
 import AttendanceTab from '@/components/features/admin/AttendanceTab';
@@ -13,12 +13,21 @@ import Logout from '@/modals/LogoutModal';
 import TeacherModal from '@/modals/teacherModals';
 import StudentModal from '@/modals/studentModal';
 import AdminHome from '@/components/features/admin/AdminHome';
+import TeacherCardModal from '@/modals/teacherCard';
+import StudentCardModal from '@/modals/studentCard';
 
 export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [logout, setLogout] = useState(false);
   const [modalType, setModalType] = useState<"teacher" | "student" | null>(null);
+  const [modalView, setModalView] = useState<{
+    type: "teacher" | "student" | "view" | null;
+    data?: teacher | null;
+  }>({ type: null, data: null });
+  const [modalStudentView, setmodalStudentView] = useState<{
+    type: "teacher" | "student" | "view" | null;
+    data?: Student | null;
+  }>({ type: null, data: null });
 
   const tabTitles: Record<string, { title: string; subtitle: string }> = {
     dashboard: { title: 'System Overview', subtitle: 'Real-time school performance & metrics' },
@@ -31,76 +40,68 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 flex">
+    <div className="min-h-screen min-w-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 flex flex-col">
 
-      {/* Sidebar */}
-      <AdminSidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        sidebarOpen={sidebarOpen}
-        setSidebarOpen={setSidebarOpen}
+      {/* Header */}
+      <AdminHeader
         setLogout={setLogout}
+        title={tabTitles[activeTab]?.title || "Dashboard"}
+        subtitle={tabTitles[activeTab]?.subtitle || ""}
       />
 
-      {/* Mobile overlay when sidebar open */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
+      {/* Full-width Horizontal Navbar */}
+      <AdminNavbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+
+      />
+
+      {/* Main Content */}
+      <main className="flex-1 transition-all duration-300 p-4 sm:p-6 lg:p-8">
+        {activeTab === 'dashboard' && <AdminHome />}
+        {activeTab === 'teachers' && <TeachersTab setmodalView={setModalView} />}
+        {activeTab === 'students' && <StudentsTab setmodalStudentView={setmodalStudentView}/>}
+        {activeTab === 'notices' && <NoticesTab />}
+        {activeTab === 'emergency' && <EmergencyTab />}
+        {activeTab === 'attendance' && <AttendanceTab />}
+        {activeTab === 'applications' && <ApplicationsTab />}
+      </main>
+
+      {/* Modals */}
+      {modalType === "teacher" && (
+        <TeacherModal
+          isOpen={true}
+          onClose={() => setModalType(null)}
+          mode="create"
+          teacherData={null}
+          refreshTeachers={() => window.location.reload()}
         />
       )}
 
-      {/* Main Content */}
-      <main
-        className={`
-          flex-1 transition-all duration-300
-          lg:ml-72
-          ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'}
-        `}
-      >
-        {/* Header */}
-        <AdminHeader
-          title={tabTitles[activeTab]?.title || "Dashboard"}
-          subtitle={tabTitles[activeTab]?.subtitle || ""}
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
+      {modalType === "student" && (
+        <StudentModal
+          isOpen={true}
+          mode="create"
+          onClose={() => setModalType(null)}
+          refreshStudents={() => window.location.reload()}
         />
+      )}
+      {modalView.type === "view" && modalView.data && (
+        <TeacherCardModal
+          isOpen={true}
+          teacher={modalView.data}
+          onClose={() => setModalView({ type: null })}
+        />
+      )}
+        {modalStudentView?.type === "view" && (
+        <StudentCardModal
+          isOpen={true}
+          onClose={() => setmodalStudentView(null)}
+          student={modalStudentView.data}
+        />
+      )}
 
-        {/* Page Content */}
-        <div className="px-4 py-6 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {activeTab === 'dashboard' && <AdminHome />}
-          {activeTab === 'teachers' && <TeachersTab />}
-          {activeTab === 'students' && <StudentsTab />}
-          {activeTab === 'notices' && <NoticesTab />}
-          {activeTab === 'emergency' && <EmergencyTab />}
-          {activeTab === 'attendance' && <AttendanceTab />}
-          {activeTab === 'applications' && <ApplicationsTab />}
-        </div>
-
-        {/* Teacher Modal */}
-        {modalType === "teacher" && (
-          <TeacherModal
-            isOpen={true}
-            onClose={() => setModalType(null)}
-            mode="create"
-            teacherData={null}
-            refreshTeachers={() => window.location.reload()}
-          />
-        )}
-
-        {/* Student Modal */}
-        {modalType === "student" && (
-          <StudentModal
-            isOpen={true}
-            mode="create"
-            onClose={() => setModalType(null)}
-            refreshStudents={() => window.location.reload()}
-          />
-        )}
-
-        {/* Logout Modal */}
-        {logout && <Logout onClose={() => setLogout(false)} />}
-      </main>
+      {logout && <Logout onClose={() => setLogout(false)} />}
     </div>
   );
 }

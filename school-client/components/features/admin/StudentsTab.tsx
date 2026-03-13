@@ -1,7 +1,11 @@
 'use client';
 
 import { useState } from "react";
-import { StatCard } from "@/components/ui/card/Card";
+import {
+  UserPlus, Users, Search,
+  Edit3, Trash2, Check, Mail, Eye
+} from "lucide-react";
+
 import StudentModal from "@/modals/studentModal";
 import { useStudents, useDeleteStudent } from "@/hooks/useStudent";
 
@@ -16,191 +20,233 @@ export interface Student {
   status?: string;
 }
 
-export default function StudentsTab() {
+interface studenttabProps {
+  setmodalStudentView?: any;
+}
 
-  const { data: students = [], isLoading } = useStudents();
+export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
+
+  // GET students
+  const { data: students = [], isLoading, isError } = useStudents();
   const { mutate: deleteStudent } = useDeleteStudent();
 
+  // ----------------------------
+  // State
+  // ----------------------------
   const [searchQuery, setSearchQuery] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [modalMode, setModalMode] = useState<"create" | "edit">("create");
 
-  const handleDelete = (id: string) => {
-    if (!confirm("Are you sure you want to remove this student record?")) return;
-    deleteStudent(id);
+  // ----------------------------
+  // OPEN MODAL
+  // ----------------------------
+  const handleOpenModal = (student: Student | null, mode: "create" | "edit") => {
+    setSelectedStudent(student);
+    setModalMode(mode);
+    setIsModalOpen(true);
   };
 
-  const handleOpenModal = (student: Student | null = null) => {
-    setEditingStudent(student);
-    setShowModal(true);
-  };
-
-  const handleSuccess = () => {
-    setShowModal(false);
-  };
-
+  // ----------------------------
+  // Filtering
+  // ----------------------------
   const filteredStudents = students.filter((s: Student) =>
     s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     s.grade.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const stats = {
-    total: students.length,
-    active: students.filter((s: Student) => s.status?.toLowerCase() === "active").length,
-    highGPA: students.filter((s: Student) => (s.gpa || 0) >= 3.5).length,
-  };
-
+  // ----------------------------
+  // Loading
+  // ----------------------------
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center p-20 space-y-4">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <p className="dash-text-muted font-medium animate-pulse">
-          Synchronizing Student Database...
+      <div className="h-96 flex flex-col items-center justify-center space-y-4">
+        <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-slate-500 font-bold text-xs uppercase">
+          Accessing Student Database...
         </p>
       </div>
     );
   }
 
+  // ----------------------------
+  // Error
+  // ----------------------------
+  if (isError) {
+    return (
+      <div className="text-center text-red-500">
+        Failed to load students
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6 animate-fadeIn">
+    <div className="space-y-6 pb-10">
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <StatCard
-          label="Total Students"
-          value={stats.total}
-          icon={<UsersIcon className="w-6 h-6 text-primary" />}
-        />
-        <StatCard
-          label="Active Status"
-          value={stats.active || stats.total}
-          icon={<CheckBadgeIcon className="w-6 h-6 text-success" />}
-        />
-        <StatCard
-          label="Honor Roll (3.5+)"
-          value={stats.highGPA}
-          icon={<UserPlusIcon className="w-6 h-6 text-warning" />}
-        />
-      </div>
+      {/* ================= KPI CARDS ================= */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
 
-      {/* Toolbar */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-dash-surface-2 p-4 rounded-2xl border dash-border">
-        <input
-          type="text"
-          placeholder="Search by name or grade..."
-          className="dash-input w-full md:w-96"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
-        <button
-          onClick={() => handleOpenModal(null)}
-          className="px-6 py-2 bg-primary text-white rounded-xl"
-        >
-          Add New Student
-        </button>
-      </div>
-
-      {/* Students Table */}
-      <div className="dash-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-
-            <thead>
-              <tr className="bg-dash-surface-2 border-b dash-border">
-                <th className="px-6 py-4">Student</th>
-                <th className="px-6 py-4">Grade</th>
-                <th className="px-6 py-4">GPA</th>
-                <th className="px-6 py-4">Attendance</th>
-                <th className="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filteredStudents.length > 0 ? (
-                filteredStudents.map((student: Student) => (
-                  <tr key={student._id} className="hover:bg-dash-surface-2">
-
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="font-bold">{student.name}</p>
-                        <p className="text-sm text-gray-500">{student.email}</p>
-                      </div>
-                    </td>
-
-                    <td className="px-6 py-4">{student.grade}</td>
-
-                    <td className="px-6 py-4">
-                      {student.gpa?.toFixed(2) || "0.00"}
-                    </td>
-
-                    <td className="px-6 py-4">
-                      {student.attendance || 0}%
-                    </td>
-
-                    <td className="px-6 py-4 text-right space-x-2">
-
-                      <button
-                        onClick={() => handleOpenModal(student)}
-                        className="text-blue-500"
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(student._id)}
-                        className="text-red-500"
-                      >
-                        Delete
-                      </button>
-
-                    </td>
-
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="p-10 text-center">
-                    No students found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-
-          </table>
+        {/* Total Students */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <Users className="w-5 h-5 text-indigo-600" />
+          <div>
+            <p className="text-[10px] font-bold uppercase text-slate-400">
+              Total Students
+            </p>
+            <h3 className="text-lg font-black">{students.length}</h3>
+          </div>
         </div>
+
+        {/* Active Students */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <Check className="w-5 h-5 text-emerald-600" />
+          <div>
+            <p className="text-[10px] font-bold uppercase text-slate-400">
+              Active
+            </p>
+            <h3 className="text-lg font-black">
+              {students.filter((s) => s.status?.toLowerCase() === "active").length}
+            </h3>
+          </div>
+        </div>
+
+        {/* Add Student */}
+        <div
+          onClick={() => handleOpenModal(null, "create")}
+          className="bg-white p-3 rounded-xl border flex items-center gap-3 cursor-pointer hover:border-indigo-500 transition"
+        >
+          <UserPlus className="w-5 h-5 text-indigo-600" />
+          <div>
+            <p className="text-[10px] font-bold uppercase text-slate-400">
+              New Student
+            </p>
+            <h3 className="text-sm font-bold">Add Entry</h3>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <Search className="w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search by name or grade..."
+            className="pl-2 pr-2 py-1 border-none outline-none w-full text-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
       </div>
 
+      {/* ================= TABLE ================= */}
+      <div className="bg-white rounded-3xl border overflow-hidden">
+        <table className="w-full">
+
+          <thead className="border-b bg-slate-50">
+            <tr>
+              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">
+                Student
+              </th>
+              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">
+                Grade
+              </th>
+              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">
+                GPA
+              </th>
+              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">
+                Attendance
+              </th>
+              <th className="text-right px-6 py-4 text-xs uppercase text-slate-400">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student: Student) => (
+
+                <tr key={student._id} className="border-b">
+
+                  {/* STUDENT */}
+                  <td className="px-6 py-4 flex flex-col">
+                    <p className="font-bold">{student.name}</p>
+                    <p className="text-sm text-slate-500 flex items-center gap-1">
+                      <Mail className="w-3 h-3" />
+                      {student.email}
+                    </p>
+                  </td>
+
+                  {/* GRADE */}
+                  <td className="px-6 py-4">{student.grade}</td>
+
+                  {/* GPA */}
+                  <td className="text-center px-6 py-4">
+                    {student.gpa?.toFixed(2) || "0.00"}
+                  </td>
+
+                  {/* ATTENDANCE */}
+                  <td className="text-center px-6 py-4">
+                    {student.attendance || 0}%
+                  </td>
+
+                  {/* ACTIONS */}
+                  <td className="text-right px-6 py-4 space-x-2 flex justify-end items-center">
+
+                    {/* VIEW */}
+                    {setmodalStudentView && (
+                      <button
+                        onClick={() =>
+                          setmodalStudentView({ type: "view", data: student })
+                        }
+                      >
+                        <Eye className="w-4 h-4 text-sky-600" />
+                      </button>
+                    )}
+
+                    {/* EDIT */}
+                    <button onClick={() => handleOpenModal(student, "edit")}>
+                      <Edit3 className="w-4 h-4 text-indigo-600" />
+                    </button>
+
+                    {/* DELETE */}
+                    <button
+                      onClick={() => {
+                        if (!confirm("Are you sure you want to remove this student record?")) return;
+                        deleteStudent(student._id);
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4 text-rose-600" />
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="p-10 text-center">
+                  No students found
+                </td>
+              </tr>
+            )}
+
+          </tbody>
+
+        </table>
+      </div>
+
+      {/* ================= MODAL ================= */}
       <StudentModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        mode="create"
-        onSuccess={handleSuccess}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        mode={modalMode}
+        studentData={selectedStudent || undefined}
+        refreshStudents={() => window.location.reload()}
       />
+
     </div>
-  );
-}
-
-function UsersIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeWidth="2" d="M12 4a4 4 0 110 8 4 4 0 010-8z" />
-    </svg>
-  );
-}
-
-function CheckBadgeIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeWidth="2" d="M9 12l2 2 4-4" />
-    </svg>
-  );
-}
-
-function UserPlusIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeWidth="2" d="M12 6v12M6 12h12" />
-    </svg>
   );
 }

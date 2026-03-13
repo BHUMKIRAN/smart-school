@@ -11,6 +11,7 @@ import emergencyNoticeRoutes from "./routes/emergencyNotice.js";
 import attendanceRoutes from "./routes/attendance.js";
 import adminRoutes from "./routes/admin.js";
 import publicRoutes from "./routes/public.js";
+import scheduleRoutes from "./routes/schedule.js";
 import initSocket from "./websocket/socket.js";
 import startCodeGenerator from "./service/CodeAt10.js";
 
@@ -47,6 +48,7 @@ app.use("/emergencyNotices", emergencyNoticeRoutes);
 app.use("/", attendanceRoutes);
 app.use("/attendanceTeacher", adminRoutes);
 app.use("/", adminRoutes);
+app.use("/",scheduleRoutes)
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);

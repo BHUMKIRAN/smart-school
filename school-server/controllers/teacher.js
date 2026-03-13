@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 // CREATE teacher
 const createTeachers = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, subject , phone , department ,salary } = req.body;
 
     // Validate fields
     if (!name || !email || !password) {
@@ -30,7 +30,10 @@ const createTeachers = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
+      department,
+      subject,
+      phone,
+      salary,
     });
 
     res.status(201).json({
@@ -40,6 +43,10 @@ const createTeachers = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
+        department: newUser.department,
+        subject: newUser.subject,
+        phone: newUser.phone,
+        salary: newUser.salary,
       },
     });
 

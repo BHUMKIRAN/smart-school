@@ -1,16 +1,9 @@
-import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
-
 
 const outfit = Outfit({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
 });
-
-export const metadata: Metadata = {
-  title: 'Teacher Dashboard - School Management System',
-  description: 'Teacher portal for school management',
-};
 
 export default function DashboardLayout({
   children,
@@ -18,10 +11,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${outfit.className} bg-white`}>
-        {children}
-      </body>
-    </html>
+    <div className={`${outfit.className} bg-white min-h-screen`}>
+      {children}
+    </div>
   );
 }

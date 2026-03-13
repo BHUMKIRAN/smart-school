@@ -4,12 +4,15 @@ import { useState } from "react";
 import {
   UserPlus, Users, Search,
   Edit3, Trash2, GraduationCap,
-  Check, X, Mail
+  Check, X, Mail,
+  Eye
 } from "lucide-react";
 
 import TeacherModal from "@/modals/teacherModals";
 import { useTeachers, useDeleteTeacher } from "@/hooks/useTeacher";
-import { useMarkTeacherAttendance, useTeacherAttendance } from "@/hooks/useAdmin";
+import { useMarkTeacherAttendance } from "@/hooks/useAdmin";
+import axios from "axios";
+import { API_BASE_URL } from "@/lib/endpoints";
 
 export interface Teacher {
   _id: string;
@@ -21,21 +24,26 @@ export interface Teacher {
   department?: string;
   salary?: string;
 }
+interface teachertabProps {
+  setmodalView: any,
+}
 
-export default function TeachersTab() {
+export default function TeachersTab({setmodalView} : teachertabProps) {
 
   // ✅ GET teachers
   const { data: teachers = [], isLoading, isError } = useTeachers();
   const deleteTeacher = useDeleteTeacher();
+  const teacherAttendance = useMarkTeacherAttendance(); // mutate function
 
-  // ✅ Attendance hooks
-  const teacherAttendance = useMarkTeacherAttendance(); // mutate function for marking attendance
-  const attendanceList = useTeacherAttendance(); // optional, if you want to fetch attendance separately
-
+  // ----------------------------
+  // State
+  // ----------------------------
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const [modalMode, setModalMode] = useState<"create" | "edit">("create");
+
 
   // ----------------------------
   // OPEN MODAL
@@ -47,14 +55,38 @@ export default function TeachersTab() {
   };
 
   // ----------------------------
-  // QUICK ATTENDANCE
+  // Attendance
   // ----------------------------
   const markQuickAttendance = (teacherId: string, status: "Present" | "Absent") => {
-    teacherAttendance.mutate({ teacherId, status }); // ✅ send object matching your mutation
+    teacherAttendance.mutate({ teacherId, status });
   };
 
   // ----------------------------
-  // FILTERING
+  // Upload PDF Schedule
+  // ----------------------------
+  const handleUpload = async (teacherId: string) => {
+    if (!pdfFile) return alert("Select a PDF file first");
+
+    const formData = new FormData();
+    formData.append("teacherId", teacherId);
+    formData.append("pdf", pdfFile);
+
+    try {
+      await axios.post(`${API_BASE_URL}/schedule`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      alert("Schedule uploaded!");
+      setPdfFile(null);
+
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed");
+    }
+  };
+
+
+  // ----------------------------
+  // Filtering
   // ----------------------------
   const filteredTeachers = teachers.filter((t: Teacher) =>
     t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -62,7 +94,7 @@ export default function TeachersTab() {
   );
 
   // ----------------------------
-  // LOADING STATE
+  // Loading / Error
   // ----------------------------
   if (isLoading) {
     return (
@@ -86,47 +118,49 @@ export default function TeachersTab() {
   return (
     <div className="space-y-6 pb-10">
 
-      {/* ================= KPIs ================= */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <div className="bg-white p-6 rounded-3xl border flex items-center gap-5">
-          <Users className="w-6 h-6 text-indigo-600" />
+      {/* ================= Small KPI Cards + Search ================= */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Total Faculty */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <Users className="w-5 h-5 text-indigo-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">Total Faculty</p>
-            <h3 className="text-2xl font-black">{teachers.length}</h3>
+            <p className="text-[10px] font-bold uppercase text-slate-400">Total Faculty</p>
+            <h3 className="text-lg font-black">{teachers.length}</h3>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border flex items-center gap-5">
-          <GraduationCap className="w-6 h-6 text-emerald-600" />
+        {/* Active Today */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <GraduationCap className="w-5 h-5 text-emerald-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">Active Today</p>
-            <h3 className="text-2xl font-black">{teachers.length}</h3>
+            <p className="text-[10px] font-bold uppercase text-slate-400">Active Today</p>
+            <h3 className="text-lg font-black">{teachers.length}</h3>
           </div>
         </div>
 
+        {/* New Hire */}
         <div
           onClick={() => handleOpenModal(null, "create")}
-          className="bg-white p-6 rounded-3xl border flex items-center gap-5 cursor-pointer hover:border-indigo-500 transition"
+          className="bg-white p-3 rounded-xl border flex items-center gap-3 cursor-pointer hover:border-indigo-500 transition"
         >
-          <UserPlus className="w-6 h-6 text-indigo-600" />
+          <UserPlus className="w-5 h-5 text-indigo-600" />
           <div>
-            <p className="text-xs font-bold uppercase text-slate-400">New Hire</p>
+            <p className="text-[10px] font-bold uppercase text-slate-400">New Hire</p>
             <h3 className="text-sm font-bold">Add Entry</h3>
           </div>
         </div>
-      </div>
 
-      {/* ================= SEARCH ================= */}
-      <div className="relative w-96">
-        <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-        <input
-          type="text"
-          placeholder="Search by name or subject..."
-          className="pl-10 pr-4 py-2 border rounded-xl w-full"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        {/* Search Card */}
+        <div className="bg-white p-3 rounded-xl border flex items-center gap-3">
+          <Search className="w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search by name or subject..."
+            className="pl-2 pr-2 py-1 border-none outline-none w-full text-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* ================= TABLE ================= */}
@@ -135,6 +169,7 @@ export default function TeachersTab() {
           <thead className="border-b bg-slate-50">
             <tr>
               <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">Faculty</th>
+              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">Schedule</th>
               <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">Subject</th>
               <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">Attendance</th>
               <th className="text-right px-6 py-4 text-xs uppercase text-slate-400">Actions</th>
@@ -145,13 +180,43 @@ export default function TeachersTab() {
             {filteredTeachers.map((teacher: Teacher) => (
               <tr key={teacher._id} className="border-b">
 
-                {/* NAME */}
-                <td className="px-6 py-4">
-                  <p className="font-bold">{teacher.name}</p>
-                  <p className="text-sm text-slate-500 flex items-center gap-1">
-                    <Mail className="w-3 h-3" />
-                    {teacher.email}
-                  </p>
+                {/* NAME + PROFILE PIC */}
+                <td className="px-6 py-4 flex items-center gap-3">
+                  {teacher.profilePic ? (
+                    <img
+                      src={teacher.profilePic}
+                      alt={teacher.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+                      {teacher.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+
+                  <div className="flex flex-col">
+                    <p className="font-bold">{teacher.name}</p>
+                    <p className="text-sm text-slate-500 flex items-center gap-1">
+                      <Mail className="w-3 h-3" />
+                      {teacher.email}
+                    </p>
+                  </div>
+                </td>
+
+                {/* SCHEDULE */}
+                <td className="px-6 py-4 space-y-1">
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={e => e.target.files && setPdfFile(e.target.files[0])}
+                    className="mb-1"
+                  />
+                  <button
+                    onClick={() => handleUpload(teacher._id)}
+                    className="bg-amber-600 text-white px-2 py-1 rounded text-xs"
+                  >
+                    Upload PDF
+                  </button>
                 </td>
 
                 {/* SUBJECT */}
@@ -175,11 +240,18 @@ export default function TeachersTab() {
                 </td>
 
                 {/* ACTIONS */}
-                <td className="text-right px-6 py-4 space-x-2">
+                <td className="text-right px-6 py-4 space-x-2 flex justify-end items-center">
+                  {/* View Teacher */}
+                  <button onClick={() => setmodalView({ type: "view", data: teacher })}>
+                    <Eye className="w-4 h-4 text-sky-600" />
+                  </button>
+
+                  {/* Edit Teacher */}
                   <button onClick={() => handleOpenModal(teacher, "edit")}>
                     <Edit3 className="w-4 h-4 text-indigo-600" />
                   </button>
 
+                  {/* Delete Teacher */}
                   <button onClick={() => deleteTeacher.mutate(teacher._id)}>
                     <Trash2 className="w-4 h-4 text-rose-600" />
                   </button>
