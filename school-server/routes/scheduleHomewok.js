@@ -3,10 +3,13 @@ import { Router } from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
 import {
   createSchedule,
   getTeacherSchedule,
-} from "../controllers/schedule.js";
+  assignHomework,
+  submitHomework,
+} from "../controllers/scheduleHomework.js";
 
 const router = Router();
 
@@ -16,36 +19,26 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configure multer storage
+// ----------------------------
+// Multer Storage
+// ----------------------------
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir); // Save all files to public/uploads
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
-  },
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
 });
 
-// Optional: accept only PDFs
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
-    cb(null, true);
-  } else {
-    cb(new Error("Only PDF files are allowed!"), false);
-  }
-};
-
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage });
 
 // ----------------------------
-// Routes
+// Schedule Routes
 // ----------------------------
-
-// Admin uploads PDF schedule
 router.post("/schedule", upload.single("pdf"), createSchedule);
-
-// Teacher fetches schedules
 router.get("/teacher/:teacherId", getTeacherSchedule);
+
+// ----------------------------
+// Homework Routes
+// ----------------------------
+router.post("/homework/:classId", upload.single("file"), assignHomework);
+router.post("/homework/submission/:classId/:homeworkId", upload.single("file"), submitHomework);
 
 export default router;

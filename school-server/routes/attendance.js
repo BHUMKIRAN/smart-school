@@ -3,12 +3,24 @@ import {
   markSelfAttendance,
   markStudentAttendance,
   getTodayAttendance,
+  getStudentAttendance,
 } from "../controllers/attendance.js";
 
 const router = express.Router();
 
-router.post("/teacherAttendance", markSelfAttendance);        // Teacher marks self
-router.post("/studentAttendance", markStudentAttendance);  // Teacher marks students
-router.get("/teacher/today", (req, res) => getTodayAttendance(req, res));
+// Teacher marks self attendance using code
+router.post("/teacher/self", markSelfAttendance);
+
+// Teacher marks student attendance
+router.post("/student/mark", markStudentAttendance);
+
+// Get today's attendance (optional query ?role=Teacher or ?role=Student)
+router.get("/today", getTodayAttendance);
+
+// Toggle student attendance (Present ↔ Absent)
+router.patch("/student/toggle/:studentId", markStudentAttendance);
+
+// Get student attendance by grade/class
+router.get("/student/class/:gradeId", getStudentAttendance);
 
 export default router;

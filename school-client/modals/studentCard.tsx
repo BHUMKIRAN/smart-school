@@ -11,10 +11,7 @@ student: {
 _id: string;
 name: string;
 email: string;
-grade: string;
-attendance?: number;
-gpa?: number;
-status?: string;
+grade: string | { _id: string; grade: number; section?: string };
 };
 }
 
@@ -25,6 +22,12 @@ student
 }: StudentCardModalProps) {
 
 if (!student) return null;
+
+const getGradeLabel = (grade: StudentCardModalProps["student"]["grade"] | null | undefined) => {
+  if (!grade) return "-";
+  if (typeof grade === "string") return grade;
+  return `Grade ${grade.grade}${grade.section ? `-${grade.section}` : ""}`;
+};
 
 return ( <Transition appear show={isOpen} as={Fragment}> <Dialog as="div" className="relative z-50" onClose={onClose}>
 
@@ -69,7 +72,7 @@ return ( <Transition appear show={isOpen} as={Fragment}> <Dialog as="div" classN
               <div>
                 <h3 className="text-lg font-bold">{student.name}</h3>
                 <p className="text-sm opacity-80">
-                  {student.status || "Active Student"}
+                  {student.attendance?.status || "Absent"}
                 </p>
               </div>
 
@@ -102,23 +105,10 @@ return ( <Transition appear show={isOpen} as={Fragment}> <Dialog as="div" classN
             <div className="flex items-center gap-3 text-slate-600">
               <GraduationCap className="w-4 h-4" />
               <span className="font-medium">Grade:</span>
-              {student.grade}
+              {getGradeLabel(student.grade)}
             </div>
 
-            {/* ATTENDANCE */}
-            <div className="flex items-center gap-3 text-slate-600">
-              <Percent className="w-4 h-4" />
-              <span className="font-medium">Attendance:</span>
-              {student.attendance ?? 0}%
-            </div>
-
-            {/* GPA */}
-            <div className="flex items-center gap-3 text-slate-600">
-              <Award className="w-4 h-4" />
-              <span className="font-medium">GPA:</span>
-              {student.gpa?.toFixed(2) || "0.00"}
-            </div>
-
+         
           </div>
 
           {/* FOOTER */}

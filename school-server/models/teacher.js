@@ -12,6 +12,13 @@ const teacherSchema = new Schema(
     subject: String,
     department: String,
     salary: Number,
+    image: String,
+    grades: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Grade",
+      },
+    ],
     isActive: {
       type: Boolean,
       default: true,

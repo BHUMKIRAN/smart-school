@@ -12,12 +12,13 @@ import { useStudents, useDeleteStudent } from "@/hooks/useStudent";
 export interface Student {
   _id: string;
   name: string;
-  grade: string;
+  grade: string | { _id: string; grade: number; section?: string };
   email: string;
   password: string;
-  attendance?: number;
-  gpa?: number;
-  status?: string;
+  class: string;
+  attendance?: {
+    status?: string;
+  };
 }
 
 interface studenttabProps {
@@ -38,6 +39,12 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [modalMode, setModalMode] = useState<"create" | "edit">("create");
 
+  const getGradeLabel = (grade: Student["grade"] | null | undefined) => {
+    if (!grade) return "-";
+    if (typeof grade === "string") return grade;
+    return `Grade ${grade.grade}${grade.section ? `-${grade.section}` : ""}`;
+  };
+
   // ----------------------------
   // OPEN MODAL
   // ----------------------------
@@ -52,7 +59,7 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
   // ----------------------------
   const filteredStudents = students.filter((s: Student) =>
     s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    s.grade.toLowerCase().includes(searchQuery.toLowerCase())
+    getGradeLabel(s.grade).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // ----------------------------
@@ -105,7 +112,7 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
               Active
             </p>
             <h3 className="text-lg font-black">
-              {students.filter((s) => s.status?.toLowerCase() === "active").length}
+              {students.filter((s) => s.attendance?.status?.toLowerCase() === "present").length}
             </h3>
           </div>
         </div>
@@ -179,7 +186,7 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
                   </td>
 
                   {/* GRADE */}
-                  <td className="px-6 py-4">{student.grade}</td>
+                  <td className="px-6 py-4">{getGradeLabel(student.grade)}</td>
 
                   {/* GPA */}
                   <td className="text-center px-6 py-4">
@@ -188,7 +195,7 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
 
                   {/* ATTENDANCE */}
                   <td className="text-center px-6 py-4">
-                    {student.attendance || 0}%
+                    {student.attendance?.status || "Absent"}
                   </td>
 
                   {/* ACTIONS */}

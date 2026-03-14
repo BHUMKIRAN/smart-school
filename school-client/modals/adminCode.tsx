@@ -37,6 +37,7 @@ export function DialogDemo() {
                 <DialogHeader>
                     <DialogTitle>Daily Attendance Code</DialogTitle>
                     <DialogDescription>
+                       
                         This code has been generated for today.
                     </DialogDescription>
                 </DialogHeader>

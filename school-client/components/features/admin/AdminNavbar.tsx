@@ -7,7 +7,8 @@ import {
   Users, 
   Bell, 
   AlertTriangle, 
-  ClipboardCheck, 
+  ClipboardCheck,
+  Folder, 
  
 } from "lucide-react";
 
@@ -30,6 +31,7 @@ export default function AdminNavbar({
     { id: 'notices', label: 'Notices', icon: <Bell className="w-5 h-5" /> },
     { id: 'emergency', label: 'Emergency', icon: <AlertTriangle className="w-5 h-5" /> },
     { id: 'attendance', label: 'Attendance', icon: <ClipboardCheck className="w-5 h-5" /> },
+    { id: 'applications', label: 'Applications', icon: <Folder className="w-5 h-5" /> },
   ];
 
   return (

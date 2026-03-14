@@ -9,9 +9,12 @@ import teacherRoutes from "./routes/teacher.js";
 import noticeRoutes from "./routes/notice.js";
 import emergencyNoticeRoutes from "./routes/emergencyNotice.js";
 import attendanceRoutes from "./routes/attendance.js";
+import attendanceCodeRoutes from "./routes/attendanceCode.js";
 import adminRoutes from "./routes/admin.js";
 import publicRoutes from "./routes/public.js";
-import scheduleRoutes from "./routes/schedule.js";
+import scheduleRoutes from "./routes/scheduleHomewok.js";
+import applicationRoutes from "./routes/application.js";
+import gradeRoutes from "./routes/grade.js";
 import initSocket from "./websocket/socket.js";
 import startCodeGenerator from "./service/CodeAt10.js";
 
@@ -49,6 +52,9 @@ app.use("/", attendanceRoutes);
 app.use("/attendanceTeacher", adminRoutes);
 app.use("/", adminRoutes);
 app.use("/",scheduleRoutes)
+app.use("/applications", applicationRoutes);
+app.use("/", attendanceCodeRoutes);
+app.use("/grades", gradeRoutes);
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
