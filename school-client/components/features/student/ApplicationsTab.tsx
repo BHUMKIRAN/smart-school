@@ -1,70 +1,112 @@
 'use client';
 
+import { API_BASE_URL } from "@/lib/endpoints";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+
 interface ApplicationsTabProps {
   onSubmit: () => void;
 }
 
-export default function ApplicationsTab({ onSubmit }: ApplicationsTabProps) {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit();
-    (e.target as HTMLFormElement).reset();
+const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
+  const user = useSelector((state: any) => state.auth.user);
+
+  const [data, setData] = useState({
+    type: "",
+    priority: "",
+    reason: "",
+    student: user?.id || "",
+  });
+
+  const [applications, setApplications] = useState<any[]>([]);
+
+  // Handle input changes
+  const handleChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value });
   };
+
+  // Submit application
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${API_BASE_URL}/applications`, data);
+      toast.success(res.data.message);
+      setData({ type: "", priority: "", reason: "", student: user.id }); // reset form
+      fetchApplications(); // refresh recent applications
+      onSubmit?.();
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || err.message);
+    }
+  };
+
+  // Fetch applications for this student
+  const fetchApplications = async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/applications?student=${user.id}`);
+      setApplications(res.data);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to fetch applications");
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) fetchApplications();
+  }, [user?.id]);
 
   return (
     <div className="tab-content space-y-6">
+      {/* Submit Form */}
       <div>
         <h3 className="text-lg font-semibold dash-text mb-4">Submit Leave Application</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium dash-text mb-2">
-                From Date
-              </label>
-              <input
-                type="date"
-                required
-                className="dash-input w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium dash-text mb-2">
-                To Date
-              </label>
-              <input
-                type="date"
-                required
-                className="dash-input w-full"
-              />
-            </div>
-          </div>
-
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">
-              Reason
-            </label>
+            <label className="block text-sm font-medium dash-text mb-2">Type</label>
             <select
+              name="type"
+              value={data.type}
+              onChange={handleChange}
               required
               className="dash-input w-full"
             >
-              <option value="">Select a reason</option>
-              <option value="medical">Medical</option>
-              <option value="family">Family Emergency</option>
-              <option value="personal">Personal</option>
-              <option value="other">Other</option>
+              <option value="">Select type</option>
+              <option value="Leave Certificate">Leave Certificate</option>
+              <option value="Transfer Certificate">Transfer Certificate</option>
+              <option value="Scholarship">Scholarship</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium dash-text mb-2">
-              Description
-            </label>
-            <textarea
-              rows={4}
+            <label className="block text-sm font-medium dash-text mb-2">Priority</label>
+            <select
+              name="priority"
+              value={data.priority}
+              onChange={handleChange}
               required
-              placeholder="Please provide details about your leave request..."
+              className="dash-input w-full"
+            >
+              <option value="">Select priority</option>
+              <option value="Normal">Normal</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium dash-text mb-2">Reason</label>
+            <textarea
+              name="reason"
+              value={data.reason}
+              onChange={handleChange}
+              required
+              placeholder="Enter your reason for the application..."
               className="dash-input w-full resize-none"
-            ></textarea>
+              rows={4}
+            />
           </div>
 
           <button
@@ -76,23 +118,33 @@ export default function ApplicationsTab({ onSubmit }: ApplicationsTabProps) {
         </form>
       </div>
 
+      {/* Recent Applications */}
       <div className="dash-card p-6">
         <h4 className="font-semibold dash-text mb-4">Recent Applications</h4>
         <div className="space-y-3">
-          {[
-            { date: 'Dec 15-16, 2024', reason: 'Medical', status: 'Approved', color: 'text-green-500' },
-            { date: 'Nov 20-22, 2024', reason: 'Family Emergency', status: 'Approved', color: 'text-green-500' },
-            { date: 'Oct 5-6, 2024', reason: 'Personal', status: 'Pending', color: 'text-amber-500' },
-          ].map((app, index) => (
+          {applications.length === 0 && (
+            <p className="text-sm dash-text-muted">No applications submitted yet.</p>
+          )}
+          {applications.map((app) => (
             <div
-              key={index}
+              key={app._id}
               className="flex items-center justify-between p-3 dash-card-alt rounded-lg"
             >
               <div>
-                <p className="text-sm font-medium dash-text">{app.date}</p>
+                <p className="text-sm font-medium dash-text">
+                  {new Date(app.createdAt).toLocaleDateString()}
+                </p>
                 <p className="text-xs dash-text-muted">{app.reason}</p>
               </div>
-              <span className={`px-3 py-1 dash-card-alt rounded-full text-xs font-medium ${app.color}`}>
+              <span
+                className={`px-3 py-1 dash-card-alt rounded-full text-xs font-medium ${
+                  app.status === "Pending"
+                    ? "bg-amber-100 text-amber-700"
+                    : app.status === "Accepted"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
                 {app.status}
               </span>
             </div>
@@ -101,4 +153,6 @@ export default function ApplicationsTab({ onSubmit }: ApplicationsTabProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ApplicationsTab;

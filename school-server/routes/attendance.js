@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 // Teacher marks self attendance using code
-router.post("/teacher/self", markSelfAttendance);
+router.post("/teacherAttendance", markSelfAttendance);
 
 // Teacher marks student attendance
 router.post("/student/mark", markStudentAttendance);

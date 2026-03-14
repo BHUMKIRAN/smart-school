@@ -157,12 +157,6 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
               <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">
                 Grade
               </th>
-              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">
-                GPA
-              </th>
-              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">
-                Attendance
-              </th>
               <th className="text-right px-6 py-4 text-xs uppercase text-slate-400">
                 Actions
               </th>
@@ -188,15 +182,7 @@ export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
                   {/* GRADE */}
                   <td className="px-6 py-4">{getGradeLabel(student.grade)}</td>
 
-                  {/* GPA */}
-                  <td className="text-center px-6 py-4">
-                    {student.gpa?.toFixed(2) || "0.00"}
-                  </td>
-
-                  {/* ATTENDANCE */}
-                  <td className="text-center px-6 py-4">
-                    {student.attendance?.status || "Absent"}
-                  </td>
+              
 
                   {/* ACTIONS */}
                   <td className="text-right px-6 py-4 space-x-2 flex justify-end items-center">

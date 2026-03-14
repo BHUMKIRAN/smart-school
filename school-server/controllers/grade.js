@@ -57,3 +57,26 @@ export const createGrade = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+export const getStudentsByTeacher = async (req, res) => {
+  try {
+    const { teacherId } = req.params;
+
+    // Find the grade(s) assigned to this teacher
+    const grade = await Grade.findOne({ "subjects.teacher": teacherId })
+      .populate({
+        path: "students",
+        select: "_id name rollNumber",
+      });
+
+    if (!grade) return res.status(404).json({ message: "No students found for this teacher" });
+
+    res.status(200).json({
+      grade,
+      students: grade.students,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};

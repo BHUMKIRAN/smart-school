@@ -1,51 +1,49 @@
-import Application from "../models/application.js";
+import Application from "../models/Application.js";
+
+// Student submits a new application
 
 export const createApplication = async (req, res) => {
   try {
-    const { studentId, message } = req.body;
+    // Use student from payload
+    const { type, priority, reason, student } = req.body;
+    if (!student) return res.status(400).json({ message: "Student ID required" });
 
-    const application = new Application({
-      student: studentId,
-      message,
+    const newApplication = await Application.create({
+      student, // use student from payload
+      type,
+      priority: priority || "Normal",
+      reason: reason || "",
     });
 
-    await application.save();
-
-    res.status(201).json(application);
+    res.status(201).json({ message: "Application submitted", application: newApplication });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error submitting application", error: error.message });
   }
 };
-
+// Admin gets all applications
 export const getApplications = async (req, res) => {
   try {
-    const applications = await Application.find()
-      .populate("student", "name email class")
-      .sort({ createdAt: -1 });
-
-    res.json(applications);
+    const applications = await Application.find().sort({ createdAt: -1 });
+    res.status(200).json(applications);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error fetching applications", error: error.message });
   }
 };
-
+// Admin updates status (approve/reject)
 export const updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { id } = req.params;
+    const { action } = req.body; // action = "approve" or "reject"
 
-    const application = await Application.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true }
-    );
+    const application = await Application.findById(id);
+    if (!application) return res.status(404).json({ message: "Application not found" });
 
-    res.json({
-      success: true,
-      message: "Application status updated",
-      application,
-    });
+    if (action === "approve") await application.approve();
+    else if (action === "reject") await application.reject();
+    else return res.status(400).json({ message: "Invalid action" });
 
+    res.status(200).json({ message: `Application ${action}d`, application });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error updating status", error: error.message });
   }
 };

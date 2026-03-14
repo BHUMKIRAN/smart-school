@@ -76,7 +76,7 @@ export default function AttendanceClassModal({
                 {students.map(student => (
                   <tr key={student.id || student._id} className="border-b">
 
-                    <td className="py-3">{student.roll ?? "-"}</td>
+                    <td className="py-3">{student.roll ?? (student._id)}</td>
 
                     <td className="font-medium">{student.name}</td>
 

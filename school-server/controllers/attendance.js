@@ -96,52 +96,78 @@ export const markSelfAttendance = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-// TEACHER OR ADMIN MARK STUDENT ATTENDANCE
+// TEACHER OR ADMIN MARK MULTIPLE STUDENT ATTENDANCE
 export const markStudentAttendance = async (req, res) => {
   try {
-    const { studentId, status, grade: bodyGrade } = req.body;
+    const { gradeId, attendance } = req.body;
 
-    if (!studentId)
-      return res.status(400).json({ message: "studentId required" });
-
-    const student = await Student.findById(studentId);
-
-    if (!student)
-      return res.status(404).json({ message: "Student not found" });
-
-    const today = getTodayDate();
-
-    const existing = await Attendance.findOne({
-      user: studentId,
-      date: today,
-    });
-
-    if (existing)
-      return res.status(409).json({ message: "Attendance already marked" });
-
-    const gradeId = student.grade || bodyGrade;
-    if (!gradeId) {
-      return res.status(400).json({ message: "grade required for student attendance" });
+    if (!attendance || !Array.isArray(attendance) || attendance.length === 0) {
+      return res.status(400).json({ message: "Attendance array required" });
     }
 
-    const attendance = await Attendance.create({
-      user: studentId,
+    const today = getTodayDate();
+    const studentIds = attendance.map((record) => record.studentId);
+
+    // Prevent duplicate marking for today
+    const alreadyMarked = await Attendance.find({
       userModel: "Student",
-      grade: gradeId,
+      user: { $in: studentIds },
       date: today,
-      status: status || "Present",
-    });
+    }).select("_id user");
 
-    const populated = await attendance.populate("user");
+    if (alreadyMarked.length > 0) {
+      return res.status(409).json({
+        message: "Attendance already marked for today",
+        alreadyMarked: alreadyMarked.map((a) => a.user),
+      });
+    }
 
-    res.status(201).json({
-      message: "Student attendance marked",
-      attendance: populated,
+    const operations = await Promise.all(
+      attendance.map(async (record) => {
+        const student = await Student.findById(record.studentId);
+
+        if (!student) {
+          throw new Error(`Student not found: ${record.studentId}`);
+        }
+
+        const studentGrade = student.grade || gradeId;
+
+        if (!studentGrade) {
+          throw new Error(`Grade missing for student: ${record.studentId}`);
+        }
+
+        return {
+          updateOne: {
+            filter: {
+              user: record.studentId,
+              date: today,
+            },
+            update: {
+              user: record.studentId,
+              userModel: "Student",
+              grade: studentGrade,
+              date: today,
+              status: record.status || "Absent",
+            },
+            upsert: true,
+          },
+        };
+      })
+    );
+
+    await Attendance.bulkWrite(operations);
+
+    res.status(200).json({
+      message: "Class attendance saved successfully",
+      totalMarked: operations.length,
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
   }
 };
 // GET TODAY ATTENDANCE

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { useCreateTeacher, useEditTeacher } from "@/hooks/useTeacher";
 import { useCreateTeacherAttendance } from "@/hooks/useTeacherAttendance";
+import axios from "axios";
+import { API_BASE_URL } from "@/lib/endpoints";
 
 interface TeacherModalProps {
   isOpen: boolean;
@@ -16,13 +18,14 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
   isOpen,
   onClose,
   mode,
-  teacherData
+  teacherData,
 }) => {
 
   const createTeacher = useCreateTeacher();
   const editTeacher = useEditTeacher();
   const markAttendance = useCreateTeacherAttendance();
 
+  const [grades, setGrades] = useState<any[]>([]);
   const [tab, setTab] = useState<"info" | "att">("info");
   const [status, setStatus] = useState<"present" | "absent">("present");
 
@@ -33,8 +36,25 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
     phone: "",
     subject: "",
     department: "",
-    salary: ""
+    salary: "",
+    gradeId: "",
   });
+
+  // Fetch grades
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/grades`);
+        setGrades(res.data);
+      } catch (err) {
+        console.error("Failed to fetch grades", err);
+      }
+    };
+
+    if (isOpen) {
+      fetchGrades();
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -46,7 +66,8 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
           phone: teacherData.phone || "",
           subject: teacherData.subject || "",
           department: teacherData.department || "",
-          salary: teacherData.salary || ""
+          salary: teacherData.salary || "",
+          gradeId: teacherData.grades?.[0]?._id || "",
         });
         setTab("info");
       } else {
@@ -57,7 +78,8 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
           phone: "",
           subject: "",
           department: "",
-          salary: ""
+          salary: "",
+          gradeId: "",
         });
         setTab("info");
       }
@@ -75,7 +97,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
       } else {
         savedTeacher = await editTeacher.mutateAsync({
           ...form,
-          _id: teacherData?._id
+          _id: teacherData?._id,
         });
       }
 
@@ -86,7 +108,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
         await markAttendance.mutateAsync({
           teacherId: targetId,
           status,
-          date: new Date().toISOString().split("T")[0]
+          date: new Date().toISOString().split("T")[0],
         });
       }
 
@@ -142,28 +164,20 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* NAME */}
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium mb-1 block">
-                  Name
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Name</label>
                 <input
-                  type="text"
                   value={form.name}
                   onChange={(e) =>
                     setForm({ ...form, name: e.target.value })
                   }
                   className="dash-input w-full"
-                  placeholder="Enter teacher name"
                   required
                 />
               </div>
 
               {/* EMAIL */}
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium mb-1 block">
-                  Email
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Email</label>
                 <input
                   type="email"
                   value={form.email}
@@ -171,18 +185,14 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
                     setForm({ ...form, email: e.target.value })
                   }
                   className="dash-input w-full"
-                  placeholder="Enter email"
                   required
                 />
               </div>
 
-              {/* PASSWORD (only for create) */}
+              {/* PASSWORD */}
               {mode === "create" && (
                 <div className="sm:col-span-2">
-                  <label className="text-sm font-medium mb-1 block">
-                    Password
-                  </label>
-
+                  <label className="text-sm font-medium mb-1 block">Password</label>
                   <input
                     type="password"
                     value={form.password}
@@ -190,7 +200,6 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
                       setForm({ ...form, password: e.target.value })
                     }
                     className="dash-input w-full"
-                    placeholder="Enter password"
                     required
                   />
                 </div>
@@ -198,10 +207,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* PHONE */}
               <div>
-                <label className="text-sm font-medium mb-1 block">
-                  Phone
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Phone</label>
                 <input
                   value={form.phone}
                   onChange={(e) =>
@@ -213,10 +219,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* SUBJECT */}
               <div>
-                <label className="text-sm font-medium mb-1 block">
-                  Subject
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Subject</label>
                 <input
                   value={form.subject}
                   onChange={(e) =>
@@ -228,10 +231,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* DEPARTMENT */}
               <div>
-                <label className="text-sm font-medium mb-1 block">
-                  Department
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Department</label>
                 <input
                   value={form.department}
                   onChange={(e) =>
@@ -243,10 +243,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* SALARY */}
               <div>
-                <label className="text-sm font-medium mb-1 block">
-                  Salary
-                </label>
-
+                <label className="text-sm font-medium mb-1 block">Salary</label>
                 <input
                   value={form.salary}
                   onChange={(e) =>
@@ -254,6 +251,31 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
                   }
                   className="dash-input w-full"
                 />
+              </div>
+
+              {/* GRADE SELECT */}
+              <div className="sm:col-span-2">
+                <label className="text-sm font-medium mb-1 block">
+                  Assign Grade
+                </label>
+
+                <select
+                  value={form.gradeId}
+                  onChange={(e) =>
+                    setForm({ ...form, gradeId: e.target.value })
+                  }
+                  className="dash-input w-full"
+                  required
+                >
+                  <option value="">Select Grade</option>
+
+                  {grades.map((g) => (
+                    <option key={g._id} value={g._id}>
+                      Grade {g.grade}
+                      {g.section ? ` - ${g.section}` : ""}
+                    </option>
+                  ))}
+                </select>
               </div>
 
             </div>
@@ -313,10 +335,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
               Cancel
             </button>
 
-            <button
-              type="submit"
-              className="btn-primary px-5 py-2"
-            >
+            <button type="submit" className="btn-primary px-5 py-2">
               {tab === "info"
                 ? "Save Details"
                 : "Confirm Attendance"}

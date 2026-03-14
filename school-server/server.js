@@ -39,11 +39,8 @@ app.use(
 );
 app.use(express.json());
 
-// ✅ Public Auth Routes
 app.use("/", authRoutes);
 app.use("/public", publicRoutes);
-
-// ✅ Protected Routes
 app.use("/students", studentRoutes);
 app.use("/teachers", teacherRoutes);
 app.use("/notices", noticeRoutes);
@@ -51,7 +48,7 @@ app.use("/emergencyNotices", emergencyNoticeRoutes);
 app.use("/", attendanceRoutes);
 app.use("/attendanceTeacher", adminRoutes);
 app.use("/", adminRoutes);
-app.use("/",scheduleRoutes)
+app.use("/schedule",scheduleRoutes)
 app.use("/applications", applicationRoutes);
 app.use("/", attendanceCodeRoutes);
 app.use("/grades", gradeRoutes);
