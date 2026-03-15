@@ -77,7 +77,7 @@ curl http://localhost:8080/teachers
 - [x] Online Applications
 - [x] Leave Requests
 - [x] Admin Approval
-- [] Teacher Forwarding
+- [ ] Teacher Forwarding
 
 #### 🚨 Notices & Alerts
 - [x] General Notices
@@ -93,15 +93,15 @@ curl http://localhost:8080/teachers
 - [x] Notice Management
 - [x] Emergency Notice Management
 - [x] Attendance Monitoring
-- [] Application Review & Forwarding
+- [ ] Application Review & Forwarding
 
 #### 👩‍🏫 Teacher Panel
 - [x] Teacher Login
 - [x] Live Class Attendance
 - [x] Student Attendance Management
 - [x] Homework Scheduling
-- [] Homework Review
-- [] Class & Subject Management
+- [ ] Homework Review
+- [ ] Class & Subject Management
 
 #### 🎓 Student Panel
 - [x] Student Login
@@ -114,12 +114,13 @@ curl http://localhost:8080/teachers
 ### Level 3: Analytics & Interface
 
 #### 📊 Reports & Monitoring
-- [] Attendance Reports
-- [] Homework Reports
-- [] Student Overview
+- [ ] Attendance Reports
+- [ ] Homework Reports
+- [ ] Student Overview
 
 #### 🌐 General Features
 - [x] Responsive Design
 - [x] Real-Time Updates
 - [x] User-Friendly Interface
 - [x] Scalable Architecture
+
