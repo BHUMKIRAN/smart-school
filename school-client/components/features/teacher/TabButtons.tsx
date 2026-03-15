@@ -10,6 +10,7 @@ interface TabButtonsProps {
 
 export default function TabButtons({ activeTab, setActiveTab }: TabButtonsProps) {
   const tabs = [
+    { id: 'dashboard', label: 'dashboard', icon: <Users className="w-3.5 h-3.5" /> },
     { id: 'attendance', label: 'Attendance', icon: <ClipboardCheck className="w-3.5 h-3.5" /> },
     { id: 'classes', label: 'Classes', icon: <BookOpen className="w-3.5 h-3.5" /> },
     

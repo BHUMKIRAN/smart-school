@@ -54,13 +54,15 @@ export default function AttendanceTab() {
   // Save attendance
   const saveAttendance = async () => {
     try {
-      for (const student of students) {
-        await axios.post(`${API_BASE_URL}/student/mark`, {
+      const payload = {
+        gradeId: selectedGrade?._id,
+        attendance: students.map((student) => ({
           studentId: student._id,
           status: student.status,
-          grade: selectedGrade._id,
-        });
-      }
+        })),
+      };
+
+      await axios.post(`${API_BASE_URL}/attendance/student/mark`, payload);
       alert("Attendance Saved");
       setIsOpen(false);
     } catch (err) {

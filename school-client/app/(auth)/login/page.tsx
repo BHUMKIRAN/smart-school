@@ -44,6 +44,11 @@ export default function LoginPage() {
     }
   }, [roleParam]);
 
+  const handleRoleChange = (nextRole: 'student' | 'teacher' | 'admin') => {
+    setRole(nextRole);
+    router.replace(`/login?role=${nextRole}`);
+  };
+
   const roles = [
     { id: 'student', name: 'विद्यार्थी', icon: <GraduationCap size={20} /> },
     { id: 'teacher', name: 'शिक्षक', icon: <Users size={20} /> },
@@ -56,6 +61,9 @@ export default function LoginPage() {
 
     try {
       const data = await login({ email, password, role });
+      if (!data?.user || !data?.token) {
+        throw new Error('Invalid login response');
+      }
       dispatch(credentials({ user: data.user, token: data.token }));
       toast.success(`स्वागत छ, ${data.user.name}!`);
 
@@ -92,7 +100,7 @@ export default function LoginPage() {
               <button
                 key={r.id}
                 type="button"
-                onClick={() => setRole(r.id as any)}
+                onClick={() => handleRoleChange(r.id as any)}
                 className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${
                   role === r.id
                     ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'

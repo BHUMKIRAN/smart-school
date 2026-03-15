@@ -18,7 +18,7 @@ import { toast } from "sonner";
 export const useStudentAttendance = (params?: Record<string, any>) =>
   useQuery({
     queryKey: ["studentAttendance", params],
-    queryFn: () => getAttendance(),
+    queryFn: () => getAttendance(params),
     onError: (error: any) => {
       toast.error(
         error?.response?.data?.message || "Failed to load student attendance",

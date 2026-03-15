@@ -69,10 +69,10 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
 
     const formData = new FormData();
     formData.append("teacherId", teacherId);
-    formData.append("pdf", pdfFile);
+    formData.append("file", pdfFile);
 
     try {
-      await axios.post(`${API_BASE_URL}/schedule`, formData, {
+      await axios.post(`${API_BASE_URL}/schedule/schedule`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       alert("Schedule uploaded!");

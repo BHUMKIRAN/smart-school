@@ -1,25 +1,24 @@
-import { api } from "./client";
+import { api } from "./axiosClientInstance";
 
 // mark attendance
 export const markAttendance = async (data) => {
-  const res = await api.post("/attendance", data);
+  const res = await api.post("/attendance/student/mark", data);
   return res.data;
 };
 
 // get attendance
-export const getAttendance = async () => {
-  const res = await api.get("/attendance");
+export const getAttendance = async (params?: Record<string, any>) => {
+  const res = await api.get("/attendance/today", { params });
   return res.data;
 };
 
 // update attendance
 export const updateAttendance = async ({ id, data }) => {
-  const res = await api.put(`/attendance/${id}`, data);
+  const res = await api.patch(`/attendance/student/toggle/${id}`, data);
   return res.data;
 };
 
 // delete attendance
 export const deleteAttendance = async (id) => {
-  const res = await api.delete(`/attendance/${id}`);
-  return res.data;
+  throw new Error("Delete student attendance not supported by backend");
 };

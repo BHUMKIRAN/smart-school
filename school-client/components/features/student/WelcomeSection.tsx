@@ -1,85 +1,123 @@
-export default function WelcomeSection() {
+'use client';
+
+import { useSelector } from 'react-redux';
+import { 
+  GraduationCap, 
+  BookOpen, 
+  Clock, 
+  Star, 
+  CalendarCheck,
+  LayoutDashboard 
+} from 'lucide-react';
+
+export default function WelcomeSection({ assignments = [] }: { assignments?: any[] }) {
+  // Pull user data from Redux
+  const user = useSelector((state: any) => state.auth.user);
+  
+  // Dynamic Greeting based on time
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
+
+  // Mock Attendance (Replace with real logic if available in Redux/API)
+  const attendance = "94.5%";
+  
+  // Calculate stats from user object/props
+  const coursesCount = user?.grade?.subjects?.length || 6;
+  const pendingHomework = assignments.length || 0;
+
   const stats = [
     {
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
+      icon: <CalendarCheck className="w-4 h-4" />,
       label: 'Attendance',
-      value: '94.5%',
-      colorClass: 'text-success',
-      bgClass: 'bg-success/10',
+      value: attendance,
+      color: 'text-[var(--primary)]',
+      bg: 'bg-[var(--secondary)]',
+      border: 'border-[var(--dash-border)]'
     },
     {
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-      ),
+      icon: <BookOpen className="w-4 h-4" />,
       label: 'Courses',
-      value: '6',
-      colorClass: 'text-[var(--primary)]',
-      bgClass: 'bg-[var(--primary)]/10',
+      value: coursesCount.toString(),
+      color: 'text-[var(--accent)]',
+      bg: 'bg-[color-mix(in_srgb,var(--accent)_12%,var(--secondary))]',
+      border: 'border-[var(--dash-border)]'
     },
     {
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      ),
+      icon: <Clock className="w-4 h-4" />,
       label: 'Pending',
-      value: '3',
-      colorClass: 'text-error',
-      bgClass: 'bg-error/10',
+      value: pendingHomework.toString(),
+      color: 'text-[var(--primary)]',
+      bg: 'bg-[var(--secondary)]',
+      border: 'border-[var(--dash-border)]'
     },
     {
-      icon: (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-        </svg>
-      ),
+      icon: <Star className="w-4 h-4" />,
       label: 'GPA',
       value: '3.8',
-      colorClass: 'text-warning',
-      bgClass: 'bg-warning/10',
+      color: 'text-[var(--accent)]',
+      bg: 'bg-[color-mix(in_srgb,var(--accent)_12%,var(--secondary))]',
+      border: 'border-[var(--dash-border)]'
     },
   ];
 
   return (
-    <div className="mb-8 animate-slide-up">
-      <div className="dash-card p-6 md:p-8 relative overflow-hidden group">
-        {/* Subtle Brand Ambient Light */}
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-[var(--primary)] opacity-[0.08] rounded-full blur-3xl transition-opacity group-hover:opacity-10"></div>
+    <div className="mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="relative overflow-hidden rounded-[2rem] bg-[var(--dash-surface)] border border-[var(--dash-border)] p-6 md:p-10 shadow-sm">
         
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-[color-mix(in_srgb,var(--primary)_12%,transparent)] rounded-full blur-3xl opacity-60"></div>
+        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] rounded-full blur-3xl opacity-60"></div>
+
         <div className="relative z-10">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[var(--foreground)] mb-1">
-              Welcome back, Alex! 
-            </h2>
-            <p className="opacity-60 text-sm font-medium">
-              Here&apos;s a quick look at your academic progress for today.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="h-1 w-8 bg-[var(--primary)] rounded-full"></div>
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--primary)]/70">
+                  Student Dashboard
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight text-[var(--dash-text)]">
+                {greeting}, {user?.name}
+              </h2>
+              <p className="text-[var(--dash-text-muted)] mt-2 font-medium">
+                You have <span className="text-[var(--dash-text)] font-bold">{pendingHomework} tasks</span> to complete today. Keep up the great work!
+              </p>
+            </div>
+            
+            <div className="hidden lg:flex items-center gap-4 bg-[var(--secondary)] p-2 rounded-2xl border border-[var(--dash-border)]">
+              <div className="w-12 h-12 rounded-xl bg-[var(--dash-surface)] flex items-center justify-center shadow-sm">
+                <GraduationCap className="text-[var(--primary)] w-6 h-6" />
+              </div>
+              <div className="pr-4">
+                <p className="text-[10px] uppercase font-bold text-[var(--dash-text-muted)] leading-none mb-1">Grade</p>
+                <p className="text-sm font-bold text-[var(--dash-text)]">{user?.grade?.grade || 'Not Assigned'}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => (
               <div 
                 key={index} 
-                className="p-4 rounded-xl border border-[var(--dash-border)] bg-[var(--background)] hover:shadow-md transition-all duration-300 group/stat"
+                className={`p-5 rounded-[1.5rem] border ${stat.border} ${stat.bg} group/stat transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[var(--primary)]/10`}
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-8 h-8 rounded-lg ${stat.bgClass} ${stat.colorClass} flex items-center justify-center transition-transform group-hover/stat:scale-110`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-10 h-10 rounded-xl bg-[var(--dash-surface)] shadow-sm flex items-center justify-center ${stat.color} transition-transform group-hover/stat:rotate-12`}>
                     {stat.icon}
                   </div>
-                  <span className="text-[10px] uppercase tracking-wider font-bold opacity-50">
+                  <span className="text-[11px] uppercase tracking-widest font-black text-[var(--dash-text-muted)]">
                     {stat.label}
                   </span>
                 </div>
-                <div className="flex items-baseline gap-1">
-                  <p className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
+                
+                <div className="flex items-end justify-between">
+                  <p className="text-3xl font-black tracking-tighter text-[var(--dash-text)]">
                     {stat.value}
                   </p>
+                  <div className="h-2 w-12 bg-[var(--dash-surface)]/60 rounded-full overflow-hidden">
+                    <div className={`h-full ${stat.color.replace('text', 'bg')} opacity-40 w-2/3`}></div>
+                  </div>
                 </div>
               </div>
             ))}
