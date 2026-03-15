@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
 
 import { DialogDemo } from "@/modals/adminCode";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-});
 
 export const metadata: Metadata = {
   title: "Admin Dashboard - School Management System",
@@ -19,8 +13,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${manrope.className} bg-white min-h-screen`}>
-      <DialogDemo/>
+    <div className="bg-white min-h-screen">
+      <DialogDemo />
       {children}
     </div>
   );

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import http from "http";
+import dns from "dns";
 
 import connectDB from "./config/db.js";
 
@@ -23,6 +24,8 @@ import gradeRoutes from "./routes/grade.js";
 import initSocket from "./websocket/socket.js";
 import startCodeGenerator from "./service/CodeAt10.js";
 
+// Force known DNS servers for SRV lookups (Atlas)
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 dotenv.config();
 
 connectDB();

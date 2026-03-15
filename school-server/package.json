@@ -8,7 +8,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "echo \"No build step (JS backend)\"",
+    "typecheck": "echo \"No TypeScript configured\""
+  },
+  "engines": {
+    "node": "20.x"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -18,7 +23,6 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
     "multer": "^2.1.1",
-    "node": "^25.7.0",
     "node-cron": "^4.2.1",
     "socket.io": "^4.8.3"
   }
