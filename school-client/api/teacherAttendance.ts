@@ -4,7 +4,7 @@ import { toast } from "sonner";
 // Mark/Create Teacher Attendance
 export const markTeacherAttendance = async (data) => {
   try {
-    const res = await api.post("/teacherAttendance/", data);
+    const res = await api.post("/attendance/teacherAttendance", data);
     toast.success("Teacher attendance marked");
     return res.data;
   } catch (err) {
@@ -16,7 +16,9 @@ export const markTeacherAttendance = async (data) => {
 // Get All Teacher Attendance
 export const getTeacherAttendance = async (params) => {
   try {
-    const res = await api.get("/ateacherAttendance/", { params });
+    const res = await api.get("/attendance/today", {
+      params: { role: "Teacher", ...(params || {}) },
+    });
     return res.data;
   } catch (err) {
     console.error(err);
@@ -27,9 +29,7 @@ export const getTeacherAttendance = async (params) => {
 // Update Teacher Attendance
 export const updateTeacherAttendance = async (id, data) => {
   try {
-    const res = await api.put(`/teacherAttendance/`, data);
-    toast.success("Teacher attendance updated");
-    return res.data;
+    throw new Error("Update teacher attendance not supported by backend");
   } catch (err) {
     toast.error("Update failed");
     throw err;
@@ -39,8 +39,7 @@ export const updateTeacherAttendance = async (id, data) => {
 // Delete Teacher Attendance
 export const deleteTeacherAttendance = async (id) => {
   try {
-    await api.delete(`/attendance/teachers/${id}`);
-    toast.success("Teacher attendance record deleted");
+    throw new Error("Delete teacher attendance not supported by backend");
   } catch (err) {
     toast.error("Delete failed");
     throw err;

@@ -1,26 +1,39 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { API_BASE_URL } from '@/lib/endpoints';
+import { toast } from 'sonner';
 
 interface SubmitModalProps {
   isOpen: boolean;
+  assignmentId: string;
   subject: string;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmitted: () => void; // callback to refresh assignments list
+ 
 }
 
-export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: SubmitModalProps) {
+export default function SubmitModal({ isOpen, assignmentId, subject, onClose, onSubmitted  }: SubmitModalProps) {
+  const user = useSelector((state: any) => state.auth.user); // student info
+  const studentId = user?._id || user?.id;
+
   const [isDragging, setIsDragging] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [remark, setRemark] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Reset when modal closes
   useEffect(() => {
     if (!isOpen) {
       const timeout = setTimeout(() => {
         setIsConfirmed(false);
-        setSelectedFiles([]);
-      }, 300); // Wait for slide-down animation
+        setSelectedFile(null);
+        setRemark('');
+      }, 300);
       return () => clearTimeout(timeout);
     }
   }, [isOpen]);
@@ -35,20 +48,44 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    setSelectedFiles(files);
+    const file = e.dataTransfer.files?.[0] || null;
+    setSelectedFile(file);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setSelectedFiles(files);
+      setSelectedFile(e.target.files?.[0] || null);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isConfirmed) onSubmit();
+    if (!isConfirmed) return;
+    if (!selectedFile) {
+      toast.error("Please upload at least one file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("assignment", assignmentId);
+    formData.append("student", studentId);
+    formData.append("remark", remark);
+    formData.append("file", selectedFile);
+
+    try {
+      setIsSubmitting(true);
+      await axios.post(`${API_BASE_URL}/submissions`, formData
+       
+      );
+      toast.success("Assignment submitted successfully");
+      onSubmitted(); // refresh assignments
+      onClose(); // close modal
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Submission failed");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -82,13 +119,11 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`
-                relative group border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300
+              className={`relative group border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300
                 ${isDragging 
                   ? 'border-[var(--primary)] bg-[var(--primary)]/5 scale-[0.99]' 
                   : 'border-[var(--dash-border)] hover:border-[var(--primary)] hover:bg-[var(--secondary)]'
-                }
-              `}
+                }`}
             >
               <div className={`w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center transition-colors ${isDragging ? 'bg-[var(--primary)] text-white' : 'bg-[var(--primary)]/10 text-[var(--primary)]'}`}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,10 +131,10 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
                 </svg>
               </div>
               <p className="text-sm font-bold text-[var(--foreground)]">
-                {selectedFiles.length > 0 ? `${selectedFiles.length} files ready` : 'Click to upload or drag & drop'}
+                {selectedFile ? selectedFile.name : 'Click to upload or drag & drop'}
               </p>
-              <p className="text-[10px] opacity-50 mt-1">PDF, DOCX or ZIP (Max 25MB)</p>
-              <input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleFileSelect} />
+              <p className="text-[10px] opacity-50 mt-1">PDF only (Max 10MB)</p>
+              <input ref={fileInputRef} type="file" className="hidden" accept="application/pdf" onChange={handleFileSelect} />
             </div>
           </div>
 
@@ -109,6 +144,8 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
             <textarea
               rows={3}
               placeholder="Add a note for your teacher..."
+              value={remark}
+              onChange={(e) => setRemark(e.target.value)}
               className="dash-input w-full resize-none text-sm"
             />
           </div>
@@ -142,10 +179,10 @@ export default function SubmitModal({ isOpen, subject, onClose, onSubmit }: Subm
             </button>
             <button
               type="submit"
-              disabled={!isConfirmed || selectedFiles.length === 0}
+              disabled={!isConfirmed || !selectedFile || isSubmitting}
               className="flex-[2] py-3 hero-gradient text-white rounded-xl font-bold shadow-lg shadow-[var(--primary)]/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed"
             >
-              Submit Assignment
+              {isSubmitting ? "Submitting..." : "Submit Assignment"}
             </button>
           </div>
         </form>

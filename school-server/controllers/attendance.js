@@ -3,6 +3,7 @@ import AttendanceCode from "../models/attendanceCode.js";
 import generateCode from "../utils/CodeGenerator.js";
 import Student from "../models/student.js";
 import getNepalDateString from "../utils/attendanceDate.js";
+import { getIO } from "../websocket/socket.js";
 
 const getTodayDate = () => getNepalDateString();
 
@@ -27,6 +28,7 @@ export const getTodayCode = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 // ADMIN MARK TEACHER ATTENDANCE
 export const markTeacherAttendanceByAdmin = async (req, res) => {
   try {
@@ -36,6 +38,7 @@ export const markTeacherAttendanceByAdmin = async (req, res) => {
     const today = getTodayDate();
 
     const existing = await Attendance.findOne({ user: teacherId, date: today });
+
     if (existing)
       return res.status(409).json({ message: "Attendance already marked", attendance: existing });
 
@@ -48,6 +51,13 @@ export const markTeacherAttendanceByAdmin = async (req, res) => {
 
     const populated = await attendance.populate("user");
 
+    // 🔥 Emit event
+    const io = getIO();
+    io.emit("attendanceUpdate", {
+      type: "teacher",
+      attendance: populated,
+    });
+
     res.status(201).json({
       message: "Teacher attendance marked",
       attendance: populated,
@@ -58,7 +68,8 @@ export const markTeacherAttendanceByAdmin = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-// TEACHER SELF ATTENDANCE (WITH CODE)
+
+// TEACHER SELF ATTENDANCE
 export const markSelfAttendance = async (req, res) => {
   try {
     const { teacherId, code } = req.body;
@@ -68,6 +79,7 @@ export const markSelfAttendance = async (req, res) => {
     const today = getTodayDate();
 
     const existing = await Attendance.findOne({ user: teacherId, date: today });
+
     if (existing)
       return res.status(409).json({ message: "Attendance already marked" });
 
@@ -86,6 +98,13 @@ export const markSelfAttendance = async (req, res) => {
 
     const populated = await attendance.populate("user");
 
+    // 🔥 Emit event
+    const io = getIO();
+    io.emit("attendanceUpdate", {
+      type: "teacher",
+      attendance: populated,
+    });
+
     res.status(201).json({
       message: "Self attendance marked",
       attendance: populated,
@@ -96,7 +115,8 @@ export const markSelfAttendance = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-// TEACHER OR ADMIN MARK MULTIPLE STUDENT ATTENDANCE
+
+// MARK STUDENT ATTENDANCE
 export const markStudentAttendance = async (req, res) => {
   try {
     const { gradeId, attendance } = req.body;
@@ -108,7 +128,6 @@ export const markStudentAttendance = async (req, res) => {
     const today = getTodayDate();
     const studentIds = attendance.map((record) => record.studentId);
 
-    // Prevent duplicate marking for today
     const alreadyMarked = await Attendance.find({
       userModel: "Student",
       user: { $in: studentIds },
@@ -157,6 +176,15 @@ export const markStudentAttendance = async (req, res) => {
 
     await Attendance.bulkWrite(operations);
 
+    // 🔥 Emit event
+    const io = getIO();
+    io.emit("attendanceUpdate", {
+      type: "student",
+      grade: gradeId,
+      totalMarked: operations.length,
+      attendance,
+    });
+
     res.status(200).json({
       message: "Class attendance saved successfully",
       totalMarked: operations.length,
@@ -170,6 +198,7 @@ export const markStudentAttendance = async (req, res) => {
     });
   }
 };
+
 // GET TODAY ATTENDANCE
 export const getTodayAttendance = async (req, res) => {
   try {
@@ -192,6 +221,9 @@ export const getTodayAttendance = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+
+
 // GET STUDENT ATTENDANCE BY GRADE
 export const getStudentAttendance = async (req, res) => {
   try {
@@ -203,8 +235,7 @@ export const getStudentAttendance = async (req, res) => {
       userModel: "Student",
       grade: gradeId,
       date: today,
-    })
-      .populate("user");
+    }).populate("user");
 
     res.json(attendance);
 
