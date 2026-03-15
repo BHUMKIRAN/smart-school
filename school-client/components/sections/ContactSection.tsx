@@ -44,11 +44,11 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-20 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
+      className="py-14 px-6  dark:bg-slate-950 transition-colors duration-500"
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-10">
        
 
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
@@ -58,7 +58,7 @@ export default function ContactSection() {
           <div className="w-12 h-1 bg-blue-600 rounded-full mt-4"></div>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid lg:grid-cols-12 gap-6 items-stretch">
           {/* LEFT SIDE */}
           <div className="lg:col-span-5 space-y-6">
             {/* Contact Cards */}
@@ -72,10 +72,10 @@ export default function ContactSection() {
                     href={info.link}
                     target={info.title === "ठेगाना" ? "_blank" : "_self"}
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-md transition-all"
+                    className="flex items-center gap-3 p-3 bg-secondary dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-md transition-all"
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl ${info.bgColor} flex items-center justify-center`}
+                      className={`w-9 h-9 rounded-xl ${info.bgColor} flex items-center justify-center`}
                     >
                       <Icon className="w-5 h-5 text-slate-700 dark:text-white" />
                     </div>
@@ -95,7 +95,7 @@ export default function ContactSection() {
             </div>
 
             {/* GOOGLE MAP */}
-            <div className="p-3 rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-200 shadow-xl overflow-hidden">
+            <div className="p-3 rounded-[2rem] bg-secondary dark:bg-slate-900 border border-slate-200 shadow-xl overflow-hidden">
               <iframe
                 src="https://www.google.com/maps?q=26.982956809710352,86.69429960097426&z=15&output=embed"
                 width="100%"
@@ -126,7 +126,7 @@ export default function ContactSection() {
 
           {/* RIGHT SIDE FORM */}
           <div className="lg:col-span-7">
-            <div className="h-auto bg-white dark:bg-slate-900 p-8 md:p-10 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-2xl">
+            <div className="h-auto bg-secondary dark:bg-slate-900 p-8 md:p-10 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800 shadow-2xl">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid md:grid-cols-2 gap-5">
                   <input
@@ -136,7 +136,7 @@ export default function ContactSection() {
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className="w-full px-5 py-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50"
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
                     required
                   />
 
@@ -147,7 +147,7 @@ export default function ContactSection() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-5 py-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50"
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
                     required
                   />
                 </div>
@@ -159,7 +159,7 @@ export default function ContactSection() {
                   onChange={(e) =>
                     setFormData({ ...formData, subject: e.target.value })
                   }
-                  className="w-full px-5 py-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50"
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
                   required
                 />
 
@@ -170,13 +170,13 @@ export default function ContactSection() {
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className="w-full px-5 py-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 resize-none"
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50 resize-none"
                   required
                 />
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-500/30 active:scale-[0.98] transition-all duration-200 nepali-text text-sm"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-500/30 active:scale-[0.98] transition-all duration-200 nepali-text text-sm"
                 >
                   सन्देश पठाउनुहोस्
                 </button>

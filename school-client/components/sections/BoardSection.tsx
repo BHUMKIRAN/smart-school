@@ -58,14 +58,14 @@ const SMC_MEMBERS: BoardMember[] = [
 
 export default function BoardSection() {
   return (
-    <section id="board" className="py-16 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500 relative overflow-hidden">
+    <section id="board" className="py-12 px-6  dark:bg-slate-950 transition-colors duration-500 relative overflow-hidden">
       
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-blue-50/50 to-transparent dark:from-blue-900/10"></div>
       
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
        
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             विद्यालय <span className="text-blue-600 relative inline-block">व्यवस्थापन समिति
@@ -77,14 +77,14 @@ export default function BoardSection() {
         </div>
 
         {/* Board Members Grid - Compact Version */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
           {SMC_MEMBERS.map((member, index) => (
             <div 
               key={index} 
-              className="group bg-white dark:bg-slate-900 rounded-[2rem] p-5 border border-slate-100 dark:border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 text-center max-w-[280px] w-full"
+              className="group bg-secondary dark:bg-slate-900 rounded-[2rem] p-4 border border-slate-100 dark:border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 text-center max-w-[280px] w-full"
             >
               {/* Smaller Profile Image */}
-              <div className="relative w-28 h-28 mx-auto mb-4 overflow-hidden rounded-2xl shadow-md border-2 border-slate-50 dark:border-slate-800 bg-slate-100">
+              <div className="relative w-24 h-24 mx-auto mb-4 overflow-hidden rounded-2xl shadow-md border-2 border-slate-50 dark:border-slate-800 bg-slate-100">
                 <img 
                   src={member.image} 
                   alt={member.name} 

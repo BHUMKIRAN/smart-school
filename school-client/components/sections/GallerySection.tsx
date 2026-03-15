@@ -27,11 +27,11 @@ export default function GallerySection() {
   };
 
   return (
-    <section id="gallery" className="py-16 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <section id="gallery" className="py-12 px-6  dark:bg-slate-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto">
         
         {/* Compact Header */}
-        <div className="text-center mb-10 space-y-2">
+        <div className="text-center mb-8 space-y-2">
           <h2 className="text-3xl font-black text-slate-900 dark:text-white nepali-text">
             फोटो <span className="text-blue-600">ग्यालरी</span>
           </h2>
@@ -41,8 +41,8 @@ export default function GallerySection() {
         </div>
 
         {/* Small Tabs */}
-        <div className="flex justify-center mb-10">
-          <div className="flex p-1 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="flex justify-center mb-8">
+          <div className="flex p-1  dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             {(['events', 'classroom', 'activities'] as const).map((tab) => (
               <button
                 key={tab}
@@ -60,7 +60,7 @@ export default function GallerySection() {
         </div>
 
         {/* Compact Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {galleryItems[activeTab as keyof typeof galleryItems].map((item, index) => (
             <div 
               key={index} 
@@ -73,7 +73,7 @@ export default function GallerySection() {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Minimal Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2.5">
                    <p className="text-[10px] text-white/90 nepali-text leading-tight line-clamp-2">
                      {item.description}
                    </p>
@@ -81,7 +81,7 @@ export default function GallerySection() {
               </div>
 
               {/* Minimal Content Box */}
-              <div className="p-3">
+              <div className="p-2.5">
                 <h4 className="font-bold text-xs text-slate-800 dark:text-slate-200 nepali-text line-clamp-1">{item.title}</h4>
               </div>
             </div>

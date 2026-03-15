@@ -33,7 +33,7 @@ export default function EmergencyBanner() {
   return (
     <div className="sticky top-0 z-[100] w-full border-b border-red-700 shadow-2xl">
       {/* Emergency Red Background with subtle pulse */}
-      <div className="bg-red-600 text-white px-4 py-3 relative overflow-hidden">
+      <div className="bg-red-600 text-white px-4 py-2 relative overflow-hidden">
         
         {/* Subtle background glow animation */}
         <div className="absolute inset-0 bg-red-500 animate-pulse opacity-20"></div>
@@ -42,9 +42,9 @@ export default function EmergencyBanner() {
           
           <div className="flex items-center gap-4 overflow-hidden">
             {/* Warning Icon - High Contrast Yellow */}
-            <div className="flex-shrink-0 bg-yellow-400 p-1.5 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)]">
+            <div className="flex-shrink-0 bg-yellow-400 p-1 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.5)]">
               <svg
-                className="w-5 h-5 text-red-700 animate-bounce"
+                className="w-4 h-4 text-red-700 animate-bounce"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -58,11 +58,11 @@ export default function EmergencyBanner() {
 
             {/* Notice Text */}
             <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4 overflow-hidden">
-              <span className="text-[10px] font-black uppercase tracking-widest bg-black/30 px-2 py-0.5 rounded-md border border-white/20 w-fit nepali-text">
+              <span className="text-[9px] font-black uppercase tracking-widest bg-black/30 px-2 py-0.5 rounded-md border border-white/20 w-fit nepali-text">
                 जरुरी सूचना
               </span>
               <div className="flex items-center gap-2">
-                <p className="text-sm md:text-base font-bold nepali-text truncate leading-tight">
+                <p className="text-xs md:text-sm font-bold nepali-text truncate leading-tight">
                   {notices.map((n) => n.title).join(" • ")}
                 </p>
                 <span className="hidden md:inline-block w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping"></span>

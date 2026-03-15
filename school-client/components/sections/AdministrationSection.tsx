@@ -6,7 +6,7 @@ import React from "react";
  * Handles the icons and hover logic 
  */
 const SocialLinksGroup = ({ facebook, twitter, linkedin }) => {
-  const iconClass = "p-2 bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm";
+  const iconClass = "p-2  dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm";
   
   return (
     <div className="flex items-center justify-center gap-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
@@ -44,11 +44,11 @@ const TEACHERS = [
 
 export default function AdministrationSection() {
   return (
-    <section id="administration" className="py-24 px-6 bg-[#F8FAFC] dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
+    <section id="administration" className="py-16 px-6  dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="text-center mb-24 space-y-4">
+        <div className="text-center mb-12 space-y-4">
         
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             हाम्रो <span className="text-blue-600 relative">शिक्षण टोली
@@ -59,17 +59,17 @@ export default function AdministrationSection() {
         </div>
 
         {/* 1. Principal & VP Section */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid lg:grid-cols-2 gap-6 mb-10">
           {LEADERSHIP.map((leader, i) => (
-            <div key={i} className="group relative bg-white dark:bg-slate-900 p-8 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-10 hover:shadow-2xl transition-all duration-500">
-              <div className="relative w-48 h-56 flex-shrink-0">
+            <div key={i} className="group relative bg-secondary dark:bg-slate-900 p-6 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-6 hover:shadow-2xl transition-all duration-500">
+              <div className="relative w-40 h-48 flex-shrink-0">
                 <div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-6 group-hover:rotate-12 transition-transform duration-500 opacity-10"></div>
                 <img src={leader.image} alt={leader.name} className="relative z-10 w-full h-full object-cover rounded-[2.5rem] border-4 border-white dark:border-slate-800 shadow-xl" />
               </div>
               <div className="text-center md:text-left flex-1 space-y-4">
                 <div>
                   <span className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-tighter">{leader.position}</span>
-                  <h3 className="text-3xl font-black text-slate-900 dark:text-white nepali-text mt-1">{leader.name}</h3>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white nepali-text mt-1">{leader.name}</h3>
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 font-bold nepali-text">विषय: {leader.subject}</p>
                 <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-center md:justify-start">
@@ -81,15 +81,15 @@ export default function AdministrationSection() {
         </div>
 
         {/* 2. Teachers Grid */}
-        <div className="bg-white dark:bg-slate-900 rounded-[4rem] p-10 md:p-16 border border-slate-100 dark:border-slate-800 shadow-2xl relative">
-          <h3 className="text-2xl font-black nepali-text mb-20 text-slate-800 dark:text-white flex items-center gap-3">
+        <div className="bg-secondary dark:bg-slate-900 rounded-[4rem] p-6 md:p-12 border border-slate-100 dark:border-slate-800 shadow-2xl relative">
+          <h3 className="text-2xl font-black nepali-text mb-10 text-slate-800 dark:text-white flex items-center gap-3">
              <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
              शिक्षण कर्मचारीहरू
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-20">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
             {TEACHERS.map((teacher, i) => (
-              <div key={i} className="group relative pt-12 bg-slate-50 dark:bg-slate-800/50 rounded-[3rem] p-8 text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-28 h-28 rounded-full overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl group-hover:rotate-6 transition-transform">
+              <div key={i} className="group relative pt-12 bg-slate-200 dark:bg-slate-800/50 rounded-[3rem] p-6 text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
+                <div className="absolute  left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl group-hover:rotate-6 transition-transform">
                   <img src={teacher.img} alt={teacher.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="mt-8 space-y-3">

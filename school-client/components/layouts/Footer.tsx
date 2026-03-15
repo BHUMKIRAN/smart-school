@@ -1,29 +1,20 @@
 import Link from 'next/link';
+import Logo from '../shared/logo';
 
 export default function Footer() {
   const currentYearNepali = "२०८२"; // Updated to current year
 
   return (
-    <footer className="py-12 px-6 bg-[#0a192f] text-white border-t-4 border-accent">
+    <footer className="py-5 px-10 bg-secondary text-accent border-t-4 border-accent">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-4 gap-10 mb-10">
+        <div className="grid md:grid-cols-4 gap-6 mb-6">
 
           {/* School Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
-                <span className="text-white font-bold text-lg nepali-text">श्री</span>
-              </div>
-              <div>
-                <h3 className="font-bold text-base leading-tight nepali-text">
-                  श्री पञ्चावती आधारभूत विद्यालय
-                </h3>
-                <p className="text-[10px] uppercase tracking-widest text-accent font-bold">
-                  Bhadure, Nepal
-                </p>
-              </div>
+             <Logo/>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-primary text-sm leading-relaxed">
               गुणस्तरीय शिक्षा, हाम्रो प्रतिबद्धता। हामी विद्यार्थीहरूको उज्ज्वल भविष्यका लागि समर्पित छौं।
             </p>
           </div>
@@ -33,7 +24,7 @@ export default function Footer() {
             <h4 className="font-bold text-sm mb-5 uppercase tracking-wider text-accent nepali-text underline underline-offset-8 decoration-primary/50">
               द्रुत लिङ्कहरू
             </h4>
-            <ul className="space-y-3 text-gray-400 text-sm font-medium">
+            <ul className="space-y-3 text-primary text-sm font-medium">
               {[
                 { name: 'गृहपृष्ठ', href: '#home' },
                 { name: 'परिचय', href: '#about' },
@@ -54,7 +45,7 @@ export default function Footer() {
             <h4 className="font-bold text-sm mb-5 uppercase tracking-wider text-accent nepali-text underline underline-offset-8 decoration-primary/50">
               सम्पर्क विवरण
             </h4>
-            <ul className="space-y-4 text-gray-400 text-sm">
+            <ul className="space-y-4 text-primary text-sm">
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 <span className="nepali-text">भदौरे, नेपाल</span>
@@ -75,7 +66,7 @@ export default function Footer() {
             <h4 className="font-bold text-sm mb-5 uppercase tracking-wider text-accent nepali-text">
               सामाजिक सञ्जाल
             </h4>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {[
                 {
                   name: 'Facebook',
@@ -109,23 +100,23 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
-              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Office Hours</p>
+            <div className="mt-6 p-3 rounded-xl bg-white/5 border border-white/10">
+              <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">Office Hours</p>
               <p className="text-xs font-semibold">Sun - Fri: 10:00 AM - 4:00 PM</p>
             </div>
           </div>
-          <div className="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
-            <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Office Hours</p>
+          <div className="mt-6 p-3 rounded-xl bg-white/5 border border-white/10">
+            <p className="text-[10px] text-primary uppercase font-bold tracking-widest mb-1">Office Hours</p>
             <p className="text-xs font-semibold">Sun - Fri: 10:00 AM - 4:00 PM</p>
           </div>
         </div>
       </div>
 
-      <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-xs font-medium">
+      <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3 text-gray-500 text-xs font-medium">
         <p className="nepali-text">© {currentYearNepali} श्री पञ्चावती आधारभूत विद्यालय। सर्वाधिकार सुरक्षित।</p>
         <div className="flex gap-6">
-          <Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-white transition">Terms of Use</Link>
+          <Link href="/privacy" className="hover:text-accent transition">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-accent transition">Terms of Use</Link>
         </div>
       </div>
     </footer>

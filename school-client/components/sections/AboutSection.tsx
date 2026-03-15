@@ -41,33 +41,33 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 px-6 bg-white dark:bg-slate-950 relative overflow-hidden transition-colors duration-500">
+    <section id="about" className="py-16 px-6  dark:bg-slate-950 relative overflow-hidden transition-colors duration-500">
       {/* Background Decorative Orbs */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] bg-blue-600/5 dark:bg-blue-500/10 rounded-full blur-[120px]" />
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-yellow-400/5 dark:bg-yellow-500/5 rounded-full blur-[100px]" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* --- Section Header --- */}
-        <div className="text-center mb-20 space-y-4">
+        <div className="text-center mb-12 space-y-4">
         
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-primary dark:text-white nepali-text leading-tight">
             विद्यालयको <span className="text-blue-600 dark:text-blue-400">परिचय</span>
           </h2>
           <div className="w-24 h-1.5 bg-yellow-400 mx-auto rounded-full shadow-sm"></div>
-          <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed nepali-text">
+          <p className="text-primary dark:text-slate-400 max-w-2xl mx-auto text-base leading-relaxed nepali-text">
             स्थापना कालदेखि नै हामी उज्ज्वल भविष्यका लागि गुणस्तरीय शिक्षा प्रदान गर्दै भोलिका नेतृत्वकर्ताहरू तयार गर्न प्रतिबद्ध छौं।
           </p>
         </div>
 
         {/* --- Vision & Mission Grid --- */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-20">
+        <div className="grid lg:grid-cols-2 gap-6 mb-12">
           {/* Vision Card */}
-          <div className="group p-10 rounded-[2.5rem] bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-500 relative overflow-hidden">
+          <div className="group p-6 rounded-[2.5rem] bg-secondary dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-blue-200 dark:hover:border-blue-900 transition-all duration-500 relative overflow-hidden">
              <div className="absolute top-0 left-0 w-2 h-full bg-blue-600 dark:bg-blue-500 opacity-20 group-hover:opacity-100 transition-all"></div>
-             <h3 className="text-2xl font-black mb-6 text-slate-900 dark:text-white nepali-text flex items-center gap-4">
+             <h3 className="text-xl font-black mb-6 text-slate-900 dark:text-white nepali-text flex items-center gap-4">
                <span className="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 dark:shadow-none">हाम्रो दृष्टिकोण</span>
              </h3>
-             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg mb-6 nepali-text">
+             <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base mb-6 nepali-text">
                ज्ञान, चरित्र र नवीनताको माध्यमबाट समाजमा सकारात्मक योगदान पुर्‍याउने जिम्मेवार नागरिकहरू उत्पादन गर्दै शैक्षिक उत्कृष्टताको केन्द्र बन्ने हाम्रो परिकल्पना हो।
              </p>
              <p className="text-blue-600/80 dark:text-blue-400/80 leading-relaxed italic border-l-4 border-yellow-400 pl-6 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-r-xl nepali-text">
@@ -76,9 +76,9 @@ export default function AboutSection() {
           </div>
 
           {/* Mission Card */}
-          <div className="group p-10 rounded-[2.5rem] bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-yellow-200 dark:hover:border-yellow-900 transition-all duration-500 relative overflow-hidden">
+          <div className="group p-6 rounded-[2.5rem] bg-secondary dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 shadow-xl hover:shadow-2xl hover:border-yellow-200 dark:hover:border-yellow-900 transition-all duration-500 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-2 h-full bg-yellow-400 opacity-20 group-hover:opacity-100 transition-all"></div>
-            <h3 className="text-2xl font-black mb-6 text-slate-900 dark:text-white nepali-text flex items-center gap-4">
+            <h3 className="text-xl font-black mb-6 text-slate-900 dark:text-white nepali-text flex items-center gap-4">
                <span className="p-3 bg-yellow-400 text-slate-900 rounded-2xl shadow-lg shadow-yellow-100 dark:shadow-none">हाम्रो लक्ष्य</span>
             </h3>
             <ul className="space-y-5">
@@ -88,13 +88,9 @@ export default function AboutSection() {
                 "बलियो चरित्र र नैतिक जग निर्माण गर्ने।",
                 "सुरक्षित, समावेशी र प्रेरणादायी वातावरण सिर्जना गर्ने।"
               ].map((item, i) => (
-                <li key={i} className="flex items-center gap-4 group/item">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-yellow-400/20 dark:bg-yellow-400/10 flex items-center justify-center text-yellow-600 dark:text-yellow-400 group-hover/item:bg-yellow-400 group-hover/item:text-slate-900 transition-all duration-300">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-slate-600 dark:text-slate-400 font-bold nepali-text text-lg">{item}</span>
+                <li key={i} className="flex items-center  gap-4 group/item">
+      
+                  <span className="text-slate-600 dark:text-slate-400 font-bold nepali-text text-base">{item}</span>
                 </li>
               ))}
             </ul>
@@ -102,19 +98,19 @@ export default function AboutSection() {
         </div>
 
         {/* --- Features Grid --- */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="group p-8 text-center rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:-translate-y-3 hover:border-blue-600/30 dark:hover:border-blue-400/30 transition-all duration-500 shadow-xl hover:shadow-blue-100 dark:hover:shadow-none relative"
+              className="group p-6 text-center rounded-[2.5rem] bg-secondary dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:-translate-y-3 hover:border-blue-600/30 dark:hover:border-blue-400/30 transition-all duration-500 shadow-xl hover:shadow-blue-100 dark:hover:shadow-none relative"
             >
-              <div className="w-20 h-20 mx-auto mb-8 rounded-[1.8rem] bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white dark:group-hover:bg-blue-500 transition-all duration-500 transform group-hover:rotate-[10deg] shadow-inner">
+              <div className="w-16 h-16 mx-auto mb-8 rounded-[1.8rem] bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white dark:group-hover:bg-blue-500 transition-all duration-500 transform group-hover:rotate-[10deg] shadow-inner">
                 {feature.icon}
               </div>
-              <h4 className="text-2xl font-black mb-4 text-slate-900 dark:text-white nepali-text group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <h4 className="text-xl font-black mb-4 text-slate-900 dark:text-white nepali-text group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {feature.title}
               </h4>
-              <p className="text-slate-500 dark:text-slate-400 text-md leading-relaxed nepali-text">
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed nepali-text">
                 {feature.description}
               </p>
               
