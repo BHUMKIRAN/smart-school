@@ -50,6 +50,11 @@ app.use(express.json());
 // Static files
 app.use("/uploads", express.static("public/uploads"));
 
+// Health check / root
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "ok", service: "smart-school-api" });
+});
+
 /* -------------------------
    ROUTES
 ------------------------- */
