@@ -20,8 +20,8 @@ export function DialogDemo() {
     useEffect(() => {
         const fetchAndShow = async () => {
             try {
-                const { data } = await axios.get(`${API_BASE_URL}/attendanceCode/code`)
-                setCodeData(data?.data ?? null)
+                const { data } = await axios.get(`${API_BASE_URL}/code`)
+                setCodeData(data)
                 setIsOpen(true)
             } catch (err) {
                 console.error("Failed to fetch codes:", err)

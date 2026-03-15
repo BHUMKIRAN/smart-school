@@ -5,26 +5,14 @@ let io;
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
-      methods: ["GET", "POST"],
-      credentials: true
+      origin: "*"
     }
   });
 
   io.on("connection", (socket) => {
-    console.log("Client connected:", socket.id);
-
-    socket.on("disconnect", () => {
-      console.log("Client disconnected:", socket.id);
-    });
+    console.log("Client connected");
   });
-};
 
-// function to access socket instance anywhere
-export const getIO = () => {
-  if (!io) {
-    throw new Error("Socket.io not initialized!");
-  }
   return io;
 };
 

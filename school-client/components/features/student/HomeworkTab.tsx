@@ -1,124 +1,76 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { API_BASE_URL } from '@/lib/endpoints';
-
 interface HomeworkTabProps {
-  onOpenModal: (assignmentId: string) => void;
-}
-
-interface Assignment {
-  _id: string;
-  title: string;
-  description: string;
-  grade: string;
-  teacher: string;
-  fileUrl: string;
-  dueDate: string;
-}
-
-interface Submission {
-  _id: string;
-  assignment: string;
-  status: 'submitted' | 'checked';
+  onOpenModal: (subject: string) => void;
 }
 
 export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
-  const user = useSelector((state: any) => state.auth.user);
-  const gradeId = user?.grade?._id;
-  const userId = user?.id;
-
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!gradeId) return;
-
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const assignmentsRes = await axios.get(`${API_BASE_URL}/assignments/grade?grade=${gradeId}`);
-        setAssignments(assignmentsRes.data);
-
-        const submissionsRes = await axios.get(`${API_BASE_URL}/submissions/student/${userId}`);
-        setSubmissions(submissionsRes.data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [gradeId, userId]);
-
-  const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
-
-  const getAssignmentStatus = () => {
-    const submission = submissions.find(s => s.assignment );
-    return submission?.status === 'submitted' ? 'Completed' : 'Pending';
-  };
+  const assignments = [
+    {
+      subject: 'Mathematics',
+      title: 'Chapter 5 - Quadratic Equations',
+      dueDate: 'Due Tomorrow',
+      status: 'pending',
+      color: 'warning', // Uses your var(--warning)
+    },
+    {
+      subject: 'Physics',
+      title: "Lab Report - Newton's Laws",
+      dueDate: 'Due in 3 days',
+      status: 'pending',
+      color: 'primary', // Uses your var(--primary)
+    },
+    {
+      subject: 'English',
+      title: 'Essay - Shakespeare Analysis',
+      dueDate: 'Submitted 2h ago',
+      status: 'completed',
+      color: 'success', // Uses your var(--success)
+    },
+  ];
 
   return (
     <div className="animate-fadeIn space-y-6">
-      {/* Header */}
+      {/* Header Info */}
       <div className="flex items-center justify-between px-1">
         <h3 className="text-xl font-bold text-[var(--foreground)]">Current Assignments</h3>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-widest font-bold opacity-50">Pending:</span>
+          <span className="text-[10px] uppercase tracking-widest font-bold opacity-50">Filter:</span>
           <span className="px-3 py-1 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full text-xs font-bold">
-            {assignments.filter(a => getAssignmentStatus(a._id) === 'Pending').length}
+            {assignments.filter(a => a.status === 'pending').length} Pending
           </span>
         </div>
       </div>
 
-      {loading && <p className="text-sm text-[var(--dash-text-muted)]">Loading assignments...</p>}
-
       {/* Assignment Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {assignments.map((assignment) => {
-          const status = getAssignmentStatus();
-          const isPending = status === 'Pending';
-
+        {assignments.map((assignment, index) => {
+          const isPending = assignment.status === 'pending';
+          
           return (
             <div
-              key={assignment._id}
+              key={index}
               className="dash-card group p-5 flex flex-col justify-between hover:border-[var(--primary)]/50 transition-all duration-300"
             >
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <span className="px-2.5 py-1 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-md text-[10px] font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">
-                    {formatDate(assignment.dueDate)}
+                  <span className="px-2.5 py-1 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-md text-[10px] font-bold uppercase tracking-wider opacity-80">
+                    {assignment.subject}
                   </span>
-                  <div className="text-xs font-bold text-[var(--dash-text-muted)]">
-                    Status: <span className="text-[var(--primary)]">{status}</span>
+                  <div className={`flex items-center gap-1.5 font-bold text-[10px] uppercase tracking-tighter 
+                    ${assignment.status === 'completed' ? 'text-success' : 'text-[var(--primary)]'}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${assignment.status === 'completed' ? 'bg-success' : 'bg-[var(--primary)]'}`} />
+                    {assignment.dueDate}
                   </div>
                 </div>
 
                 <h4 className="text-lg font-bold text-[var(--foreground)] leading-tight mb-2 group-hover:text-[var(--primary)] transition-colors">
                   {assignment.title}
                 </h4>
-                <p className="text-sm text-[var(--dash-text-muted)] mb-2">{assignment.description}</p>
-                {assignment.fileUrl && (
-                  <a
-                    href={`${API_BASE_URL}${assignment.fileUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--primary)] font-bold text-sm hover:underline"
-                  >
-                    View PDF
-                  </a>
-                )}
               </div>
 
               <div className="mt-6">
                 {isPending ? (
                   <button
-                    onClick={() => onOpenModal(assignment._id)}
+                    onClick={() => onOpenModal(assignment.title)}
                     className="w-full py-3 hero-gradient text-white rounded-xl font-bold text-sm shadow-lg shadow-[var(--primary)]/10 hover:scale-[1.02] active:scale-[0.98] transition-all"
                   >
                     Submit Assignment

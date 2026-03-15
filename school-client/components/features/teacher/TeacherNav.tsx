@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, Bell, LogOut, BookOpen } from 'lucide-react';
 import { useSelector } from 'react-redux';
-import Logo from '@/components/shared/logo';
 
 interface TeacherNavProps {
   setLogout: (logout: boolean) => void;
@@ -35,8 +34,20 @@ export default function TeacherNav({ setLogout }: TeacherNavProps) {
     <nav className="sticky top-0 z-40 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800/60 px-8 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
-     
-     <Logo/>
+        {/* Left Side: Brand/Identity */}
+        <div className="flex items-center gap-4">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200 dark:shadow-none">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest leading-none">
+              Teacher Portal
+            </h1>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
+              AY 2024 • 25
+            </span>
+          </div>
+        </div>
 
         {/* Right Side: Context & Profile */}
         <div className="flex items-center gap-6">

@@ -58,68 +58,69 @@ curl http://localhost:8080/teachers
 ### Level 1: Core Systems
 
 #### 🔐 Authentication & Access
-- [x] Role-Based Login (Admin / Teacher / Student)
-- [x] Secure Authentication
-- [x] Access Control
+- [ ] Role-Based Login (Admin / Teacher / Student)
+- [ ] Secure Authentication
+- [ ] Access Control
 
 #### 📝 Attendance System
-- [x] Live Attendance Tracking
-- [x] Class-wise Attendance
-- [x] Date-wise Attendance
-- [x] Attendance History
+- [ ] Live Attendance Tracking
+- [ ] Class-wise Attendance
+- [ ] Date-wise Attendance
+- [ ] Attendance History
 
 #### 📚 Homework Management
-- [x] Homework Scheduling
-- [x] Deadline Management
-- [x] Online Submission System
+- [ ] Homework Assignment
+- [ ] Homework Scheduling
+- [ ] Deadline Management
+- [ ] Online Submission System
 
 #### 📩 Application System
-- [x] Online Applications
-- [x] Leave Requests
-- [x] Admin Approval
-- [] Teacher Forwarding
+- [ ] Online Applications
+- [ ] Leave Requests
+- [ ] Admin Approval
+- [ ] Teacher Forwarding
 
 #### 🚨 Notices & Alerts
-- [x] General Notices
-- [x] Emergency Alerts
-- [x] Instant Notifications
+- [ ] General Notices
+- [ ] Emergency Alerts
+- [ ] Instant Notifications
 
 ### Level 2: Role-Specific Panels
 
 #### 👨‍💼 Admin Panel
-- [x] Admin Dashboard
-- [x] Teacher Management
-- [x] Student Management
-- [x] Notice Management
-- [x] Emergency Notice Management
-- [x] Attendance Monitoring
-- [] Application Review & Forwarding
+- [ ] Admin Dashboard
+- [ ] Teacher Management
+- [ ] Student Management
+- [ ] Notice Management
+- [ ] Emergency Notice Management
+- [ ] Attendance Monitoring
+- [ ] Application Review & Forwarding
 
 #### 👩‍🏫 Teacher Panel
-- [x] Teacher Login
-- [x] Live Class Attendance
-- [x] Student Attendance Management
-- [x] Homework Scheduling
-- [] Homework Review
-- [] Class & Subject Management
+- [ ] Teacher Login
+- [ ] Live Class Attendance
+- [ ] Student Attendance Management
+- [ ] Homework Scheduling
+- [ ] Homework Review
+- [ ] Class & Subject Management
 
 #### 🎓 Student Panel
-- [x] Student Login
-- [x] Live Attendance View
-- [x] Homework Access
-- [x] Online Homework Submission
-- [x] Application Submission
-- [x] Application Status Tracking
+- [ ] Student Login
+- [ ] Live Attendance View
+- [ ] Homework Access
+- [ ] Online Homework Submission
+- [ ] Application Submission
+- [ ] Application Status Tracking
 
 ### Level 3: Analytics & Interface
 
 #### 📊 Reports & Monitoring
-- [] Attendance Reports
-- [] Homework Reports
-- [] Student Overview
+- [ ] Attendance Reports
+- [ ] Homework Reports
+- [ ] Student Overview
 
 #### 🌐 General Features
-- [x] Responsive Design
-- [x] Real-Time Updates
-- [x] User-Friendly Interface
-- [x] Scalable Architecture
+- [ ] Responsive Design
+- [ ] Real-Time Updates
+- [ ] User-Friendly Interface
+- [ ] Scalable Architecture

@@ -65,7 +65,7 @@ export default function ClassesTab() {
         })),
       };
 
-      await axios.post(`${API_BASE_URL}/attendance/student/mark`, payload);
+      await axios.post(`${API_BASE_URL}/student/mark`, payload);
 
       toast.success("Attendance submitted successfully");
       setAttendance({});
