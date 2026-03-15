@@ -1,4 +1,4 @@
-import Application from "../models/Application.js";
+import Application from "../models/application.js";
 
 // Student submits a new application
 
