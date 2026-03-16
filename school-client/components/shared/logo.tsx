@@ -5,7 +5,7 @@ export default function Logo() {
     <div className="group flex items-center gap-3.5 cursor-pointer">
       {/* Icon Container with Glass Effect and Glow */}
       <div className="relative">
-        <div className="absolute inset-0 bg-blue-600 blur-lg opacity-20 group-hover:opacity-40 transition-opacity"></div>
+        <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity"></div>
         <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-200 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300 border border-white/20">
           <span className="text-white font-black text-xl nepali-text drop-shadow-md">
             श्री
@@ -26,7 +26,7 @@ export default function Logo() {
         
         <div className="flex items-center gap-1.5 mt-1">
           <p className="text-[10px] uppercase font-black tracking-[0.15em] text-slate-400">
-            Bhadure, Nepal
+            Bhadure, Rautamai
           </p>
         </div>
       </div>

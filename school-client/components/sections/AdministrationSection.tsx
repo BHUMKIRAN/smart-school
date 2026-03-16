@@ -1,6 +1,6 @@
 "use client";
 
-import { getTeachers } from "@/api/useTeache";
+import { getTeachers } from "@/api/getTeacher";
 import React, { useEffect, useState, useMemo } from "react";
 
 const toAssetUrl = (asset: any) => {
@@ -95,12 +95,12 @@ export default function AdministrationSection() {
   if (!data) return null;
 
   return (
-    <section id="administration" className="py-16 px-6 dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
+    <section id="administration" className="py-5 px-6 dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto">
 
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
+          <h2 className="text-2xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             हाम्रो <span className="text-blue-600 relative">{sectionTitle}
               <svg className="absolute -bottom-2 left-0 w-full h-2 text-yellow-400" viewBox="0 0 100 10" preserveAspectRatio="none">
                 <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4" />
@@ -115,7 +115,7 @@ export default function AdministrationSection() {
           {leadership.map((leader, i) => (
             <div key={i} className="group relative bg-secondary dark:bg-slate-900 p-6 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-6 hover:shadow-2xl transition-all duration-500">
               <div className="relative w-40 h-48 flex-shrink-0">
-                <div className="absolute inset-0 bg-blue-600 rounded-[2.5rem] rotate-6 group-hover:rotate-12 transition-transform duration-500 opacity-10"></div>
+                <div className="absolute inset-0  rounded-[2.5rem] rotate-6  transition-transform duration-500 opacity-10"></div>
                 <Avatar
                   image={leader.image}
                   name={leader.name}
@@ -137,15 +137,15 @@ export default function AdministrationSection() {
         </div>
 
         {/* 2. Teachers Grid */}
-        <div className="bg-secondary dark:bg-slate-900 rounded-[4rem] p-6 md:p-12 border border-slate-100 dark:border-slate-800 shadow-2xl relative">
-          <h3 className="text-2xl font-black nepali-text mb-10 text-slate-800 dark:text-white flex items-center gap-3">
+        <div className=" dark:bg-slate-900  md:p-12 border border-slate-100 dark:border-slate-800  relative">
+          <h3 className="text-2xl font-black nepali-text mb-10 text-slate-800 dark:text-white flex items-center gap-1">
             <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
             शिक्षण कर्मचारीहरू
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
             {teachers.map((t, i) => (
-              <div key={i} className="group relative pt-12 bg-slate-200 dark:bg-slate-800/50 rounded-[3rem] p-6 text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
-                <div className="absolute left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl group-hover:rotate-6 transition-transform">
+              <div key={i} className="group relative hover:scale-110  pt-12  dark:bg-slate-800/50   text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
+                <div className="absolute left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl group-hover:scale-150 overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl  transition-transform">
                   <Avatar image={t.image} name={t.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="mt-8 space-y-3">

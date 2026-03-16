@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYearNepali = "२०८२"; // Updated to current year
 
   return (
-    <footer className="py-5 px-10 bg-secondary text-accent border-t-4 border-accent">
+    <footer className="py-5 px-10 footer text-accent border-t-4 border-accent">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-6 mb-6">
 

@@ -6,6 +6,6 @@ export const getAbout = async () => {
     include: 5,
     limit: 1,
   });
-
+  console.log(res);
   return res.items[0] ?? null;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { getCommittee } from "@/api/useCommittee";
+import { getCommittee } from "@/api/getCommittee";
 
 // ... (Types and toAssetUrl remain exactly as you provided)
 type BoardMember = {

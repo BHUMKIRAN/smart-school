@@ -78,7 +78,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-[100] p-3 bg-secondary dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+      <nav className="sticky top-0 z-[100] p-3 navbar dark:bg-slate-950/90  border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
@@ -94,7 +94,7 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors nepali-text"
+                    className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors nepali-text"
                   >
                     {link.name}
                   </Link>
@@ -109,12 +109,11 @@ export default function Navbar() {
                   onMouseEnter={() => setIsPortalOpen(true)}
                   onMouseLeave={() => setIsPortalOpen(false)}
                 >
-                  <button className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:border-blue-500/50">
-                    <LogIn size={18} className="text-blue-600" />
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:border-blue-500/50">
                     <span className="nepali-text">लगइन</span>
                     <ChevronDown
                       size={14}
-                      className={`transition-transform ${isPortalOpen ? 'rotate-180' : ''
+                      className={`transition-transform ${isPortalOpen ? 'translate-y-2' : ''
                         }`}
                     />
                   </button>

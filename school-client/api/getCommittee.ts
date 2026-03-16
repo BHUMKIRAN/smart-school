@@ -5,6 +5,6 @@ export const getCommittee = async () => {
     content_type: "schoolCommittee",
     include: 5,
   });
- console.log(res);
+ 
   return res.items;
 };

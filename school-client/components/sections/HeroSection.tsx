@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useEffect, useMemo, useState } from "react";
-import { getHero } from "@/api/useHero";
+import { getHero } from "@/api/getHero";
 
 type ContentfulAsset = {
   fields?: {
@@ -74,7 +74,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-[75vh] flex items-center  dark:bg-slate-950  overflow-hidden pt-16 pb-8"
+      className="relative min-h-[75vh] flex items-center  dark:bg-slate-950  overflow-hidden pt-5 pb-5"
     >
       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="grid lg:grid-cols-2 gap-10 items-center">

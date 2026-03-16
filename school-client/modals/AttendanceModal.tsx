@@ -97,10 +97,6 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
     }
 
   };
-
-
-  /* ---------------- MODAL OPEN ---------------- */
-
   useEffect(()=>{
 
     if(isOpen){
