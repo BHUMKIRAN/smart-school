@@ -33,7 +33,7 @@ Run the server:
 npm run dev
 ```
 
-Backend runs at `http://localhost:8080`.
+Backend runs at `https://smart-school-e0fm.onrender.com/`.
 
 ### 2) Frontend
 
@@ -45,7 +45,7 @@ npm install
 Create a `.env.local` file in `school-client/`:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_API_URL=https://smart-school-e0fm.onrender.com/
 ```
 
 Run the client:
@@ -153,7 +153,7 @@ Frontend (`school-client/package.json`)
 
 ## API (Backend)
 
-Base URL: `http://localhost:8080`
+Base URL: `https://smart-school-e0fm.onrender.com/`
 
 Auth
 - `POST /auth/login`
