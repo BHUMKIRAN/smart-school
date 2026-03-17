@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { credentials } from '@/store/authSlice';
-import { login } from '@/api/auth';
+import { login } from '@/Backend/auth';
 import { toast } from 'sonner';
 import Logo from '@/components/shared/logo';
 
@@ -101,11 +101,10 @@ export default function LoginPage() {
                 key={r.id}
                 type="button"
                 onClick={() => handleRoleChange(r.id as any)}
-                className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${
-                  role === r.id
+                className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${role === r.id
                     ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
                     : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
-                }`}
+                  }`}
               >
                 {r.icon}
                 <span className="text-[10px] font-black nepali-text uppercase">{r.name}</span>

@@ -1,11 +1,16 @@
-import { useQuery, useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 import {
   readStudents,
   readStudentById,
   createStudent,
   editStudent,
   deleteStudent,
-} from "@/api/studentApi";
+} from "@/Backend/studentBack";
 import { toast } from "sonner";
 
 // -------------------------
@@ -17,7 +22,10 @@ import { toast } from "sonner";
 // immediate feedback to the user.
 
 // GET ALL STUDENTS
-export const useStudents = (): UseQueryResult<Awaited<ReturnType<typeof readStudents>>, unknown> =>
+export const useStudents = (): UseQueryResult<
+  Awaited<ReturnType<typeof readStudents>>,
+  unknown
+> =>
   useQuery<Awaited<ReturnType<typeof readStudents>>>({
     queryKey: ["students"],
     queryFn: readStudents,

@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  type UseQueryResult,
+} from "@tanstack/react-query";
 
 import {
   readTeachers,
@@ -6,7 +11,7 @@ import {
   createTeacher,
   editTeacher,
   deleteTeacher,
-} from "@/api/teacherApi";
+} from "@/Backend/teacherBack";
 
 import { toast } from "sonner";
 
@@ -18,7 +23,10 @@ import { toast } from "sonner";
 // background updates when we invalidate queries below.
 
 // FETCH ALL TEACHERS
-export const useTeachers = (): UseQueryResult<Awaited<ReturnType<typeof readTeachers>>, unknown> =>
+export const useTeachers = (): UseQueryResult<
+  Awaited<ReturnType<typeof readTeachers>>,
+  unknown
+> =>
   useQuery<Awaited<ReturnType<typeof readTeachers>>>({
     queryKey: ["teachers"],
     queryFn: readTeachers,

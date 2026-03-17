@@ -1,6 +1,6 @@
 'use client';
 
-import { getAbout } from "@/api/getAbout";
+import { getAbout } from "@/Backend/getAbout";
 import { useEffect, useState } from "react";
 
 export default function AboutSection() {
@@ -9,7 +9,7 @@ export default function AboutSection() {
     getAbout()
       .then((data) => {
         setData(data)
-        
+
       })
 
       .catch((err) => console.error(err));
@@ -117,7 +117,7 @@ export default function AboutSection() {
                 {icons[index] || icons[0]}
               </div>
               <h4 className="text-xl font-black mb-4 text-slate-900 dark:text-white nepali-text group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                {val?.fields?.title  }
+                {val?.fields?.title}
               </h4>
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed nepali-text">
                 {val?.fields.subtitle}

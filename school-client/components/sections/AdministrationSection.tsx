@@ -1,6 +1,6 @@
 "use client";
 
-import { getTeachers } from "@/api/getTeacher";
+import { getTeachers } from "@/Backend/getTeacher";
 import { useEffect, useState } from "react";
 
 // Avatar component with fallback
@@ -73,7 +73,7 @@ export default function AdministrationSection() {
             <span className="text-blue-600 relative">
               {sectionTitle}
               <svg className="absolute -bottom-2 left-0 w-full h-2 text-yellow-400" viewBox="0 0 100 10" preserveAspectRatio="none">
-                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4"/>
+                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4" />
               </svg>
             </span>
           </h2>
@@ -86,7 +86,7 @@ export default function AdministrationSection() {
             <div key={i} className="group relative bg-secondary dark:bg-slate-900 p-6 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-6 hover:shadow-2xl transition-all duration-500">
               <div className="relative w-40 h-48 flex-shrink-0">
                 <div className="absolute inset-0 rounded-[2.5rem] rotate-6 transition-transform duration-500 opacity-10"></div>
-                <Avatar image={leader.fields.image?.fields?.file?.url} name={leader.fields.name} className="relative z-10 w-full h-full rounded-[2.5rem]"/>
+                <Avatar image={leader.fields.image?.fields?.file?.url} name={leader.fields.name} className="relative z-10 w-full h-full rounded-[2.5rem]" />
               </div>
               <div className="text-center md:text-left flex-1 space-y-4">
                 <div>
@@ -99,7 +99,7 @@ export default function AdministrationSection() {
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 font-bold nepali-text">विषय: {leader.fields.subject}</p>
                 <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-center md:justify-start">
-                  <SocialLinksGroup facebook={leader.facebook} twitter={leader.twitter}/>
+                  <SocialLinksGroup facebook={leader.facebook} twitter={leader.twitter} />
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function AdministrationSection() {
             {teacherList.map((t: any, i: number) => (
               <div key={i} className="group relative hover:scale-110 pt-12 dark:bg-slate-800/50 text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
                 <div className="absolute left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl group-hover:scale-150 overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl transition-transform">
-                  <Avatar image={t.fields.image?.fields?.file?.url} name={t.fields.name} className="w-full h-full object-cover"/>
+                  <Avatar image={t.fields.image?.fields?.file?.url} name={t.fields.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="mt-8 space-y-3">
                   <h4 className="font-black text-slate-900 dark:text-white nepali-text text-xl">{t.fields.name}</h4>
@@ -125,7 +125,7 @@ export default function AdministrationSection() {
                     <p className="italic">{t.fields.education}</p>
                   </div>
                   <div className="pt-4 flex justify-center">
-                    <SocialLinksGroup facebook={t.facebook} twitter={t.twitter}/>
+                    <SocialLinksGroup facebook={t.facebook} twitter={t.twitter} />
                   </div>
                 </div>
               </div>

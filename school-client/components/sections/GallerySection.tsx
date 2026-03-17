@@ -1,6 +1,6 @@
 'use client';
 
-import getGallery from '@/api/getGallery';
+import getGallery from '@/Backend/getGallery';
 import { useEffect, useState } from 'react';
 
 export default function GallerySection() {

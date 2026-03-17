@@ -4,7 +4,7 @@ import {
   markTeacherAttendance,
   updateTeacherAttendance,
   deleteTeacherAttendance,
-} from "@/api/teacherAttendance";
+} from "@/Backend/teacherAttendance";
 import { toast } from "sonner";
 
 // ----------

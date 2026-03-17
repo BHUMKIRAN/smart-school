@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useEffect, useMemo, useState } from "react";
-import { getHero } from "@/api/getHero";
+import { getHero } from "@/Backend/getHero";
 
 type ContentfulAsset = {
   fields?: {
@@ -68,8 +68,8 @@ export default function HeroSection() {
 
   const title = hero?.title
   const subtitle =
-    hero?.subtitle 
-   
+    hero?.subtitle
+
 
   return (
     <section

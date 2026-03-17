@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getCommittee } from "@/api/getCommittee";
+import { getCommittee } from "@/Backend/getCommittee";
 
 type BoardMember = {
   name: string;
@@ -19,10 +19,10 @@ export default function BoardSection() {
   useEffect(() => {
     getCommittee()
       .then((res) => {
- 
+
         // Assuming res is the Contentful response object
         const cards = Array.isArray(res[0]?.fields?.cards) ? res[0].fields.cards : [];
-        
+
         const mappedMembers: BoardMember[] = cards.map((card: any) => ({
           name: card.fields?.title ?? "Unnamed",
           position: card.fields?.subtitle ?? "",
