@@ -1,5 +1,6 @@
 'use client';
 
+import { API_BASE_URL } from "@/lib/endpoints";
 import { useEffect, useState } from "react";
 
 export default function NoticesTab() {
@@ -9,7 +10,7 @@ export default function NoticesTab() {
 
   const fetchNotices = async () => {
     try {
-      const res = await fetch("https://smart-school-e0fm.onrender.com/notices");
+      const res = await fetch(`${API_BASE_URL}/notices`);
       const data = await res.json();
       setNotices(data);
     } catch (error) {
@@ -21,7 +22,7 @@ export default function NoticesTab() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch("https://smart-school-e0fm.onrender.com/notices", {
+      const response = await fetch(`${API_BASE_URL}/notices`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -39,7 +40,7 @@ export default function NoticesTab() {
   const deleteNotice = async (id: string) => {
     if (!confirm("Are you sure you want to delete this notice?")) return;
     try {
-      const res = await fetch(`https://smart-school-e0fm.onrender.com/notices/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/notices/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete notice");

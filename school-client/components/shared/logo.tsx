@@ -1,8 +1,10 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 export default function Logo() {
+  const router = useRouter();
   return (
-    <div className="group flex items-center gap-3.5 cursor-pointer">
+    <div className="group flex items-center gap-3.5 cursor-pointer"
+    onClick={()=>router.push('/')}>
       {/* Icon Container with Glass Effect and Glow */}
       <div className="relative">
         <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity"></div>

@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from "@/lib/endpoints";
 import { useEffect, useState } from "react";
 
 interface Notice {
@@ -11,7 +12,7 @@ export default function NoticeTicker() {
 
   const fetchNotices = async () => {
     try {
-      const res = await fetch("https://smart-school-e0fm.onrender.com/notices");
+      const res = await fetch(`${API_BASE_URL}/notices`);
       const data = await res.json();
       setNotices(data);
     } catch (error) {

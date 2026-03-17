@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Megaphone, Trash2, AlertTriangle, Send } from "lucide-react";
+import { API_BASE_URL } from "@/lib/endpoints";
 
 export default function EmergencyTab() {
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ export default function EmergencyTab() {
   // Fetch notices to show history and allow deletion
   const fetchNotices = async () => {
     try {
-      const res = await axios.get("https://smart-school-e0fm.onrender.com/emergencyNotices");
+      const res = await axios.get(`${API_BASE_URL}/emergencyNotices`);
       setNotices(res.data);
     } catch (err) { console.error(err); }
   };
@@ -24,7 +25,7 @@ export default function EmergencyTab() {
     try {
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
-      await axios.post("https://smart-school-e0fm.onrender.com/emergencyNotices", data);
+      await axios.post(`${API_BASE_URL}/emergencyNotices`, data);
       (e.target as HTMLFormElement).reset();
       fetchNotices();
     } catch (error) {
@@ -35,7 +36,7 @@ export default function EmergencyTab() {
   const deleteNotice = async (id: string) => {
     if (!confirm("Remove this alert from history?")) return;
     try {
-      await axios.delete(`https://smart-school-e0fm.onrender.com/emergencyNotices/${id}`);
+      await axios.delete(`${API_BASE_URL}/emergencyNotices/${id}`);
       fetchNotices();
     } catch (err) { console.error(err); }
   };

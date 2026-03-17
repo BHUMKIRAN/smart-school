@@ -1,7 +1,8 @@
 "use client";
 
+import axios from "axios";
 import { MapPin, Phone, Mail } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, ChangeEvent } from "react";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -11,10 +12,34 @@ export default function ContactSection() {
     message: "",
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [responseMsg, setResponseMsg] = useState("");
+
+  // Generic change handler for inputs and textarea
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    alert("तपाईंको सन्देश सफलतापूर्वक पठाइएको छ!");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setLoading(true);
+    setResponseMsg("");
+
+    try {
+      const res = await axios.post("/api/sendmail", formData);
+      if (res.status === 200) {
+        setResponseMsg("सन्देश सफलतापूर्वक पठाइयो।"); // Success message
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setResponseMsg("सन्देश पठाउन असफल भयो।");
+      }
+    } catch (err: any) {
+      console.error(err);
+      setResponseMsg("सर्भरमा समस्या आएको छ। कृपया पछि प्रयास गर्नुहोस्।");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -42,19 +67,13 @@ export default function ContactSection() {
   ];
 
   return (
-    <section
-      id="contact"
-      className="py-14 px-6  dark:bg-slate-950 transition-colors duration-500"
-    >
+    <section id="contact" className="py-14 px-6 dark:bg-slate-950 transition-colors duration-500">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10">
-       
-
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
             हामीसँग <span className="text-blue-600">सम्पर्क</span> गर्नुहोस्
           </h2>
-
           <div className="w-12 h-1 bg-blue-600 rounded-full mt-4"></div>
         </div>
 
@@ -65,7 +84,6 @@ export default function ContactSection() {
             <div className="grid gap-3">
               {contactInfo.map((info, index) => {
                 const Icon = info.icon;
-
                 return (
                   <a
                     key={index}
@@ -74,20 +92,12 @@ export default function ContactSection() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 bg-secondary dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-md transition-all"
                   >
-                    <div
-                      className={`w-9 h-9 rounded-xl ${info.bgColor} flex items-center justify-center`}
-                    >
+                    <div className={`w-9 h-9 rounded-xl ${info.bgColor} flex items-center justify-center`}>
                       <Icon className="w-5 h-5 text-slate-700 dark:text-white" />
                     </div>
-
                     <div>
-                      <h4 className="font-black text-[9px] text-slate-400 uppercase tracking-widest">
-                        {info.title}
-                      </h4>
-
-                      <p className="text-slate-800 dark:text-slate-200 font-bold text-xs nepali-text">
-                        {info.value}
-                      </p>
+                      <h4 className="font-black text-[9px] text-slate-400 uppercase tracking-widest">{info.title}</h4>
+                      <p className="text-slate-800 dark:text-slate-200 font-bold text-xs nepali-text">{info.value}</p>
                     </div>
                   </a>
                 );
@@ -105,10 +115,7 @@ export default function ContactSection() {
               ></iframe>
 
               <div className="text-center mt-4">
-                <h4 className="text-sm font-black text-slate-900 dark:text-white nepali-text">
-                  भदौरे, रौतामाई
-                </h4>
-
+                <h4 className="text-sm font-black text-slate-900 dark:text-white nepali-text">भदौरे, रौतामाई</h4>
                 <button
                   className="mt-3 px-5 py-2 border rounded-xl text-[10px] font-black uppercase hover:bg-slate-50 transition"
                   onClick={() =>
@@ -131,55 +138,53 @@ export default function ContactSection() {
                 <div className="grid md:grid-cols-2 gap-5">
                   <input
                     type="text"
+                    name="name"
                     placeholder="पूरा नाम"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 dark:bg-slate-800/50"
                     required
                   />
-
                   <input
                     type="email"
+                    name="email"
                     placeholder="email@address.com"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 dark:bg-slate-800/50"
                     required
                   />
                 </div>
 
                 <input
                   type="text"
+                  name="subject"
                   placeholder="सन्देशको मुख्य उद्देश्य"
                   value={formData.subject}
-                  onChange={(e) =>
-                    setFormData({ ...formData, subject: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50"
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 dark:bg-slate-800/50"
                   required
                 />
 
                 <textarea
+                  name="message"
                   rows={4}
                   placeholder="आफ्नो जिज्ञासा यहाँ लेख्नुहोस्..."
                   value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800  dark:bg-slate-800/50 resize-none"
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 dark:bg-slate-800/50 resize-none"
                   required
                 />
 
                 <button
                   type="submit"
+                  disabled={loading}
                   className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-xl shadow-blue-500/30 active:scale-[0.98] transition-all duration-200 nepali-text text-sm"
                 >
-                  सन्देश पठाउनुहोस्
+                  {loading ? "पठाइँदै..." : "सन्देश पठाउनुहोस्"}
                 </button>
+
+                {responseMsg && <p className="text-center mt-2 text-sm font-bold">{responseMsg}</p>}
               </form>
             </div>
           </div>

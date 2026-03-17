@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { API_BASE_URL } from "@/lib/endpoints"
 
 interface EmergencyNotice {
   _id: string
@@ -16,7 +17,7 @@ export default function EmergencyBanner() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const res = await axios.get("https://smart-school-e0fm.onrender.com/emergencyNotices")
+        const res = await axios.get(`${API_BASE_URL}/emergencyNotices`)
         setNotices(res.data)
         if (res.data.length > 0) {
           setIsVisible(true)

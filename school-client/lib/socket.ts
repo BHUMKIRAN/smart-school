@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
+import { API_BASE_URL } from "./endpoints";
 
-const socket = io("https://smart-school-e0fm.onrender.com", {
+const socket = io(`${API_BASE_URL}`, {
   transports: ["websocket"],
 });
 
