@@ -1,12 +1,29 @@
 import { api } from "./axiosClientInstance";
 
-export const login = async (data) => {
-  // We let the component handle the try/catch to manage local loading states
-  const res = await api.post("/auth/login", data);
-  return res.data; // Expected: { user, token }
+interface LoginRequest {
+  email: string;
+  password: string;
+  role: string;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role?: string;
+}
+
+interface LoginResponse {
+  user: User;
+  token: string;
+}
+
+export const login = async (data: LoginRequest): Promise<LoginResponse> => {
+  const res = await api.post<LoginResponse>("/auth/login", data);
+  return res.data;
 };
 
-export const logoutApi = async () => {
-  const res = await api.post("/auth/logout");
+export const logoutApi = async (): Promise<{ message: string }> => {
+  const res = await api.post<{ message: string }>("/auth/logout");
   return res.data;
 };

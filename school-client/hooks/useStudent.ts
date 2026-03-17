@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
 import {
   readStudents,
   readStudentById,
@@ -17,26 +17,18 @@ import { toast } from "sonner";
 // immediate feedback to the user.
 
 // GET ALL STUDENTS
-export const useStudents = () =>
-  useQuery({
+export const useStudents = (): UseQueryResult<Awaited<ReturnType<typeof readStudents>>, unknown> =>
+  useQuery<Awaited<ReturnType<typeof readStudents>>>({
     queryKey: ["students"],
     queryFn: readStudents,
-    
-    // onError lets us show a toast if the network request fails
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to fetch students");
-    },
   });
 
 // GET A SINGLE STUDENT BY ID
 export const useStudent = (id: string | undefined) =>
-  useQuery({
+  useQuery<Awaited<ReturnType<typeof readStudentById>>>({
     queryKey: ["students", id],
     queryFn: () => readStudentById(id!),
     enabled: !!id, // only execute query if we actually have an id
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to fetch student");
-    },
   });
 
 // CREATE A NEW STUDENT

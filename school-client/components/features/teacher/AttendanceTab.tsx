@@ -6,7 +6,11 @@ import { toast, Toaster } from 'sonner';
 import { useCreateTeacherAttendance } from "@/hooks/useTeacherAttendance"; 
 import { useSelector } from 'react-redux';
 
-export default function MarkAttendance() {
+type AttendanceTabProps = {
+  onMarked?: () => void;
+};
+
+export default function AttendanceTab({ onMarked }: AttendanceTabProps) {
   const [code, setCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -38,7 +42,7 @@ export default function MarkAttendance() {
     createTeacherAttendance.mutate(
       {
         code: trimmedCode,
-        status: "Present",
+        status: "present",
         teacherId: teacherId,
       },
       {
@@ -49,6 +53,7 @@ export default function MarkAttendance() {
             icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" />,
           });
           setCode('');
+          onMarked?.();
         },
         onError: (error: any) => {
           setIsSubmitting(false);

@@ -4,7 +4,7 @@ import { getAbout } from "@/api/getAbout";
 import { useEffect, useState } from "react";
 
 export default function AboutSection() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   useEffect(() => {
     getAbout()
       .then((data) => {
@@ -108,7 +108,7 @@ export default function AboutSection() {
 
         {/* --- Features Grid --- */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {itemsCards.map((val, index) => (
+          {itemsCards.map((val: any, index: number) => (
             <div
               key={index}
               className="group p-6 text-center rounded-[2.5rem] bg-secondary dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:-translate-y-3 hover:border-blue-600/30 dark:hover:border-blue-400/30 transition-all duration-500 shadow-xl hover:shadow-blue-100 dark:hover:shadow-none relative"

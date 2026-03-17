@@ -1,7 +1,13 @@
 
+'use client';
+
 import { useRouter } from "next/navigation";
 
-const Logout = ({ onClose }) => {
+type LogoutProps = {
+  onClose: () => void;
+};
+
+const Logout = ({ onClose }: LogoutProps) => {
   const router = useRouter();
 
   const handleConfirm = () => {

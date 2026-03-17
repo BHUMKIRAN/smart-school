@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, type UseQueryResult } from "@tanstack/react-query";
 
 import {
   readTeachers,
@@ -18,24 +18,18 @@ import { toast } from "sonner";
 // background updates when we invalidate queries below.
 
 // FETCH ALL TEACHERS
-export const useTeachers = () =>
-  useQuery({
+export const useTeachers = (): UseQueryResult<Awaited<ReturnType<typeof readTeachers>>, unknown> =>
+  useQuery<Awaited<ReturnType<typeof readTeachers>>>({
     queryKey: ["teachers"],
     queryFn: readTeachers,
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to fetch teachers");
-    },
   });
 
 // FETCH A SINGLE TEACHER BY ID
 export const useTeacher = (id: string | undefined) =>
-  useQuery({
+  useQuery<Awaited<ReturnType<typeof readById>>>({
     queryKey: ["teachers", id],
     queryFn: () => readById(id!),
     enabled: !!id,
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || "Failed to fetch teacher");
-    },
   });
 
 // CREATE TEACHER

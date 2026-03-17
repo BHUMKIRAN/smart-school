@@ -1,13 +1,7 @@
 "use client";
 
-import { getTeachers } from "@/api/getTeacher";
-import React, { useEffect, useState, useMemo } from "react";
-
-const toAssetUrl = (asset: any) => {
-  const url = asset?.fields?.file?.url;
-  if (!url) return null;
-  return url.startsWith("//") ? `https:${url}` : url;
-};
+import React, { useMemo } from "react";
+import type { LandingAdminStaff, LandingDepartment, LandingTeacher } from "@/types";
 
 const Avatar = ({ image, name, className }: any) => {
   if (image) {
@@ -41,58 +35,56 @@ const SocialLinksGroup = ({ facebook, twitter }: { facebook?: string; twitter?: 
   );
 };
 
-export default function AdministrationSection() {
-  const [data, setData] = useState<any>(null);
+type AdministrationSectionProps = {
+  adminStaff: LandingAdminStaff[];
+  departments: LandingDepartment[];
+  teachers: LandingTeacher[];
+};
 
-  useEffect(() => {
-    getTeachers()
-      .then((res) => setData(res))
-      .catch((err) => console.error(err));
-  }, []);
+export default function AdministrationSection({ adminStaff, departments, teachers }: AdministrationSectionProps) {
+  const { sectionTitle, leadership, teacherList } = useMemo(() => {
+    const title = "हाम्रो शिक्षण टोली";
 
-  const { sectionTitle, leadership, teachers } = useMemo(() => {
-    const entry = data?.items?.[0] || data?.[0];
-    const title = entry?.fields?.title || "हाम्रो शिक्षण टोली";
-    
-    // Support both 'card' and 'cards' field names
-    const rawCards = entry?.fields?.card || entry?.fields?.cards || [];
-
-    const allMembers = rawCards.map((item: any) => ({
-      name: item.fields?.name || item.fields?.title || "Staff Member",
-      position: item.fields?.post || item.fields?.role || item.fields?.subtitle || "",
-      subject: item.fields?.subject || "",
-      education: item.fields?.education || "",
-      image: toAssetUrl(item.fields?.image || item.fields?.photo),
-      facebook: item.fields?.facebook || "#",
-      twitter: item.fields?.twitter || "#",
+    const leadershipMembers = adminStaff.slice(0, 2).map((m) => ({
+      name: m.name,
+      position: m.position,
+      subject: "",
+      education: m.qualification || m.experience || "",
+      image: null as string | null,
+      facebook: "#",
+      twitter: "#",
     }));
 
-    // --- LOGIC: Identify Leadership ---
-    // Specifically pull out the Principal (प्रधानाध्यापक) and Vice Principal (सहायक प्रधानाध्यापक)
-    const principal = allMembers.find((m: any) => 
-      m.position?.includes("प्रधानाध्यापक") && !m.position?.includes("सहायक")
-    );
-    const vicePrincipal = allMembers.find((m: any) => 
-      m.position?.includes("सहायक प्रधानाध्यापक")
-    );
+    const mappedTeachers = teachers.map((t) => ({
+      name: t.name,
+      position: t.department || "Teacher",
+      subject: t.subject || "",
+      education: "",
+      image: null as string | null,
+      facebook: "#",
+      twitter: "#",
+    }));
 
-    // Create leadership array based on found items
-    const leadershipList = [principal, vicePrincipal].filter(Boolean);
-
-    // If API didn't have specific roles, fallback to taking first two
-    const finalLeadership = leadershipList.length > 0 ? leadershipList : allMembers.slice(0, 2);
-
-    // Teachers are everyone else who is NOT in the leadership list
-    const finalTeachers = allMembers.filter(m => !finalLeadership.includes(m));
+    // If adminStaff is empty, pull leadership from departments.
+    const fallbackLeadership =
+      leadershipMembers.length > 0
+        ? leadershipMembers
+        : departments.slice(0, 2).map((d) => ({
+            name: d.head,
+            position: d.name,
+            subject: "",
+            education: d.description || "",
+            image: null as string | null,
+            facebook: "#",
+            twitter: "#",
+          }));
 
     return {
       sectionTitle: title,
-      leadership: finalLeadership,
-      teachers: finalTeachers,
+      leadership: fallbackLeadership,
+      teacherList: mappedTeachers,
     };
-  }, [data]);
-
-  if (!data) return null;
+  }, [adminStaff, departments, teachers]);
 
   return (
     <section id="administration" className="py-5 px-6 dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
@@ -143,7 +135,7 @@ export default function AdministrationSection() {
             शिक्षण कर्मचारीहरू
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {teachers.map((t, i) => (
+            {teacherList.map((t, i) => (
               <div key={i} className="group relative hover:scale-110  pt-12  dark:bg-slate-800/50   text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
                 <div className="absolute left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl group-hover:scale-150 overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl  transition-transform">
                   <Avatar image={t.image} name={t.name} className="w-full h-full object-cover" />

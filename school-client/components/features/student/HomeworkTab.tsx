@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux';
 import { API_BASE_URL } from '@/lib/endpoints';
 
 interface HomeworkTabProps {
-  onOpenModal: (assignmentId: string) => void;
+  onOpenModal: (assignmentId: string, subject: string) => void;
+  refreshFlag?: boolean;
 }
 
 interface Assignment {
@@ -25,7 +26,7 @@ interface Submission {
   status: 'submitted' | 'checked';
 }
 
-export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
+export default function HomeworkTab({ onOpenModal, refreshFlag }: HomeworkTabProps) {
   const user = useSelector((state: any) => state.auth.user);
   const gradeId = user?.grade?._id;
   const userId = user?.id;
@@ -53,14 +54,14 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
     };
 
     fetchData();
-  }, [gradeId, userId]);
+  }, [gradeId, userId, refreshFlag]);
 
   const formatDate = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 
-  const getAssignmentStatus = () => {
-    const submission = submissions.find(s => s.assignment );
-    return submission?.status === 'submitted' ? 'Completed' : 'Pending';
+  const getAssignmentStatus = (assignmentId: string) => {
+    const submission = submissions.find((s) => s.assignment === assignmentId);
+    return submission?.status ? 'Completed' : 'Pending';
   };
 
   return (
@@ -81,7 +82,7 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
       {/* Assignment Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {assignments.map((assignment) => {
-          const status = getAssignmentStatus();
+          const status = getAssignmentStatus(assignment._id);
           const isPending = status === 'Pending';
 
           return (
@@ -118,7 +119,7 @@ export default function HomeworkTab({ onOpenModal }: HomeworkTabProps) {
               <div className="mt-6">
                 {isPending ? (
                   <button
-                    onClick={() => onOpenModal(assignment._id)}
+                    onClick={() => onOpenModal(assignment._id, assignment.title)}
                     className="w-full py-3 hero-gradient text-white rounded-xl font-bold text-sm shadow-lg shadow-[var(--primary)]/10 hover:scale-[1.02] active:scale-[0.98] transition-all"
                   >
                     Submit Assignment

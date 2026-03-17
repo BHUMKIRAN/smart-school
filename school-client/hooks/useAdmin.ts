@@ -6,11 +6,6 @@ export const useTeacherAttendance = ()=>{
     return useQuery({
         queryKey: ["teacherAttendance"],
         queryFn: getTeacherAttendance,
-        onError: (error: any) => {
-            toast.error(
-              error?.response?.data?.message || "Failed to load teacher attendance",
-            );
-          },
     })
 }
 

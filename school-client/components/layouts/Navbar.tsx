@@ -19,6 +19,7 @@ import {
 import AttendanceModal from '@/modals/AttendanceModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleTheme } from '@/store/themeSlice'
+import type { AppDispatch, RootState } from '@/store/store'
 import Logo from '../shared/logo'
 
 export default function Navbar() {

@@ -14,13 +14,10 @@ import TeacherHeader from '@/components/features/teacher/dashboard';
 export default function TeachersPanelPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showModal, setShowModal] = useState(false);
-  const [attendanceStatus, setAttendanceStatus] = useState('Not Marked');
   const [logout, setLogout] = useState(false);
 
   const handleMarkAttendance = () => {
     setShowModal(true);
-    setAttendanceStatus('Marked ✓');
-    return true;
   };
 
   return (
@@ -43,8 +40,7 @@ export default function TeachersPanelPage() {
                 {activeTab === 'attendance' && (
                   <div className="animate-in fade-in slide-in-from-left-4 duration-500">
                     <AttendanceTab
-                      onMarkAttendance={handleMarkAttendance}
-                      attendanceStatus={attendanceStatus}
+                      onMarked={handleMarkAttendance}
                     />
                   </div>
                 )}

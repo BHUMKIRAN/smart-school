@@ -14,8 +14,8 @@ export interface Student {
   name: string;
   grade: string | { _id: string; grade: number; section?: string };
   email: string;
-  password: string;
-  class: string;
+  password?: string;
+  class?: string;
   attendance?: {
     status?: string;
   };
@@ -28,7 +28,8 @@ interface studenttabProps {
 export default function StudentsTab({ setmodalStudentView }: studenttabProps) {
 
   // GET students
-  const { data: students = [], isLoading, isError } = useStudents();
+  const { data, isLoading, isError } = useStudents();
+  const students = data ?? [];
   const { mutate: deleteStudent } = useDeleteStudent();
 
   // ----------------------------

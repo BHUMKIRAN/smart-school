@@ -1,5 +1,5 @@
 // lib/endpoints.ts
-const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL || "https://smart-school-e0fm.onrender.com";
 // Normalize to avoid double slashes when concatenating paths
 export const API_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
 

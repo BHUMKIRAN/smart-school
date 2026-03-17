@@ -12,6 +12,9 @@ _id: string;
 name: string;
 email: string;
 grade: string | { _id: string; grade: number; section?: string };
+attendance?: {
+  status?: string;
+};
 };
 }
 

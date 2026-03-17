@@ -47,9 +47,7 @@ export default function StudentDashboardPage() {
               {activeTab === 'dashboard' && <WelcomeSection />}
               {activeTab === 'homework' && (
                 <HomeworkTab
-                  onOpenModal={(assignmentId, subject) =>
-                    handleOpenModal(assignmentId, subject)
-                  }
+                  onOpenModal={handleOpenModal}
                   refreshFlag={refreshHomework}
                 />
               )}

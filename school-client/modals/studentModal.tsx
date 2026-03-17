@@ -16,7 +16,7 @@ interface Student {
   name: string;
   email: string;
   password?: string;
-  grade: string; // stores Grade _id
+  grade: string | { _id: string; grade: number; section?: string }; // stores Grade _id or populated grade
   image?: string;
 }
 
@@ -74,7 +74,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
         name: studentData.name || "",
         email: studentData.email || "",
         password: "",
-        grade: studentData.grade || "",
+        grade: typeof studentData.grade === "string" ? studentData.grade : studentData.grade?._id || "",
         image: studentData.image || "",
       });
     } else {
@@ -176,7 +176,7 @@ const StudentModal: React.FC<StudentModalProps> = ({
             <label className="text-sm font-medium mb-1 block">Grade</label>
             <select
               name="grade"
-              value={formData.grade}
+              value={typeof formData.grade === "string" ? formData.grade : formData.grade?._id || ""}
               onChange={handleChange}
               className="dash-input w-full"
               required

@@ -23,6 +23,7 @@ export interface Teacher {
   phone?: string;
   department?: string;
   salary?: string;
+  profilePic?: string;
 }
 interface teachertabProps {
   setmodalView: any,
@@ -31,7 +32,8 @@ interface teachertabProps {
 export default function TeachersTab({setmodalView} : teachertabProps) {
 
   // ✅ GET teachers
-  const { data: teachers = [], isLoading, isError } = useTeachers();
+  const { data, isLoading, isError } = useTeachers();
+  const teachers = data ?? [];
   const deleteTeacher = useDeleteTeacher();
   const teacherAttendance = useMarkTeacherAttendance(); // mutate function
 

@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { getCommittee } from "@/api/getCommittee";
+import React, { useMemo } from "react";
+import type { LandingBoardMember } from "@/types";
 
-// ... (Types and toAssetUrl remain exactly as you provided)
 type BoardMember = {
   name: string;
   position: string;
@@ -13,91 +12,37 @@ type BoardMember = {
   twitter?: string;
 };
 
-type ContentfulAsset = {
-  fields?: {
-    title?: string;
-    file?: {
-      url?: string;
-    };
-  };
+type BoardSectionProps = {
+  boardMembers: LandingBoardMember[];
 };
 
-type CommitteeEntry = {
-  sys?: { id?: string };
-  fields?: Record<string, any>;
-};
-
-const toAssetUrl = (asset?: ContentfulAsset) => {
-  const url = asset?.fields?.file?.url;
-  if (!url) return undefined;
-  return url.startsWith("//") ? `https:${url}` : url;
-};
-
-const toMember = (entry: CommitteeEntry): BoardMember => {
-  const fields = entry?.fields ?? {};
-  return {
-    name: fields.name ?? fields.fullName ?? fields.title ?? "Member",
-    position: fields.subtitle ?? "",
-    description: fields.description ?? fields.bio ?? fields.summary ?? fields.education ?? "",
-    image: toAssetUrl(fields.image ?? fields.photo ?? fields.avatar),
-    facebook: fields.facebook ?? "#",
-    twitter: fields.twitter ?? "#",
-  };
-};
-
-export default function BoardSection() {
-  const [committeeItems, setCommitteeItems] = useState<CommitteeEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    getCommittee()
-      .then((items) => {
-        if (!isMounted) return;
-        setCommitteeItems(items ?? []);
-      })
-      .catch(() => {
-        if (!isMounted) return;
-        setCommitteeItems([]);
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+export default function BoardSection({ boardMembers }: BoardSectionProps) {
   const { title, members } = useMemo(() => {
-    const first = committeeItems[0];
-    const heading = first?.fields?.title ?? "विद्यालय व्यवस्थापन समिति";
-    
-    const rawMembers = Array.isArray(first?.fields?.cards)
-      ? (first?.fields?.cards as CommitteeEntry[])
-      : Array.isArray(first?.fields?.subtitle)
-        ? (first?.fields?.members as CommitteeEntry[])
-        : committeeItems;
+    const heading = "विद्यालय व्यवस्थापन समिति";
 
-    const mapped = rawMembers.map((entry) => toMember(entry));
+    const mapped: BoardMember[] = boardMembers.map((m) => ({
+      name: m.name,
+      position: m.position,
+      description: m.description ?? "",
+      image: undefined,
+      facebook: "#",
+      twitter: "#",
+    }));
 
-    // --- SORTING LOGIC ADDED HERE ---
     const sorted = [...mapped].sort((a, b) => {
       const getPriority = (pos: string) => {
-        // Higher priority (lower number) comes first
         if (pos.includes("अध्यक्ष")) return 1;
         if (pos.includes("सह-अध्यक्ष")) return 2;
         if (pos.includes("सचिव")) return 3;
         if (pos.includes("कोषाध्यक्ष")) return 4;
         if (pos.includes("सदस्य")) return 5;
-        return 6; // Others
+        return 6;
       };
       return getPriority(a.position) - getPriority(b.position);
     });
-    
-    return { title: heading, members: sorted };
-  }, [committeeItems]);
 
-  if (loading) return null;
+    return { title: heading, members: sorted };
+  }, [boardMembers]);
 
   return (
     <section

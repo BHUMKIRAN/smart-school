@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import AdminHeader from '@/components/features/admin/AdminHeader';
 import AdminNavbar from '@/components/features/admin/AdminNavbar';
-import TeachersTab from '@/components/features/admin/TeachersTab';
+import TeachersTab, { Teacher } from '@/components/features/admin/TeachersTab';
 import StudentsTab, { Student } from '@/components/features/admin/StudentsTab';
 import NoticesTab from '@/components/features/admin/NoticesTab';
 import EmergencyTab from '@/components/features/admin/EmergencyTab';
@@ -22,7 +22,7 @@ export default function AdminDashboardPage() {
   const [modalType, setModalType] = useState<"teacher" | "student" | null>(null);
   const [modalView, setModalView] = useState<{
     type: "teacher" | "student" | "view" | null;
-    data?: teacher | null;
+    data?: Teacher | null;
   }>({ type: null, data: null });
   const [modalStudentView, setmodalStudentView] = useState<{
     type: "teacher" | "student" | "view" | null;
@@ -73,8 +73,7 @@ export default function AdminDashboardPage() {
           isOpen={true}
           onClose={() => setModalType(null)}
           mode="create"
-          teacherData={null}
-          refreshTeachers={() => window.location.reload()}
+          teacherData={undefined}
         />
       )}
 
@@ -90,13 +89,13 @@ export default function AdminDashboardPage() {
         <TeacherCardModal
           isOpen={true}
           teacher={modalView.data}
-          onClose={() => setModalView({ type: null })}
+          onClose={() => setModalView({ type: null, data: null })}
         />
       )}
-        {modalStudentView?.type === "view" && (
+        {modalStudentView.type === "view" && modalStudentView.data && (
         <StudentCardModal
           isOpen={true}
-          onClose={() => setmodalStudentView(null)}
+          onClose={() => setmodalStudentView({ type: null, data: null })}
           student={modalStudentView.data}
         />
       )}

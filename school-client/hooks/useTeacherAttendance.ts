@@ -21,11 +21,6 @@ export const useTeacherAttendance = (params?: Record<string, any>) =>
   useQuery({
     queryKey: ["teacherAttendance", params],
     queryFn: () => getTeacherAttendance(params),
-    onError: (error: any) => {
-      toast.error(
-        error?.response?.data?.message || "Failed to load teacher attendance",
-      );
-    },
   });
 
 // CREATE / MARK ATTENDANCE FOR TEACHER
