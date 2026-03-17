@@ -33,13 +33,8 @@ export default async function Home() {
       <NoticeTicker />
       <HeroSection />
       <AboutSection />
-      <AdministrationSection
-        adminStaff={content.adminStaff}
-        departments={content.departments}
-        teachers={content.teachers}
-      />
-      <BoardSection boardMembers={content.boardMembers} />
-      
+      <AdministrationSection/>
+      <BoardSection/>
       <GallerySection />
       <ContactSection />
       <Footer />

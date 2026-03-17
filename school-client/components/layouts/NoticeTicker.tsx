@@ -11,7 +11,7 @@ export default function NoticeTicker() {
 
   const fetchNotices = async () => {
     try {
-      const res = await fetch("http://localhost:8080/notices");
+      const res = await fetch("https://smart-school-e0fm.onrender.com/notices");
       const data = await res.json();
       setNotices(data);
     } catch (error) {

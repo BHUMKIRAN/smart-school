@@ -16,7 +16,7 @@ export default function EmergencyBanner() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/emergencyNotices")
+        const res = await axios.get("https://smart-school-e0fm.onrender.com/emergencyNotices")
         setNotices(res.data)
         if (res.data.length > 0) {
           setIsVisible(true)
