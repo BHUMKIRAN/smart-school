@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 export default function CreateAssignment() {
   const user = useSelector((state: any) => state.auth.user);
-  const teacherId = user._id || user.id; // 
+  const teacherId = user?._id || user?.id; // 
 
   const [isUploading, setIsUploading] = useState(false);
   const [grades, setGrades] = useState<any[]>([]);

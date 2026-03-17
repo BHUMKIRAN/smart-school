@@ -1,106 +1,30 @@
-'use client';
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import jwt from "jsonwebtoken";
+import AdminDashboardPage from "./admin";
 
-import { useState } from 'react';
-import AdminHeader from '@/components/features/admin/AdminHeader';
-import AdminNavbar from '@/components/features/admin/AdminNavbar';
-import TeachersTab, { Teacher } from '@/components/features/admin/TeachersTab';
-import StudentsTab, { Student } from '@/components/features/admin/StudentsTab';
-import NoticesTab from '@/components/features/admin/NoticesTab';
-import EmergencyTab from '@/components/features/admin/EmergencyTab';
-import AttendanceTab from '@/components/features/admin/AttendanceTab';
-import ApplicationsTab from '@/components/features/admin/ApplicationsTab';
-import Logout from '@/modals/LogoutModal';
-import TeacherModal from '@/modals/teacherModals';
-import StudentModal from '@/modals/studentModal';
-import AdminHome from '@/components/features/admin/AdminHome';
-import TeacherCardModal from '@/modals/teacherCard';
-import StudentCardModal from '@/modals/studentCard';
+const AdminPage = async () => {
 
-export default function AdminDashboardPage() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [logout, setLogout] = useState(false);
-  const [modalType, setModalType] = useState<"teacher" | "student" | null>(null);
-  const [modalView, setModalView] = useState<{
-    type: "teacher" | "student" | "view" | null;
-    data?: Teacher | null;
-  }>({ type: null, data: null });
-  const [modalStudentView, setmodalStudentView] = useState<{
-    type: "teacher" | "student" | "view" | null;
-    data?: Student | null;
-  }>({ type: null, data: null });
+    const Requestcookies = await cookies();
+    const token = Requestcookies.get("token")?.value;
 
-  const tabTitles: Record<string, { title: string; subtitle: string }> = {
-    dashboard: { title: 'System Overview', subtitle: 'Real-time school performance & metrics' },
-    teachers: { title: 'Teacher Management', subtitle: 'Manage and monitor your teachers' },
-    students: { title: 'Student Management', subtitle: 'Manage and monitor your students' },
-    notices: { title: 'Notice Management', subtitle: 'Create and manage school notices' },
-    emergency: { title: 'Emergency Notices', subtitle: 'Manage critical emergency alerts' },
-    attendance: { title: 'Attendance Monitoring', subtitle: 'Track and analyze attendance data' },
-    applications: { title: 'Application Review', subtitle: 'Review and approve student applications' },
-  };
+    if (!token) {
+        redirect("/login");
+    }
 
-  return (
-    <div className="min-h-screen min-w-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 flex flex-col">
+    try {
+        const decoded: any= jwt.verify(token, process.env.JWT_SECRET!);
 
-      {/* Header */}
-      <AdminHeader
-        setLogout={setLogout}
-        title={tabTitles[activeTab]?.title || "Dashboard"}
-        subtitle={tabTitles[activeTab]?.subtitle || ""}
-      />
+        // Role check
+        if (decoded.role !== "admin") {
+            redirect("/login");
+        } 
+    } catch (error) {
+        // redirect("/login");
+    }
 
-      {/* Full-width Horizontal Navbar */}
-      <AdminNavbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+    // If everything is valid → render dashboard
+    return <AdminDashboardPage />;
+    }
 
-      />
-
-      {/* Main Content */}
-      <main className="flex-1 transition-all duration-300 p-4 sm:p-6 lg:p-8">
-        {activeTab === 'dashboard' && <AdminHome />}
-        {activeTab === 'teachers' && <TeachersTab setmodalView={setModalView} />}
-        {activeTab === 'students' && <StudentsTab setmodalStudentView={setmodalStudentView}/>}
-        {activeTab === 'notices' && <NoticesTab />}
-        {activeTab === 'emergency' && <EmergencyTab />}
-        {activeTab === 'attendance' && <AttendanceTab />}
-        {activeTab === 'applications' && <ApplicationsTab />}
-      </main>
-
-      {/* Modals */}
-      {modalType === "teacher" && (
-        <TeacherModal
-          isOpen={true}
-          onClose={() => setModalType(null)}
-          mode="create"
-          teacherData={undefined}
-        />
-      )}
-
-      {modalType === "student" && (
-        <StudentModal
-          isOpen={true}
-          mode="create"
-          onClose={() => setModalType(null)}
-          refreshStudents={() => window.location.reload()}
-        />
-      )}
-      {modalView.type === "view" && modalView.data && (
-        <TeacherCardModal
-          isOpen={true}
-          teacher={modalView.data}
-          onClose={() => setModalView({ type: null, data: null })}
-        />
-      )}
-        {modalStudentView.type === "view" && modalStudentView.data && (
-        <StudentCardModal
-          isOpen={true}
-          onClose={() => setmodalStudentView({ type: null, data: null })}
-          student={modalStudentView.data}
-        />
-      )}
-
-      {logout && <Logout onClose={() => setLogout(false)} />}
-    </div>
-  );
-}
+export default AdminPage;

@@ -1,29 +1,37 @@
 import mongoose from "mongoose";
-import AttendanceCode from "./models/attendanceCode.js"; // Adjust path
+import bcrypt from "bcryptjs";
+import Admin from "./models/admin.js";
 
-const seedData = [
-  { code: "XY67B2", date: "2024-05-20" },
-  { code: "KL99P1", date: "2024-05-21" },
-  { code: "MN44Q8", date: "2024-05-22" },
-  { code: "RV12Z5", date: "2024-05-23" }
-];
+const MONGO_URI = "mongodb+srv://kirankhatri787_db_user:gMRyjJKgxXWYy8NJ@school.ilzuwoa.mongodb.net/"
 
-const seedDB = async () => {
+async function seedAdmin() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/smart-school");
-    
-    // Clear existing data to avoid unique key errors
-    await AttendanceCode.deleteMany({});
-    
-    // Insert seed data
-    await AttendanceCode.insertMany(seedData);
-    
-    console.log("Database Seeded successfully! ✅");
+    await mongoose.connect(MONGO_URI);
+
+    const existingAdmin = await Admin.findOne({
+      email: "kiran.khatri.787@gmail.com",
+    });
+
+    if (existingAdmin) {
+      console.log("Admin already exists");
+      process.exit();
+    }
+
+    const hashedPassword = await bcrypt.hash("Bhadaure@123", 10);
+
+    await Admin.create({
+      name: "Super Admin",
+      email: "kiran.khatri.787@gmail.com",
+      password: hashedPassword,
+    });
+
+    console.log("Admin seeded successfully");
+
     process.exit();
-  } catch (err) {
-    console.error("Error seeding database: ❌", err);
+  } catch (error) {
+    console.error("Seeding failed", error);
     process.exit(1);
   }
-};
+}
 
-seedDB();
+seedAdmin();

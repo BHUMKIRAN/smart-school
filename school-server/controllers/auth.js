@@ -14,8 +14,10 @@ const login = async (req, res) => {
     if (role === "student") {
       // Populate the 'grade' field to get full grade object
       user = await Student.findOne({ email }).populate("grade");
+      
     } else if (role === "teacher") {
       user = await Teacher.findOne({ email });
+
     } else if (role === "admin") {
       user = await Admin.findOne({ email });
     } else {
@@ -39,7 +41,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: role },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     // Respond with user info including populated grade
@@ -54,7 +56,6 @@ const login = async (req, res) => {
         grade: user.grade, // This now contains the full grade object (id, name, section)
       },
     });
-
   } catch (error) {
     res.status(500).json({ message: "Server Error", error: error.message });
   }

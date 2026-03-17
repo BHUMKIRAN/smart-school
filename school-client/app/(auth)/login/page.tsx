@@ -18,6 +18,7 @@ import { credentials } from '@/store/authSlice';
 import { login } from '@/Backend/auth';
 import { toast } from 'sonner';
 import Logo from '@/components/shared/logo';
+import { setCookie } from 'nookies'
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -64,7 +65,16 @@ export default function LoginPage() {
       if (!data?.user || !data?.token) {
         throw new Error('Invalid login response');
       }
+
+      // Dispatch to Redux
       dispatch(credentials({ user: data.user, token: data.token }));
+
+      // ✅ Set JWT in cookie for SSR
+      setCookie(null, 'token', data.token, {
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        path: '/', // cookie available for all routes
+      });
+
       toast.success(`स्वागत छ, ${data.user.name}!`);
 
       const nextPath =
@@ -76,7 +86,6 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6">
       <div className="w-full max-w-[450px] space-y-8">
@@ -102,8 +111,8 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => handleRoleChange(r.id as any)}
                 className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${role === r.id
-                    ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
-                    : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
+                  ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
+                  : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
                   }`}
               >
                 {r.icon}

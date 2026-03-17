@@ -1,85 +1,35 @@
-'use client';
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import jwt from "jsonwebtoken";
+import TeachersPanelPage from "./teacher";
 
-import { useState } from 'react';
-import TeacherNav from '@/components/features/teacher/TeacherNav';
-import StatsCards from '@/components/features/teacher/dashboard';
-import TabButtons from '@/components/features/teacher/TabButtons';
-import AttendanceTab from '@/components/features/teacher/AttendanceTab';
-import ClassesTab from '@/components/features/teacher/ClassesTab';
-import SuccessModal from '@/components/features/teacher/SuccessModal';
-import Logout from '@/modals/LogoutModal';
-import CreateAssignment from '@/components/features/teacher/CreateAssigment';
-import TeacherHeader from '@/components/features/teacher/dashboard';
+const TeacherPage = async () => {
 
-export default function TeachersPanelPage() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [showModal, setShowModal] = useState(false);
-  const [logout, setLogout] = useState(false);
+    const Requestcookies = await cookies();
+    const token = Requestcookies.get("token")?.value;
 
-  const handleMarkAttendance = () => {
-    setShowModal(true);
-  };
+    if (!token) {
+        redirect("/login");
+    }
+    const secret = process.env.JWT_SECRET;
 
-  return (
-    <div className="min-h-screen  dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      <TeacherNav setLogout={setLogout} />
+    if (!secret) {
+        throw new Error("JWT secret is not defined");
+    }
 
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
-        <div className="space-y-12">
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    try {
+        const decoded: any= jwt.verify(token, secret);
 
-            {/* Left Column: Core Workflows (Attendance/Classes) */}
-            <div className="lg:col-span-8  space-y-6">
-              <div className="flex items-center gap-6 mb-2">
-                <TabButtons activeTab={activeTab} setActiveTab={setActiveTab} />
-                <div className="h-px flex-1 bg-slate-200/60 dark:bg-slate-800/60" />
-              </div>
+        // Role check
+        if (decoded.role !== "teacher") {
+            redirect("/login");
+        }
+    } catch (error) {
+        console.log("this errror is comming from teacher page",error);
+    }
 
-              <div className="min-h-[500px]">
-                {activeTab === 'attendance' && (
-                  <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-                    <AttendanceTab
-                      onMarked={handleMarkAttendance}
-                    />
-                  </div>
-                )}
-                {activeTab === 'classes' && (
-                  <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-                    <ClassesTab />
-                  </div>
-                )}
-                {activeTab === 'dashboard' && (
-                  <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-                    <TeacherHeader />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Right Column: Actions & Tools */}
-            <aside className="lg:col-span-4 space-y-6 sticky top-24">
-              <div className="group">
-                <div className="flex items-center gap-2 mb-4 px-1">
-                  <span className="w-1.5 h-4 bg-indigo-600 rounded-full" />
-                  <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Quick Actions</h2>
-                </div>
-                <CreateAssignment />
-              </div>
-
-              {/* Optional: Add a simple help card or small news snippet here later */}
-            </aside>
-
-          </div>
-        </div>
-      </main>
-
-      {/* Overlays */}
-      <SuccessModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-      />
-      {logout && <Logout onClose={() => setLogout(false)} />}
-    </div>
-  );
+    // If everything is valid → render dashboard
+    return <TeachersPanelPage />;
 }
+
+export default TeacherPage;
