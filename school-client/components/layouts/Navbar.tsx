@@ -1,10 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
-  LogIn,
-  UserPlus,
   GraduationCap,
   Users,
   ShieldCheck,
@@ -30,6 +28,16 @@ export default function Navbar() {
   const dispatch = useDispatch<AppDispatch>()
   const theme = useSelector((state: RootState) => state.theme.theme)
 
+  // Synchronize HTML class with theme state
+  useEffect(() => {
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [theme])
+
   const navLinks = [
     { name: 'गृहपृष्ठ', href: '#home' },
     { name: 'परिचय', href: '#about' },
@@ -43,48 +51,34 @@ export default function Navbar() {
       name: 'शिक्षक पोर्टल',
       href: '/login?role=teacher',
       icon: <Users size={18} />,
-      color: 'text-blue-600',
+      color: 'text-blue-500',
     },
     {
       name: 'विद्यार्थी पोर्टल',
       href: '/login?role=student',
       icon: <GraduationCap size={18} />,
-      color: 'text-emerald-600',
+      color: 'text-emerald-500',
     },
     {
       name: 'एडमिन पोर्टल',
       href: '/login?role=admin',
       icon: <ShieldCheck size={18} />,
-      color: 'text-rose-600',
+      color: 'text-rose-500',
     },
   ]
 
   const handleThemeToggle = () => {
-    dispatch(
-      toggleTheme({
-        theme: theme === 'light' ? 'dark' : 'light',
-      })
-    )
-
-    const root = document.documentElement
-
-    if (theme === 'light') {
-      root.classList.add('dark')
-      root.classList.remove('light')
-    } else {
-      root.classList.add('light')
-      root.classList.remove('dark')
-    }
+    dispatch(toggleTheme({ theme: theme === 'light' ? 'dark' : 'light' }))
   }
 
   return (
     <>
-      <nav className="sticky top-0 z-[100] p-3 navbar dark:bg-slate-950/90  border-b border-slate-200 dark:border-slate-800">
+      <nav className="navbar border-b py-3">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-
+            
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/" className="flex items-center gap-3">
               <Logo />
             </Link>
 
@@ -95,7 +89,7 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors nepali-text"
+                    className="text-sm font-semibold hover:text-slate-300 transition-opacity nepali-text text-white"
                   >
                     {link.name}
                   </Link>
@@ -103,59 +97,43 @@ export default function Navbar() {
               </div>
 
               <div className="flex items-center gap-3">
-
                 {/* Portal Dropdown */}
-                <div
-                  className="relative"
-                  onClick={()=>setIsPortalOpen(!isPortalOpen)}
-                   
-                >
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:border-blue-500/50">
-                    <span className="nepali-text">लगइन</span>
-                    <ChevronDown
-                      size={14}
-                      className={`transition-transform ${isPortalOpen ? 'translate-y-2' : ''
-                        }`}
-                    />
+                <div className="relative">
+                  <button 
+                    onClick={() => setIsPortalOpen(!isPortalOpen)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all"
+                  >
+                    <span className="nepali-text text-xs font-bold">लगइन</span>
+                    <ChevronDown size={14} className={`transition-transform ${isPortalOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {isPortalOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3">
-                      <div className="mb-2 px-2 py-1">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                          User Login
-                        </p>
-                      </div>
-
-                      <div className="space-y-1">
-                        {portals.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
-                          >
-                            <span
-                              className={`${item.color} p-2 rounded-lg bg-current/10`}
-                            >
-                              {item.icon}
-                            </span>
-
-                            <span className="nepali-text font-bold text-xs group-hover:translate-x-1 transition-transform">
-                              {item.name}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-
-
+                    <div className="absolute right-0 mt-3 w-60 card p-2 z-[110] animate-fadeIn">
+                      <p className="text-[10px] font-black uppercase tracking-widest px-3 py-2 opacity-50">
+                        Select Portal
+                      </p>
+                      {portals.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--muted-bg)] transition-colors group"
+                        >
+                          <span className={`${item.color} p-2 rounded-lg bg-current/10`}>
+                            {item.icon}
+                          </span>
+                          <span className="nepali-text font-bold text-xs !text-[var(--foreground)] group-hover:translate-x-1 transition-transform">
+                            {item.name}
+                          </span>
+                        </Link>
+                      ))}
                     </div>
                   )}
                 </div>
 
-                {/* Attendance */}
+                {/* Attendance Button - Using your .attendance-btn class */}
                 <button
                   onClick={() => setIsAttendanceOpen(true)}
-                  className="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-4 py-2 rounded-xl text-xs font-black flex items-center gap-2 transition-all active:scale-95 shadow-lg shadow-yellow-500/10"
+                  className="attendance-btn flex items-center gap-2"
                 >
                   <ClipboardCheck size={18} />
                   <span className="nepali-text">उपस्थिति</span>
@@ -164,13 +142,9 @@ export default function Navbar() {
                 {/* Theme Toggle */}
                 <button
                   onClick={handleThemeToggle}
-                  className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all"
+                  className="p-2.5 rounded-xl bg-white/10 hover:bg-[var(--accent)] hover:text-slate-900 transition-all"
                 >
-                  {theme === 'light' ? (
-                    <Moon size={20} />
-                  ) : (
-                    <Sun size={20} />
-                  )}
+                  {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
               </div>
             </div>
@@ -178,97 +152,77 @@ export default function Navbar() {
             {/* Mobile Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-900"
+              className="lg:hidden p-2 rounded-xl bg-white/10"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </nav>
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-[1000] bg-black/40 lg:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        >
-          <div
-            className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-slate-950 shadow-2xl p-6 transform transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-              }`}
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
-          >
-            {/* Close button */}
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-slate-900"
-            >
-              <X size={20} />
-            </button>
 
-            {/* Navigation Links */}
-            <div className="space-y-2 mt-8">
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[1000] bg-black/60 lg:hidden animate-fadeIn" onClick={() => setMobileMenuOpen(false)}>
+          <div 
+            className="fixed top-0 right-0 h-full w-72 bg-[var(--background)] p-6 shadow-2xl transition-transform"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-8">
+              <Logo />
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 rounded-full bg-[var(--muted-bg)]">
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-2 rounded-lg text-sm font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 nepali-text"
+                  className="block px-4 py-3 rounded-xl font-bold hover:bg-[var(--muted-bg)] nepali-text !text-[var(--foreground)]"
                 >
                   {link.name}
                 </Link>
               ))}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 my-4" />
+            <div className="h-[1px] bg-[var(--card-border)] my-6" />
 
-            {/* Login Portals */}
             <div className="space-y-2">
-              <p className="text-xs font-black uppercase text-slate-400 px-2">
-                Login Portals
-              </p>
-
+              <p className="text-xs font-black uppercase opacity-40 px-4 mb-2">Portals</p>
               {portals.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[var(--muted-bg)]"
                 >
-                  <span className={`${item.color}`}>{item.icon}</span>
-                  <span className="text-sm font-bold nepali-text">{item.name}</span>
+                  <span className={item.color}>{item.icon}</span>
+                  <span className="nepali-text font-bold !text-[var(--foreground)]">{item.name}</span>
                 </Link>
               ))}
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 my-4" />
-
-            {/* Attendance Button */}
-            <button
-              onClick={() => {
-                setIsAttendanceOpen(true)
-                setMobileMenuOpen(false)
-              }}
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-4 py-3 rounded-xl text-sm font-black flex items-center justify-center gap-2 transition-all mb-3"
-            >
-              <ClipboardCheck size={18} />
-              <span className="nepali-text">उपस्थिति</span>
-            </button>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={handleThemeToggle}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300"
-            >
-              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-              <span className="text-sm font-bold">
-                {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-              </span>
-            </button>
+            <div className="mt-8 space-y-3">
+               <button
+                  onClick={() => setIsAttendanceOpen(true)}
+                  className="attendance-btn w-full flex justify-center items-center gap-2 py-4"
+                >
+                  <ClipboardCheck size={20} />
+                  <span className="nepali-text text-base">उपस्थिति</span>
+                </button>
+                <button
+                  onClick={handleThemeToggle}
+                  className="w-full flex items-center justify-center gap-2 p-4 rounded-xl bg-[var(--muted-bg)] font-bold"
+                >
+                  {theme === 'light' ? <><Moon size={18} /> Dark Mode</> : <><Sun size={18} /> Light Mode</>}
+                </button>
+            </div>
           </div>
         </div>
       )}
-      <AttendanceModal
-        isOpen={isAttendanceOpen}
-        onClose={() => setIsAttendanceOpen(false)}
-      />
+
+      <AttendanceModal isOpen={isAttendanceOpen} onClose={() => setIsAttendanceOpen(false)} />
     </>
   )
 }

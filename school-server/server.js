@@ -79,7 +79,7 @@ app.use("/notices", noticeRoutes);
 
 app.use("/emergencyNotices", emergencyNoticeRoutes);
 
-app.use("/attendance", protect, attendanceRoutes);
+app.use("/attendance",  attendanceRoutes);
 
 app.use("/attendanceCode", protect, attendanceCodeRoutes);
 

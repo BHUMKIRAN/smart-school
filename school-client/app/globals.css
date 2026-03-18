@@ -8,294 +8,352 @@
    LIGHT MODE (DEFAULT)
 ========================= */
 :root {
-  /* Surface */
-  --background: #f8fafc; /* body background */
-  --foreground: #1e293b; /* text */
-  --card-bg: #ffffff; /* card / section background */
-  --card-border: #e2e8f0; /* card border */
-  --muted-bg: #f1f5f9;
-  --muted-text: #64748b;
+
+  /* Main Layout */
+  --background: #F5F7FA;
+  --foreground: #111827;
+
+  /* Cards */
+  --card-bg: #FFFFFF;
+  --card-border: #E5E7EB;
+
+  /* Muted */
+  --muted-bg: #F1F5F9;
+  --muted-text: #64748B;
 
   /* Brand Colors */
-  --primary: #1d63ff; /* buttons, highlights */
-  --primary-dark: #106ebe; 
-  --secondary: #f1f5f9; /* secondary sections */
-  --accent: #ffce32; /* highlights / borders */
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
 
-  /* Semantic Colors */
-  --success: #10b981;
-  --warning: #ffce32;
-  --error: #ef4444;
-  --info: #1d63ff;
+  --secondary: #C62828;
+  --accent: #F4C430;
+
+  /* Semantic */
+  --success: #10B981;
+  --warning: #FFCE32;
+  --error: #EF4444;
+  --info: #1D63FF;
 
   /* Navbar / Footer */
-  --nav-bg: rgba(255, 255, 255, 0.98);
-  --nav-border: #e2e8f0;
-  --nav-text: #1e293b;
-  --footer-bg: #f1f5f9;
+  --nav-bg: #1E40AF;
+  --nav-border: #1E3A8A;
+  --nav-text: #FFFFFF;
+
+  --footer-bg: #1E3A8A;
+  --footer-text: #E2E8F0;
 
   /* Inputs */
-  --input-bg: #ffffff;
-  --input-border: #cbd5e1;
-  --input-text: #1e293b;
+  --input-bg: #FFFFFF;
+  --input-border: #CBD5E1;
+  --input-text: #111827;
 
   /* Ticker */
-  --ticker-bg: #fffbeb;
-  --ticker-border: #ffce32;
+  --ticker-bg: #FFFBEB;
+  --ticker-border: #FACC15;
 
-  /* Dashboard / Portal */
-  --dash-bg: #f1f5f9;
-  --dash-surface: #ffffff;
-  --dash-surface-2: #f8fafc;
-  --dash-border: #e2e8f0;
-  --dash-text: #1e293b;
-  --dash-text-muted: #64748b;
-  --dash-sidebar-bg: #ffffff;
-  --dash-sidebar-border: #e2e8f0;
-  --dash-sidebar-active: #1d63ff;
-  --dash-sidebar-hover: #f1f5f9;
-  --dash-glass: rgba(255, 255, 255, 0.8);
-  --dash-glass-border: rgba(0, 0, 0, 0.05);
+  /* Dashboard */
+  --dash-bg: #F1F5F9;
+  --dash-surface: #FFFFFF;
+  --dash-surface-2: #F8FAFC;
+  --dash-border: #E2E8F0;
+  --dash-text: #1E293B;
+  --dash-text-muted: #64748B;
 
-  /* Radius */
+  --dash-sidebar-bg: #FFFFFF;
+  --dash-sidebar-border: #E2E8F0;
+  --dash-sidebar-active: #2563EB;
+  --dash-sidebar-hover: #F1F5F9;
+
+  --dash-glass: rgba(255,255,255,0.8);
+  --dash-glass-border: rgba(0,0,0,0.05);
+
   --radius: 0.5rem;
 }
 
 /* =========================
-   DARK MODE OVERRIDES
+   DARK MODE
 ========================= */
 html.dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card-bg: #1e293b;
+
+  --background: #0F172A;
+  --foreground: #F8FAFC;
+
+  --card-bg: #1E293B;
   --card-border: #334155;
-  --muted-bg: #1e293b;
-  --muted-text: #94a3b8;
 
-  --primary: #3b82f6;
-  --primary-dark: #1d63ff;
-  --secondary: #1e293b;
-  --accent: #ffce32;
+  --muted-bg: #1E293B;
+  --muted-text: #94A3B8;
 
-  --success: #34d399;
-  --warning: #ffce32;
-  --error: #f87171;
-  --info: #60a5fa;
+  --primary: #3B82F6;
+  --primary-dark: #1D63FF;
 
-  --nav-bg: rgba(15, 23, 42, 0.95);
+  --secondary: #1E293B;
+  --accent: #F4C430;
+
+  --success: #34D399;
+  --warning: #FFCE32;
+  --error: #F87171;
+  --info: #60A5FA;
+
+  --nav-bg: #0F172A;
   --nav-border: #334155;
-  --nav-text: #f8fafc;
-  --footer-bg: #162032;
+  --nav-text: #F8FAFC;
 
-  --dash-bg: #0f172a;
-  --dash-surface: #1e293b;
+  --footer-bg: #162032;
+  --footer-text: #94A3B8;
+
+  --dash-bg: #0F172A;
+  --dash-surface: #1E293B;
   --dash-surface-2: #162032;
   --dash-border: #334155;
-  --dash-text: #f8fafc;
-  --dash-text-muted: #94a3b8;
-  --dash-sidebar-bg: #1e293b;
+  --dash-text: #F8FAFC;
+  --dash-text-muted: #94A3B8;
+
+  --dash-sidebar-bg: #1E293B;
   --dash-sidebar-border: #334155;
-  --dash-sidebar-active: #3b82f6;
+  --dash-sidebar-active: #3B82F6;
   --dash-sidebar-hover: #334155;
-  --dash-glass: rgba(30, 41, 59, 0.85);
-  --dash-glass-border: rgba(255, 255, 255, 0.08);
+
+  --dash-glass: rgba(30,41,59,0.85);
+  --dash-glass-border: rgba(255,255,255,0.08);
 }
 
 /* =========================
    BASE LAYER
 ========================= */
 @layer base {
-  * {
-    @apply m-0 p-0 box-border;
-  }
 
-  html {
-    scroll-behavior: smooth;
-  }
+*{
+  @apply m-0 p-0 box-border;
+}
 
-  body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: "Inter", "Noto Sans Devanagari", sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+html{
+  scroll-behavior:smooth;
+}
 
-  .nepali-text {
-    font-family: "Noto Sans Devanagari", sans-serif;
-  }
+body{
+  background:var(--background);
+  color:var(--foreground);
+  font-family:"Inter","Noto Sans Devanagari",sans-serif;
+  transition:background .3s,color .3s;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-    color: var(--foreground);
-  }
+.nepali-text{
+  font-family:"Noto Sans Devanagari",sans-serif;
+}
 
-  a {
-    color: var(--primary);
-    transition: color 0.2s ease;
-  }
+h1,h2,h3,h4,h5,h6{
+  color:var(--foreground);
+}
 
-  a:hover {
-    color: var(--primary-dark);
-  }
+a{
+  color:var(--primary);
+  transition:color .2s;
+}
 
-  input, textarea, select {
-    background-color: var(--input-bg);
-    border-color: var(--input-border);
-    color: var(--input-text);
-    @apply outline-none rounded-lg px-4 py-2;
-  }
+a:hover{
+  color:var(--primary-dark);
+}
+
+input,textarea,select{
+  background:var(--input-bg);
+  border:1px solid var(--input-border);
+  color:var(--input-text);
+  @apply outline-none rounded-lg px-4 py-2;
+}
+
 }
 
 /* =========================
-   COMPONENTS LAYER
+   COMPONENTS
 ========================= */
 @layer components {
-  .hero-gradient {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  }
 
-  .card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    @apply rounded-xl shadow-sm transition-all duration-300;
-  }
-  .card:hover {
-    @apply -translate-y-1 shadow-md;
-  }
+/* HERO */
 
-  .stat-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    @apply p-6 rounded-xl text-center shadow-sm transition-colors duration-300;
-  }
-  .stat-number {
-    color: var(--primary);
-    @apply text-3xl font-bold;
-  }
+.hero-gradient{
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+}
 
-  .icon-box {
-    background-color: color-mix(in srgb, var(--primary) 15%, transparent);
-    @apply w-12 h-12 rounded-xl flex items-center justify-center;
-  }
+/* CARDS */
 
-  .accent-bar {
-    background-color: var(--accent);
-    @apply w-12 h-1 rounded-full;
-  }
+.card{
+background:var(--card-bg);
+border:1px solid var(--card-border);
+@apply rounded-xl shadow-sm transition-all duration-300;
+}
 
-  .btn {
-    @apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300;
-  }
-  .btn-primary {
-    background-color: var(--primary);
-    @apply text-white;
-  }
-  .btn-primary:hover {
-    background-color: var(--primary-dark);
-    @apply -translate-y-0.5 shadow-lg;
-  }
+.card:hover{
+@apply -translate-y-1 shadow-md;
+}
 
-  .attendance-btn {
-    @apply relative px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  }
-  .attendance-btn:hover {
-    @apply scale-105 shadow-lg;
-  }
+/* STAT CARD */
 
-  .notice-ticker {
-    background-color: var(--ticker-bg);
-    border-left: 4px solid var(--ticker-border);
-    @apply overflow-hidden;
-  }
-  .ticker-content {
-    @apply inline-block whitespace-nowrap;
-    animation: scroll 30s linear infinite;
-  }
+.stat-card{
+background:var(--card-bg);
+border:1px solid var(--card-border);
+@apply p-6 rounded-xl text-center shadow-sm;
+}
 
-  .modal-content {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    color: var(--foreground);
-    @apply rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
-    animation: modalSlideIn 0.3s ease;
-  }
+.stat-number{
+color:var(--primary);
+@apply text-3xl font-bold;
+}
 
-  .tab-button {
-    color: var(--muted-text);
-    @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200;
-  }
-  .tab-active {
-    background-color: var(--primary);
-    @apply text-white;
-  }
+/* ICON BOX */
 
-  .navbar {
-    background-color: var(--nav-bg);
-    border-bottom: 1px solid var(--nav-border);
-    @apply sticky top-0 z-50 backdrop-blur-lg;
-    color: var(--nav-text);
-  }
+.icon-box{
+background:color-mix(in srgb,var(--primary) 15%,transparent);
+@apply w-12 h-12 rounded-xl flex items-center justify-center;
+}
 
-  footer {
-    background-color: var(--footer-bg);
-    color: var(--muted-text);
-    @apply py-8 px-6;
-  }
+/* ACCENT */
 
-  /* Dashboard Classes */
-  .dash-page {
-    background-color: var(--dash-bg);
-    color: var(--dash-text);
-    @apply min-h-screen transition-colors duration-300;
-  }
-  .dash-sidebar {
-    background-color: var(--dash-sidebar-bg);
-    border-right: 1px solid var(--dash-sidebar-border);
-    @apply transition-all duration-300;
-  }
-  .dash-card {
-    background-color: var(--dash-surface);
-    border: 1px solid var(--dash-border);
-    @apply rounded-xl transition-colors duration-300;
-  }
-  .dash-table td {
-    @apply px-6 py-4;
-    color: var(--dash-text);
-  }
-  .dash-input {
-    background-color: var(--dash-surface);
-    border: 1px solid var(--dash-border);
-    color: var(--dash-text);
-    @apply px-4 py-2.5 rounded-lg outline-none transition-all;
-  }
-  .dash-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(29, 99, 255, 0.2);
-  }
+.accent-bar{
+background:var(--accent);
+@apply w-12 h-1 rounded-full;
+}
+
+/* BUTTONS */
+
+.btn{
+@apply inline-block px-7 py-2.5 rounded-lg font-semibold transition-all duration-300;
+}
+
+.btn-primary{
+background:var(--primary);
+color:white;
+}
+
+.btn-primary:hover{
+background:var(--primary-dark);
+@apply shadow-lg -translate-y-0.5;
+}
+
+/* ATTENDANCE BUTTON */
+
+.attendance-btn{
+@apply px-5 py-2 rounded-full text-sm font-semibold text-white cursor-pointer transition-all duration-300;
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+}
+
+.attendance-btn:hover{
+@apply scale-105 shadow-lg;
+}
+
+/* TICKER */
+
+.notice-ticker{
+background:var(--ticker-bg);
+border-left:4px solid var(--ticker-border);
+@apply overflow-hidden;
+}
+
+.ticker-content{
+@apply inline-block whitespace-nowrap;
+animation:scroll 30s linear infinite;
+}
+
+/* MODAL */
+
+.modal-content{
+background:var(--card-bg);
+border:1px solid var(--card-border);
+color:var(--foreground);
+@apply rounded-2xl p-8 max-w-lg w-11/12 max-h-[80vh] overflow-y-auto relative;
+animation:modalSlideIn .3s ease;
+}
+
+/* TABS */
+
+.tab-button{
+color:var(--muted-text);
+@apply px-4 py-2 text-sm font-medium rounded-lg transition;
+}
+
+.tab-active{
+background:var(--primary);
+color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:var(--nav-bg);
+color:var(--nav-text);
+border-bottom:1px solid var(--nav-border);
+@apply sticky top-0 z-50 backdrop-blur-lg;
+}
+
+/* FOOTER */
+
+footer{
+background:var(--footer-bg);
+color:var(--footer-text);
+@apply py-8 px-6;
+}
+
+/* DASHBOARD */
+
+.dash-page{
+background:var(--dash-bg);
+color:var(--dash-text);
+@apply min-h-screen;
+}
+
+.dash-sidebar{
+background:var(--dash-sidebar-bg);
+border-right:1px solid var(--dash-sidebar-border);
+}
+
+.dash-card{
+background:var(--dash-surface);
+border:1px solid var(--dash-border);
+@apply rounded-xl;
+}
+
+.dash-table td{
+@apply px-6 py-4;
+color:var(--dash-text);
+}
+
+.dash-input{
+background:var(--dash-surface);
+border:1px solid var(--dash-border);
+color:var(--dash-text);
+@apply px-4 py-2.5 rounded-lg outline-none;
+}
+
+.dash-input:focus{
+border-color:var(--primary);
+box-shadow:0 0 0 2px rgba(29,99,255,.2);
+}
+
 }
 
 /* =========================
    ANIMATIONS
 ========================= */
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+
+@keyframes scroll{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
 }
 
-@keyframes modalSlideIn {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+@keyframes modalSlideIn{
+from{transform:translateY(-20px);opacity:0}
+to{transform:translateY(0);opacity:1}
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
 }
 
-.animate-scroll {
-  animation: scroll 30s linear infinite;
+.animate-scroll{
+animation:scroll 30s linear infinite;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease;
+.animate-fadeIn{
+animation:fadeIn .3s ease;
 }

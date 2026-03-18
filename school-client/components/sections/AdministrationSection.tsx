@@ -3,12 +3,13 @@
 import { getTeachers } from "@/Backend/getTeacher";
 import { useEffect, useState } from "react";
 
-// Avatar component with fallback
+// Avatar component with theme-aware fallback
 const Avatar = ({ image, name, className }: any) => {
   if (image) {
+    const url = image.startsWith("//") ? `https:${image}` : image;
     return (
       <img
-        src={image.startsWith("//") ? `https:${image}` : image} // inline fix
+        src={url}
         alt={name}
         className={`w-full h-full object-cover ${className}`}
       />
@@ -16,18 +17,16 @@ const Avatar = ({ image, name, className }: any) => {
   }
 
   return (
-    <div
-      className={`flex items-center justify-center bg-blue-600 text-white font-black text-3xl ${className}`}
-    >
+    <div className={`flex items-center justify-center bg-[var(--primary)] text-white font-black text-3xl ${className}`}>
       {name?.charAt(0)}
     </div>
   );
 };
 
-// Social links component
+// Social links styled with theme variables
 const SocialLinksGroup = ({ facebook, twitter }: { facebook?: string; twitter?: string }) => {
-  const iconClass =
-    "p-2 dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm";
+  const iconClass = "p-2 bg-[var(--muted-bg)] text-[var(--primary)] rounded-xl hover:bg-[var(--primary)] hover:text-white transition-all duration-300 shadow-sm border border-[var(--card-border)]";
+  
   return (
     <div className="flex items-center justify-center gap-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
       <a href={facebook || "#"} className={iconClass}>
@@ -50,12 +49,11 @@ export default function AdministrationSection() {
   useEffect(() => {
     getTeachers()
       .then((res) => setData(res))
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
-  const sectionTitle = data[0]?.fields.title || "";
+  const sectionTitle = data[0]?.fields.title || "हाम्रो प्रशासन";
 
-  // Leadership filter (प्रधानाध्यापक, उपप्रधानाध्यापक)
   const leadership = (data[0]?.fields.card || []).filter((t: any) =>
     ["प्रधानाध्यापक", "उपप्रधानाध्यापक"].includes(t.fields.post)
   );
@@ -65,41 +63,49 @@ export default function AdministrationSection() {
   );
 
   return (
-    <section className="py-5 px-6 dark:bg-slate-950 transition-colors duration-500 overflow-hidden">
+    <section className="py-10 px-6 bg-[var(--background)] transition-colors duration-500 overflow-hidden">
       <div className="max-w-7xl mx-auto">
+        
         {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h2 className="text-2xl md:text-5xl font-black text-slate-900 dark:text-white nepali-text leading-tight">
-            <span className="text-blue-600 relative">
+        <div className="text-center mb-16 space-y-4 animate-fadeIn">
+          <h2 className="text-3xl md:text-5xl font-black text-[var(--foreground)] nepali-text leading-tight">
+            <span className="relative">
               {sectionTitle}
-              <svg className="absolute -bottom-2 left-0 w-full h-2 text-yellow-400" viewBox="0 0 100 10" preserveAspectRatio="none">
-                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="4" />
+              <svg className="absolute -bottom-3 left-0 w-full h-3 text-[var(--accent)] opacity-70" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 25 0, 50 5 T 100 5" fill="none" stroke="currentColor" strokeWidth="6" />
               </svg>
             </span>
           </h2>
-          <div className="w-20 h-1.5 bg-yellow-400 mx-auto rounded-full mt-6"></div>
+          <div className="accent-bar mx-auto mt-8"></div>
         </div>
 
-        {/* Leadership Section */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-10">
+        {/* Leadership Section - Two large cards */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-20">
           {leadership.map((leader: any, i: number) => (
-            <div key={i} className="group relative bg-secondary dark:bg-slate-900 p-6 rounded-[3rem] border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center gap-6 hover:shadow-2xl transition-all duration-500">
-              <div className="relative w-40 h-48 flex-shrink-0">
-                <div className="absolute inset-0 rounded-[2.5rem] rotate-6 transition-transform duration-500 opacity-10"></div>
-                <Avatar image={leader.fields.image?.fields?.file?.url} name={leader.fields.name} className="relative z-10 w-full h-full rounded-[2.5rem]" />
+            <div key={i} className="card group p-8  flex flex-col md:flex-row items-center gap-8 hover:shadow-2xl transition-all duration-500 border-l-8 border-l-[var(--primary)]">
+              <div className="relative w-44 h-52 flex-shrink-0">
+                <div className="absolute inset-0  rounded-[2.5rem] rotate-6 opacity-10 group-hover:rotate-0 transition-transform duration-500"></div>
+                <Avatar 
+                  image={leader.fields.image?.fields?.file?.url} 
+                  name={leader.fields.name} 
+                  className="relative z-10 w-full h-full rounded-[2.5rem]  border-4 border-[var(--card-bg)]" 
+                />
               </div>
               <div className="text-center md:text-left flex-1 space-y-4">
                 <div>
-                  <span className="text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-tighter">
+                  <span className="px-3 py-1 bg-[var(--muted-bg)] text-[var(--primary)] text-xs font-black rounded-full uppercase tracking-tighter border border-[var(--card-border)]">
                     {leader.fields.post}
                   </span>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white nepali-text mt-1">
+                  <h3 className="text-3xl font-black text-[var(--foreground)] nepali-text mt-3">
                     {leader.fields.name}
                   </h3>
                 </div>
-                <p className="text-slate-500 dark:text-slate-400 font-bold nepali-text">विषय: {leader.fields.subject}</p>
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-center md:justify-start">
-                  <SocialLinksGroup facebook={leader.facebook} twitter={leader.twitter} />
+                <div className="space-y-1">
+                  <p className="text-[var(--primary)] font-bold nepali-text">विषय: {leader.fields.subject}</p>
+                  <p className="text-[var(--muted-text)] text-sm italic">{leader.fields.education}</p>
+                </div>
+                <div className="pt-4 border-t border-[var(--card-border)] flex justify-center md:justify-start">
+                  <SocialLinksGroup facebook={leader.fields.facebook} twitter={leader.fields.twitter} />
                 </div>
               </div>
             </div>
@@ -107,25 +113,32 @@ export default function AdministrationSection() {
         </div>
 
         {/* Teachers Grid */}
-        <div className="dark:bg-slate-900 md:p-12 border border-slate-100 dark:border-slate-800 relative">
-          <h3 className="text-2xl font-black nepali-text mb-10 text-slate-800 dark:text-white flex items-center gap-1">
-            <span className="w-2 h-8 bg-blue-600 rounded-full"></span> शिक्षण कर्मचारीहरू
+        <div className="  md:p-14  relative overflow-hidden border-none">
+          <div className="absolute top-0 right-0 w-64 h-50 bg-[var(--primary)] opacity-[0.03] blur-[100px]"></div>
+          
+          <h3 className="text-2xl font-black nepali-text mb-16 text-[var(--foreground)] flex items-center gap-3">
+            <span className="w-2 h-8 bg-[var(--accent)] rounded-full"></span> शिक्षण कर्मचारीहरू
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-x-5 gap-y-10 ">
             {teacherList.map((t: any, i: number) => (
-              <div key={i} className="group relative hover:scale-110 pt-12 dark:bg-slate-800/50 text-center border border-transparent hover:border-blue-100 dark:hover:border-blue-900 transition-all hover:bg-white dark:hover:bg-slate-800">
-                <div className="absolute left-1/2 -top-9 -translate-x-1/2 w-28 h-28 rounded-2xl group-hover:scale-150 overflow-hidden border-4 border-white dark:border-slate-900 shadow-xl transition-transform">
-                  <Avatar image={t.fields.image?.fields?.file?.url} name={t.fields.name} className="w-full h-full object-cover" />
+              <div key={i} className="card group relative pt-16 pb-1 px-6 text-center hover:-translate-y-2 transition-all duration-500 ">
+                {/* Floating Avatar Box */}
+                <div className="absolute  left-1/2 top-1 -translate-x-1/2 w-24 h-24  group-hover:scale-110 overflow-hidden border-2 rounded-2xl shadow-xl transition-all duration-500 z-20">
+                  <Avatar image={t.fields.image?.fields?.file?.url} name={t.fields.name} className="w-full h-full" />
                 </div>
-                <div className="mt-8 space-y-3">
-                  <h4 className="font-black text-slate-900 dark:text-white nepali-text text-xl">{t.fields.name}</h4>
-                  <span className="text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest">{t.fields.post}</span>
-                  <div className="pt-4 border-t border-slate-200 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 nepali-text">
-                    <p className="font-bold">विषय: {t.fields.subject}</p>
-                    <p className="italic">{t.fields.education}</p>
+                
+                <div className="space-y-3 mt-10">
+                  <h4 className="font-black text-[var(--foreground)] nepali-text text-xl group-hover:text-[var(--primary)] transition-colors">{t.fields.name}</h4>
+                  <span className="inline-block px-2 py-0.5 bg-[var(--muted-bg)] text-[var(--primary)] text-[10px] font-black rounded-md border border-[var(--card-border)] uppercase tracking-widest">{t.fields.post}</span>
+                  
+                  <div className="pt-4 border-t border-[var(--card-border)] text-xs text-[var(--muted-text)] nepali-text">
+                    <p className="font-bold text-[var(--foreground)]">विषय: {t.fields.subject}</p>
+                    <p className="italic mt-1 opacity-80">{t.fields.education}</p>
                   </div>
+
                   <div className="pt-4 flex justify-center">
-                    <SocialLinksGroup facebook={t.facebook} twitter={t.twitter} />
+                    <SocialLinksGroup facebook={t.fields.facebook} twitter={t.fields.twitter} />
                   </div>
                 </div>
               </div>

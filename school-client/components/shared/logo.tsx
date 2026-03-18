@@ -1,37 +1,59 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
+
 export default function Logo() {
   const router = useRouter();
+
   return (
-    <div className="group flex items-center gap-3.5 cursor-pointer"
-    onClick={()=>router.push('/')}>
-      {/* Icon Container with Glass Effect and Glow */}
-      <div className="relative">
-        <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity"></div>
-        <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-200 rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300 border border-white/20">
-          <span className="text-white font-black text-xl nepali-text drop-shadow-md">
-            श्री
+    <div 
+      className="group flex items-center cursor-pointer select-none py-2 gap-3"
+      onClick={() => router.push('/')}
+    >
+      {/* --- THE MEDALLION --- */}
+      <div className="relative flex items-center justify-center">
+        {/* Outer Ring - feels like a formal seal */}
+        <div className="w-16 h-16 rounded-full border-[3px] border-[var(--accent)] flex items-center justify-center transition-all duration-500 group-hover:bg-[var(--accent)]">
+          {/* Inner Circle */}
+          <div className="w-[85%] h-[85%] rounded-full border border-[var(--accent)]/30 flex items-center justify-center bg-white shadow-sm">
+             <span className="text-[var(--primary)] font-black text-2xl nepali-text mt-1">
+              श्री
+            </span>
+          </div>
+        </div>
+        
+        {/* Decorative "Stamp" dots - a human touch used in official seals */}
+        
+      </div>
+
+      {/* --- THE TYPOGRAPHIC DIVIDER --- */}
+      <div className="h-12 w-[2px] bg-[var(--accent)]/40 rounded-full" />
+
+      {/* --- THE IDENTITY --- */}
+      <div className="flex flex-col">
+        <h1 className="text-2xl md:text-2xl font-black text-white leading-none nepali-text tracking-normal  transition-colors">
+          पञ्चावती
+        </h1>
+        
+        <div className="flex flex-col mt-1">
+          <span className="text-[13px] md:text-[14px] font-bold text-[var(--accent)] nepali-text leading-tight">
+            आधारभूत विद्यालय
           </span>
           
-       
+          <div className="flex items-center gap-2 mt-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.35em] text-[var(--muted-text)] opacity-80">
+              Bhadaure , Rautamai
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Text Container */}
-      <div className="flex flex-col justify-center">
-        <h1 className="text-[17px] md:text-[19px] font-black text-slate-900 leading-none tracking-tight nepali-text">
-          श्री पञ्चावती
-          <span className="block text-blue-600 text-[13px] md:text-[14px] font-bold mt-0.5">
-            आधारभूत विद्यालय
-          </span>
-        </h1>
-        
-        <div className="flex items-center gap-1.5 mt-1">
-          <p className="text-[10px] uppercase font-black tracking-[0.15em] text-slate-400">
-            Bhadure, Rautamai
-          </p>
-        </div>
-      </div>
+      <style jsx>{`
+        .nepali-text {
+          /* Removing digital skew, focusing on clean, heavy weight */
+          line-height: 1;
+        }
+      `}</style>
     </div>
   );
 }

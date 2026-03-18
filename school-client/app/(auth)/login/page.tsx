@@ -18,27 +18,21 @@ import { credentials } from '@/store/authSlice';
 import { login } from '@/Backend/auth';
 import { toast } from 'sonner';
 import Logo from '@/components/shared/logo';
-import { setCookie } from 'nookies'
+import { setCookie } from 'nookies';
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const roleParam = searchParams.get('role')?.toLowerCase() as
-    | 'student'
-    | 'teacher'
-    | 'admin'
-    | undefined;
+  const roleParam = searchParams.get('role')?.toLowerCase() as 'student' | 'teacher' | 'admin' | undefined;
 
-  // Initialize role from query param
   const [role, setRole] = useState<'student' | 'teacher' | 'admin'>(roleParam || 'student');
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Update role if query param changes
   useEffect(() => {
     if (roleParam && roleParam !== role) {
       setRole(roleParam);
@@ -51,140 +45,139 @@ export default function LoginPage() {
   };
 
   const roles = [
-    { id: 'student', name: 'विद्यार्थी', icon: <GraduationCap size={20} /> },
-    { id: 'teacher', name: 'शिक्षक', icon: <Users size={20} /> },
-    { id: 'admin', name: 'प्रशासक', icon: <ShieldCheck size={20} /> },
+    { id: 'student', name: 'विद्यार्थी', icon: <GraduationCap size={18} /> },
+    { id: 'teacher', name: 'शिक्षक', icon: <Users size={18} /> },
+    { id: 'admin', name: 'प्रशासक', icon: <ShieldCheck size={18} /> },
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       const data = await login({ email, password, role });
-      if (!data?.user || !data?.token) {
-        throw new Error('Invalid login response');
-      }
+      if (!data?.user || !data?.token) throw new Error('Invalid login response');
 
-      // Dispatch to Redux
       dispatch(credentials({ user: data.user, token: data.token }));
-
-      // ✅ Set JWT in cookie for SSR
-      setCookie(null, 'token', data.token, {
-        maxAge: 7 * 24 * 60 * 60, // 7 days
-        path: '/', // cookie available for all routes
-      });
-
+      setCookie(null, 'token', data.token, { maxAge: 7 * 24 * 60 * 60, path: '/' });
       toast.success(`स्वागत छ, ${data.user.name}!`);
 
-      const nextPath =
-        role === 'admin' ? '/admin' : role === 'teacher' ? '/teacher' : '/student';
+      const nextPath = role === 'admin' ? '/admin' : role === 'teacher' ? '/teacher' : '/student';
       router.push(nextPath);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'लगइन असफल भयो। विवरण जाँच गर्नुहोस्।');
+      toast.error(err.response?.data?.message || 'लगइन असफल भयो।');
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6">
-      <div className="w-full max-w-[450px] space-y-8">
-        <div className="flex justify-center">
-          <Logo />
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 shadow-2xl shadow-blue-500/5">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-black text-slate-900 dark:text-white nepali-text">
-              स्वागत छ!
-            </h2>
-            <p className="text-slate-500 text-sm mt-1 font-medium">
-              अगाडि बढ्न आफ्नो विवरण भर्नुहोस्
-            </p>
-          </div>
-
-          {/* Role Switcher */}
-          <div className="grid grid-cols-3 gap-2 p-1.5 bg-slate-100 dark:bg-slate-800/50 rounded-2xl mb-8">
-            {roles.map((r) => (
-              <button
-                key={r.id}
-                type="button"
-                onClick={() => handleRoleChange(r.id as any)}
-                className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-all duration-300 ${role === r.id
-                  ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 scale-100'
-                  : 'text-slate-400 hover:text-slate-600 opacity-60 scale-95'
-                  }`}
-              >
-                {r.icon}
-                <span className="text-[10px] font-black nepali-text uppercase">{r.name}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Form */}
-          <form className="space-y-5" onSubmit={handleLogin}>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-widest">
-                Email / Username
-              </label>
-              <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={18} />
-                <input
-                  type="text"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="example@school.com"
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-sm"
-                />
-              </div>
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
+      <div className="w-full max-w-[400px] animate-fadeIn">
+        
+        <div className="card overflow-hidden border-none shadow-xl">
+          {/* Top Header Section with Logo */}
+          <header className="bg-primary-dark py-1 flex flex-col items-center justify-center text-white">
+            <div className=" p-2  mb-3 ">
+               <Logo />
             </div>
+           
+          </header>
 
-            <div className="space-y-2">
-              <div className="flex justify-between items-center px-1">
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-                  Password
-                </label>
-                <button type="button" onClick={() => router.push('/forget-password')} className="text-[11px] font-bold text-blue-600 hover:underline">
-                  बिर्सनुभयो?
-                </button>
-              </div>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={18} />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-sm"
-                />
+          <div className="p-6 md:p-8">
+            {/* Role Switcher */}
+            <div className="flex bg-[var(--muted-bg)] p-1 rounded-lg mb-6 border border-[var(--card-border)]">
+              {roles.map((r) => (
                 <button
+                  key={r.id}
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  onClick={() => handleRoleChange(r.id as any)}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md transition-all text-xs font-bold nepali-text ${
+                    role === r.id
+                      ? 'bg-[var(--card-bg)] text-[var(--primary)] shadow-sm border border-[var(--card-border)]'
+                      : 'text-[var(--muted-text)] hover:text-[var(--foreground)]'
+                  }`}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {r.icon}
+                  <span className="hidden sm:inline">{r.name}</span>
                 </button>
-              </div>
+              ))}
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl font-black text-sm shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:hover:translate-y-0"
-            >
-              {isLoading ? (
-                <Loader2 className="animate-spin" size={20} />
-              ) : (
-                <>
-                  <span className="nepali-text text-base">लगइन गर्नुहोस्</span>
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
+            <form className="space-y-4" onSubmit={handleLogin}>
+              {/* Input Group */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-[var(--muted-text)] uppercase tracking-wider ml-1">
+                  Email / Username
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted-text)]" size={16} />
+                  <input
+                    type="text"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="example@school.com"
+                    className="dash-input w-full pl-10 text-sm py-2.5 rounded-lg"
+                  />
+                </div>
+              </div>
+
+              {/* Password Group */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center px-1">
+                  <label className="text-[10px] font-bold text-[var(--muted-text)] uppercase tracking-wider">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/forget-password')}
+                    className="text-[10px] font-bold text-[var(--primary)] hover:underline nepali-text"
+                  >
+                    बिर्सनुभयो?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted-text)]" size={16} />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="dash-input w-full pl-10 pr-10 text-sm py-2.5 rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-text)] hover:text-[var(--primary)] transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="btn btn-primary w-full py-3 mt-2 flex items-center justify-center gap-2 group disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <Loader2 className="animate-spin" size={18} />
+                ) : (
+                  <>
+                    <span className="nepali-text">लगइन गर्नुहोस्</span>
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
+        
+        <p className="text-center mt-6 text-[var(--muted-text)] text-[11px] font-medium opacity-60">
+          &copy; {new Date().getFullYear()} School Management System
+        </p>
       </div>
     </div>
   );

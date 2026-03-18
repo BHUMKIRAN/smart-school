@@ -27,7 +27,7 @@ export default async function Home() {
   const content = await getSchoolPageContent();
 
   return (
-    <main className="min-h-screen text-primary dark:bg-gray-800 dark:text-gray-100 transition-colors">
+    <main className="min-h-screen bg-[#F5F7FA] text-primary dark:bg-gray-800 dark:text-gray-100 transition-colors">
       <EmergencyBanner />
       <Navbar />
       <NoticeTicker />

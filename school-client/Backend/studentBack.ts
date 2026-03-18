@@ -78,7 +78,7 @@ export const deleteStudent = async (
     return res.data;
   } catch (err) {
     console.error("Delete Student Error:", err);
-    toast.error("Failed to delete student");
+   
     throw err;
   }
 };
