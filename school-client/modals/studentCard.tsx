@@ -26,7 +26,9 @@ export default function StudentCardModal({
 
   if (!student) return null;
 
-  const getGradeLabel = (grade: StudentCardModalProps["student"]["grade"] | null | undefined) => {
+  const getGradeLabel = (
+    grade: NonNullable<StudentCardModalProps["student"]>["grade"] | null | undefined
+  ) => {
     if (!grade) return "Not Assigned";
     if (typeof grade === "string") return grade;
     return `Grade ${grade.grade}${grade.section ? ` - ${grade.section}` : ""}`;

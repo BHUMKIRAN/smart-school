@@ -11,6 +11,7 @@ import {
   TrendingUp, ArrowUpRight, Bell,
   PlusCircle, ClipboardCheck, History, X
 } from "lucide-react";
+import type { LucideProps } from "lucide-react";
 import { api } from "@/Backend/axiosClientInstance";
 
 const data = [
@@ -27,7 +28,12 @@ const AdminHome = () => {
   const [section, setSection] = useState("");
   const [open, setOpen] = useState(false);
 
-  const stats = [
+  const stats: Array<{
+    label: string;
+    value: string;
+    icon: React.ReactElement<LucideProps>;
+    grow: string;
+  }> = [
     { label: "Students", value: "1,240", icon: <Users className="w-5 h-5" />, grow: "+12%" },
     { label: "Teachers", value: "84", icon: <GraduationCap className="w-5 h-5" />, grow: "+3%" },
     { label: "Attendance", value: "94.2%", icon: <CheckCircle className="w-5 h-5" />, grow: "+2.1%" },
@@ -67,7 +73,7 @@ const AdminHome = () => {
             </div>
             {/* Subtle background decoration */}
             <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-               {React.cloneElement(stat.icon as React.ReactElement, { size: 100 })}
+               {React.cloneElement(stat.icon, { size: 100 })}
             </div>
           </div>
         ))}
