@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import AttendanceClassModal from "@/modals/classAttendance";
-import axios from "axios";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 export default function AttendanceTab() {
   const [grades, setGrades] = useState<any[]>([]);
@@ -15,7 +14,7 @@ export default function AttendanceTab() {
   useEffect(() => {
     const loadGrades = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/grades`);
+        const res = await api.get(`/grades`);
         setGrades(res.data);
       } catch (err) {
         console.error("Failed to load grades", err);
@@ -28,7 +27,7 @@ export default function AttendanceTab() {
   const fetchStudents = async (grade: any) => {
     setSelectedGrade(grade);
     try {
-      const res = await axios.get(`${API_BASE_URL}/students?grade=${grade._id}`);
+      const res = await api.get(`/students`, { params: { grade: grade._id } });
       const studentsWithStatus = res.data.map((s: any) => ({
         ...s,
         status: "Present",
@@ -62,7 +61,7 @@ export default function AttendanceTab() {
         })),
       };
 
-      await axios.post(`${API_BASE_URL}/attendance/student/mark`, payload);
+      await api.post(`/attendance/student/mark`, payload);
       alert("Attendance Saved");
       setIsOpen(false);
     } catch (err) {

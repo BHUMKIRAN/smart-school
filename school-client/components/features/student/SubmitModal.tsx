@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { API_BASE_URL } from '@/lib/endpoints';
 import { toast } from 'sonner';
+import { api } from '@/Backend/axiosClientInstance';
 
 interface SubmitModalProps {
   isOpen: boolean;
@@ -74,9 +73,7 @@ export default function SubmitModal({ isOpen, assignmentId, subject, onClose, on
 
     try {
       setIsSubmitting(true);
-      await axios.post(`${API_BASE_URL}/submissions`, formData
-       
-      );
+      await api.post(`/submissions`, formData);
       toast.success("Assignment submitted successfully");
       onSubmitted(); // refresh assignments
       onClose(); // close modal

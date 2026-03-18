@@ -1,7 +1,6 @@
 'use client';
 
-import { API_BASE_URL } from "@/lib/endpoints";
-import axios from "axios";
+import { api } from "@/Backend/axiosClientInstance";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -11,7 +10,7 @@ const ApplicationsTab = () => {
   // Fetch applications from backend
   const getApplication = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/applications`);
+      const res = await api.get(`/applications`);
       setData(res.data);
     } catch (error: any) {
       toast.error("Failed to fetch applications");
@@ -26,7 +25,7 @@ const ApplicationsTab = () => {
   // Update application status
   const handleStatusChange = async (id: string, action: "approve" | "reject") => {
     try {
-      const res = await axios.put(`${API_BASE_URL}/applications/${id}/status`, { action });
+      const res = await api.put(`/applications/${id}/status`, { action });
       toast.success(res.data.message);
       // Refresh the applications list after update
       getApplication();

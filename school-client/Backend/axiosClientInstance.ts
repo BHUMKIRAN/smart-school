@@ -1,43 +1,38 @@
 import axios from "axios";
-import type { InternalAxiosRequestConfig } from "axios";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://smart-school-e0fm.onrender.com";
+  (process.env.NEXT_PUBLIC_API_URL || "https://smart-school-e0fm.onrender.com").replace(/\/+$/, "");
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true, // send cookies if backend uses them
+  withCredentials: true, // send cookies along with requests
 });
 
-// Request Interceptor
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    // Prevent SSR crash in Next.js
-    if (typeof window !== "undefined") {
-      try {
-        const persisted = localStorage.getItem("persist:root");
+// Get token from Redux persist or cookie
+const getToken = (): string | null => {
+  if (typeof window === "undefined") return null;
 
-        if (persisted) {
-          const root = JSON.parse(persisted);
+  try {
 
-          if (root.auth) {
-            const auth = JSON.parse(root.auth);
-            const token = auth?.token;
-
-            if (token) {
-              config.headers.Authorization = `Bearer ${token}`;
-            }
-          }
-        }
-      } catch (error) {
-        console.warn("Failed to parse auth token", error);
-      }
+    const persisted = localStorage.getItem("persist:root");
+    if (persisted) {
+      const root = JSON.parse(persisted);
+      const auth = root?.auth ? JSON.parse(root.auth) : null;
+      if (auth?.token) return auth.token;
     }
+  } catch(err) {
+    console.log(err)
+  }
 
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  return null;
+};
+
+// Axios request interceptor to attach Authorization header
+api.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => Promise.reject(error));

@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { useCreateTeacher, useEditTeacher } from "@/hooks/useTeacher";
 import { useCreateTeacherAttendance } from "@/hooks/useTeacherAttendance";
-import axios from "axios";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 interface TeacherModalProps {
   isOpen: boolean;
@@ -44,7 +43,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/grades`);
+        const res = await api.get(`/grades`);
         setGrades(res.data);
       } catch (err) {
         console.error("Failed to fetch grades", err);

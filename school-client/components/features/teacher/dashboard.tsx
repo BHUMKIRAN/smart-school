@@ -5,7 +5,7 @@ import { ArrowRight, Calendar, Clock, Download, UserCircle } from "lucide-react"
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { API_BASE_URL } from "@/lib/endpoints";
-import axios from "axios";
+import { api } from "@/Backend/axiosClientInstance";
 
 export default function TeacherHeader() {
   const [schedulePdf, setSchedulePdf] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export default function TeacherHeader() {
     if (!teacherId) return;
     const fetchPdf = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/schedule/teacher/${teacherId}`);
+        const res = await api.get(`/schedule/teacher/${teacherId}`);
         setSchedulePdf(res.data.pdfUrl);
       } catch (err) {
         console.error(err);

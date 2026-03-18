@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import axios from "axios";
 import socket from "@/lib/socket";
-import { API_BASE_URL } from '@/lib/endpoints';
+import { api } from "@/Backend/axiosClientInstance";
 
 interface AttendanceModalProps {
   isOpen: boolean;
@@ -63,8 +62,8 @@ export default function AttendanceModal({ isOpen, onClose }: AttendanceModalProp
     try {
 
       const [studentRes, teacherRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/attendance/today?role=Student`),
-        axios.get(`${API_BASE_URL}/attendance/today?role=Teacher`)
+        api.get(`/attendance/today`, { params: { role: "Student" } }),
+        api.get(`/attendance/today`, { params: { role: "Teacher" } }),
       ]);
 
       const students = studentRes.data;

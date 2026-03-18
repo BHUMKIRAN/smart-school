@@ -85,7 +85,7 @@ export default function Navbar() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-             <Logo/>
+              <Logo />
             </Link>
 
             {/* Desktop Menu */}
@@ -107,8 +107,8 @@ export default function Navbar() {
                 {/* Portal Dropdown */}
                 <div
                   className="relative"
-                  onMouseEnter={() => setIsPortalOpen(true)}
-                  onMouseLeave={() => setIsPortalOpen(false)}
+                  onClick={()=>setIsPortalOpen(!isPortalOpen)}
+                   
                 >
                   <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:border-blue-500/50">
                     <span className="nepali-text">लगइन</span>

@@ -1,7 +1,6 @@
 'use client';
 
-import { API_BASE_URL } from "@/lib/endpoints";
-import axios from "axios";
+import { api } from "@/Backend/axiosClientInstance";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
@@ -35,7 +34,7 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
   const fetchApplications = useCallback(async () => {
     if (!user?.id) return;
     try {
-      const res = await axios.get(`${API_BASE_URL}/applications?student=${user.id}`);
+      const res = await api.get(`/applications`, { params: { student: user.id } });
       setApplications(res.data);
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to fetch applications");
@@ -55,7 +54,7 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE_URL}/applications`, data);
+      const res = await api.post(`/applications`, data);
       toast.success(res.data.message || "Application submitted successfully");
       setData({ type: "", priority: "", reason: "", student: user.id });
       fetchApplications();

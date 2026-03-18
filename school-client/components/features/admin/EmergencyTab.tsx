@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Megaphone, Trash2, AlertTriangle, Send } from "lucide-react";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 export default function EmergencyTab() {
   const [loading, setLoading] = useState(false);
@@ -12,7 +11,7 @@ export default function EmergencyTab() {
   // Fetch notices to show history and allow deletion
   const fetchNotices = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/emergencyNotices`);
+      const res = await api.get(`/emergencyNotices`);
       setNotices(res.data);
     } catch (err) { console.error(err); }
   };
@@ -25,7 +24,7 @@ export default function EmergencyTab() {
     try {
       const formData = new FormData(e.currentTarget);
       const data = Object.fromEntries(formData.entries());
-      await axios.post(`${API_BASE_URL}/emergencyNotices`, data);
+      await api.post(`/emergencyNotices`, data);
       (e.target as HTMLFormElement).reset();
       fetchNotices();
     } catch (error) {
@@ -36,7 +35,7 @@ export default function EmergencyTab() {
   const deleteNotice = async (id: string) => {
     if (!confirm("Remove this alert from history?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/emergencyNotices/${id}`);
+      await api.delete(`/emergencyNotices/${id}`);
       fetchNotices();
     } catch (err) { console.error(err); }
   };

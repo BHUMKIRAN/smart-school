@@ -23,11 +23,8 @@ export const markTeacherAttendance = async ({
       teacherId,
       status,
     });
-
-    toast.success("Attendance marked!");
     return res.data;
   } catch (e: any) {
-    toast.error(e?.response?.data?.message || "Failed to mark teacher attendance");
     throw e; // important to let React Query catch the error
   }
 };

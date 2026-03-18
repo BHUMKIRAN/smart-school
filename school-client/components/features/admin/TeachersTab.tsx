@@ -11,8 +11,7 @@ import {
 import TeacherModal from "@/modals/teacherModals";
 import { useTeachers, useDeleteTeacher } from "@/hooks/useTeacher";
 import { useMarkTeacherAttendance } from "@/hooks/useAdmin";
-import axios from "axios";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 export interface Teacher {
   _id: string;
@@ -25,17 +24,22 @@ export interface Teacher {
   salary?: string;
   profilePic?: string;
 }
+
+type TeacherModalViewState = {
+  type: "teacher" | "student" | "view" | null;
+  data?: Teacher | null;
+};
 interface teachertabProps {
-  setmodalView: any,
+  setmodalView: (view: TeacherModalViewState) => void;
 }
 
-export default function TeachersTab({setmodalView} : teachertabProps) {
+export default function TeachersTab({ setmodalView }: teachertabProps) {
 
   // ✅ GET teachers
   const { data, isLoading, isError } = useTeachers();
   const teachers = data ?? [];
   const deleteTeacher = useDeleteTeacher();
-  const teacherAttendance = useMarkTeacherAttendance(); // mutate function
+  const { mutate } = useMarkTeacherAttendance(); // mutate function
 
   // ----------------------------
   // State
@@ -60,7 +64,8 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
   // Attendance
   // ----------------------------
   const markQuickAttendance = (teacherId: string, status: "Present" | "Absent") => {
-    teacherAttendance.mutate({ teacherId, status });
+    mutate({ teacherId, status });
+
   };
 
   // ----------------------------
@@ -74,9 +79,7 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
     formData.append("file", pdfFile);
 
     try {
-      await axios.post(`${API_BASE_URL}/schedule/schedule`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      await api.post(`/schedule/schedule`, formData);
       alert("Schedule uploaded!");
       setPdfFile(null);
 
@@ -170,11 +173,21 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
         <table className="w-full">
           <thead className="border-b bg-slate-50">
             <tr>
-              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">Faculty</th>
-              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">Schedule</th>
-              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">Subject</th>
-              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">Attendance</th>
-              <th className="text-right px-6 py-4 text-xs uppercase text-slate-400">Actions</th>
+              <th className="text-left px-6 py-4 text-xs uppercase text-slate-400">
+                Name
+              </th>
+              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400 hidden md:table-cell">
+                Schedule
+              </th>
+              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400 hidden md:table-cell">
+                Subject
+              </th>
+              <th className="text-center px-6 py-4 text-xs uppercase text-slate-400">
+                Attendance
+              </th>
+              <th className="text-right px-6 py-4 text-xs uppercase text-slate-400">
+                Actions
+              </th>
             </tr>
           </thead>
 
@@ -205,8 +218,8 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
                   </div>
                 </td>
 
-                {/* SCHEDULE */}
-                <td className="px-6 py-4 space-y-1">
+                {/* SCHEDULE - hidden on mobile */}
+                <td className="px-6 py-4 space-y-1 hidden md:table-cell">
                   <input
                     type="file"
                     accept="application/pdf"
@@ -221,8 +234,8 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
                   </button>
                 </td>
 
-                {/* SUBJECT */}
-                <td className="text-center px-6 py-4">{teacher.subject}</td>
+                {/* SUBJECT - hidden on mobile */}
+                <td className="text-center px-6 py-4 hidden md:table-cell">{teacher.subject}</td>
 
                 {/* ATTENDANCE */}
                 <td className="text-center px-6 py-4 space-x-2">
@@ -243,17 +256,14 @@ export default function TeachersTab({setmodalView} : teachertabProps) {
 
                 {/* ACTIONS */}
                 <td className="text-right px-6 py-4 space-x-2 flex justify-end items-center">
-                  {/* View Teacher */}
                   <button onClick={() => setmodalView({ type: "view", data: teacher })}>
                     <Eye className="w-4 h-4 text-sky-600" />
                   </button>
 
-                  {/* Edit Teacher */}
                   <button onClick={() => handleOpenModal(teacher, "edit")}>
                     <Edit3 className="w-4 h-4 text-indigo-600" />
                   </button>
 
-                  {/* Delete Teacher */}
                   <button onClick={() => deleteTeacher.mutate(teacher._id)}>
                     <Trash2 className="w-4 h-4 text-rose-600" />
                   </button>

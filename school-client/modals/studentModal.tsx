@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useCreateStudent, useUpdateStudent } from "@/hooks/useStudent";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 interface Grade {
   _id: string;
@@ -55,10 +55,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
   useEffect(() => {
     const fetchGrades = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/grades`); // make sure route exists
-        if (!res.ok) throw new Error("Failed to fetch grades");
-        const data = await res.json();
-        setGrades(data);
+        const res = await api.get(`/grades`);
+        setGrades(res.data);
       } catch (err) {
         console.error("Error fetching grades:", err);
       }

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL } from '@/lib/endpoints';
+import { api } from '@/Backend/axiosClientInstance';
 
 interface HomeworkTabProps {
   onOpenModal: (assignmentId: string, subject: string) => void;
@@ -41,10 +41,10 @@ export default function HomeworkTab({ onOpenModal, refreshFlag }: HomeworkTabPro
     const fetchData = async () => {
       setLoading(true);
       try {
-        const assignmentsRes = await axios.get(`${API_BASE_URL}/assignments/grade?grade=${gradeId}`);
+        const assignmentsRes = await api.get(`/assignments/grade`, { params: { grade: gradeId } });
         setAssignments(assignmentsRes.data);
 
-        const submissionsRes = await axios.get(`${API_BASE_URL}/submissions/student/${userId}`);
+        const submissionsRes = await api.get(`/submissions/student/${userId}`);
         setSubmissions(submissionsRes.data);
       } catch (error) {
         console.error(error);

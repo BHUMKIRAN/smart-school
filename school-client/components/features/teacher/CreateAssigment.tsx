@@ -8,8 +8,7 @@ import {
   Hash
 } from 'lucide-react';
 import { toast } from 'sonner';
-import axios from 'axios';
-import { API_BASE_URL } from '@/lib/endpoints';
+import { api } from '@/Backend/axiosClientInstance';
 import { useSelector } from 'react-redux';
 
 export default function CreateAssignment() {
@@ -32,7 +31,7 @@ export default function CreateAssignment() {
 
   const fetchGrades = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/grades`);
+      const res = await api.get(`/grades`);
       setGrades(res.data);
     } catch (error) {
       console.log(error);
@@ -58,7 +57,7 @@ export default function CreateAssignment() {
       formData.append("file", file);
       formData.append("teacher", teacherId);   
 
-      await axios.post(`${API_BASE_URL}/assignments/`, formData);
+      await api.post(`/assignments/`, formData);
 
       toast.success("Assignment Published");
 

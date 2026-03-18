@@ -10,8 +10,7 @@ import {
     DialogClose,
     DialogFooter
 } from "@/components/ui/dialog"
-import axios from "axios"
-import { API_BASE_URL } from "@/lib/endpoints"
+import { api } from "@/Backend/axiosClientInstance"
 
 export function DialogDemo() {
     const [codeData, setCodeData] = useState<{ code?: string } | null>(null)
@@ -20,7 +19,7 @@ export function DialogDemo() {
     useEffect(() => {
         const fetchAndShow = async () => {
             try {
-                const { data } = await axios.get(`${API_BASE_URL}/attendanceCode/code`)
+                const { data } = await api.get(`/attendanceCode/code`)
                 setCodeData(data?.data ?? null)
                 setIsOpen(true)
             } catch (err) {

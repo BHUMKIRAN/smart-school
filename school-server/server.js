@@ -21,6 +21,8 @@ import submissionRoutes from "./routes/submission.js";
 import applicationRoutes from "./routes/application.js";
 import gradeRoutes from "./routes/grade.js";
 
+import { protect } from "./middleware/authMiddleware.js";
+
 import initSocket from "./websocket/socket.js";
 import startCodeGenerator from "./service/CodeAt10.js";
 
@@ -40,10 +42,7 @@ startCodeGenerator();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://smart-school-pearl.vercel.app",
-    ],
+    origin: ["http://localhost:3000", "https://smart-school-pearl.vercel.app"],
 
     credentials: true,
   }),
@@ -59,39 +58,44 @@ app.get("/", (req, res) => {
   res.status(200).json({ status: "ok", service: "smart-school-api" });
 });
 
+//test middleware
+app.use("/test", protect, (req, res) => {
+  res.status(200).json({ message: "protected route is running " });
+});
+
 /* -------------------------
    ROUTES
 ------------------------- */
 
 app.use("/", authRoutes);
 
-app.use("/public", publicRoutes);
+app.use("/public", protect, publicRoutes);
 
-app.use("/students", studentRoutes);
+app.use("/students", protect, studentRoutes);
 
-app.use("/teachers", teacherRoutes);
+app.use("/teachers", protect, teacherRoutes);
 
 app.use("/notices", noticeRoutes);
 
 app.use("/emergencyNotices", emergencyNoticeRoutes);
 
-app.use("/attendance", attendanceRoutes);
+app.use("/attendance", protect, attendanceRoutes);
 
-app.use("/attendanceCode", attendanceCodeRoutes);
+app.use("/attendanceCode", protect, attendanceCodeRoutes);
 
-app.use("/attendanceTeacher", adminRoutes);
+app.use("/attendanceTeacher", protect, adminRoutes);
 
-app.use("/schedule", scheduleRoutes);
+app.use("/schedule", protect, scheduleRoutes);
 
-app.use("/applications", applicationRoutes);
+app.use("/applications", protect, applicationRoutes);
 
-app.use("/grades", gradeRoutes);
+app.use("/grades", protect, gradeRoutes);
 
 // Support both spellings
-app.use("/assignments", assigmentRoutes);
-app.use("/assigments", assigmentRoutes);
+app.use("/assignments", protect, assigmentRoutes);
+app.use("/assigments", protect, assigmentRoutes);
 
-app.use("/submissions", submissionRoutes);
+app.use("/submissions", protect, submissionRoutes);
 
 /* -------------------------
    SERVER START

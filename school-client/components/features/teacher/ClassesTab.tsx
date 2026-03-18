@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 import {
   Check,
   X,
@@ -30,7 +29,7 @@ export default function ClassesTab() {
 
     const fetchStudents = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/grades/teacher/${teacherId}/students`);
+        const res = await api.get(`/grades/teacher/${teacherId}/students`);
         setStudents(res.data.students || []);
         setGrade(res.data.grade || null);
       } catch (err) {
@@ -65,7 +64,7 @@ export default function ClassesTab() {
         })),
       };
 
-      await axios.post(`${API_BASE_URL}/attendance/student/mark`, payload);
+      await api.post(`/attendance/student/mark`, payload);
 
       toast.success("Attendance submitted successfully");
       setAttendance({});

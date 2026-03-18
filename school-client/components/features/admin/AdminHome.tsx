@@ -11,8 +11,7 @@ import {
   TrendingUp, ArrowUpRight, Bell,
   UserPlus, ClipboardCheck
 } from "lucide-react";
-import axios from "axios";
-import { API_BASE_URL } from "@/lib/endpoints";
+import { api } from "@/Backend/axiosClientInstance";
 
 const data = [
   { month: "Jan", students: 400 },
@@ -45,7 +44,7 @@ const AdminHome = () => {
     }
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/grades`, {
+      const response = await api.post(`/grades`, {
         grade: Number(grade),
         section: section || null,
       });
@@ -91,62 +90,6 @@ const AdminHome = () => {
           </div>
         ))}
       </div>
-
-      {/* CHART + ATTENDANCE */}
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Chart */}
-        <div className="lg:col-span-2 p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-sm font-black flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-indigo-500" />
-              Enrollment Growth
-            </h3>
-            <span className="text-[10px] font-bold text-slate-400">
-              Last 6 Months
-            </span>
-          </div>
-          <div className="h-[260px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data}>
-                <defs>
-                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fontSize:10,fontWeight:800,fill:'#94a3b8'}} />
-                <YAxis hide />
-                <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px rgba(0,0,0,0.1)' }} />
-                <Area type="monotone" dataKey="students" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#chartGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Attendance Snapshot */}
-        <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-          <h3 className="text-sm font-black mb-6 flex items-center gap-2">
-            <ClipboardCheck className="w-4 h-4 text-indigo-500"/>
-            Today's Attendance
-          </h3>
-          <div className="space-y-4">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Present</span>
-              <span className="font-black text-emerald-600">892</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Absent</span>
-              <span className="font-black text-red-500">43</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Late</span>
-              <span className="font-black text-amber-500">21</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Quick Actions */}
       <div className="grid md:grid-cols-2 gap-6">
         <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
@@ -156,7 +99,7 @@ const AdminHome = () => {
               className="p-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-bold flex items-center gap-2"
               onClick={() => setOpen(true)}
             >
-              <UserPlus className="w-4 h-4"/>
+              <UserPlus className="w-4 h-4" />
               Add Grade
             </button>
 
@@ -187,6 +130,62 @@ const AdminHome = () => {
             )}
           </div>
         </div>
+
+        {/* CHART + ATTENDANCE */}
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Chart */}
+          <div className="lg:col-span-2 p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-sm font-black flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-indigo-500" />
+                Enrollment Growth
+              </h3>
+              <span className="text-[10px] font-bold text-slate-400">
+                Last 6 Months
+              </span>
+            </div>
+            <div className="h-[260px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data}>
+                  <defs>
+                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 800, fill: '#94a3b8' }} />
+                  <YAxis hide />
+                  <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px rgba(0,0,0,0.1)' }} />
+                  <Area type="monotone" dataKey="students" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#chartGradient)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Attendance Snapshot */}
+          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
+            <h3 className="text-sm font-black mb-6 flex items-center gap-2">
+              <ClipboardCheck className="w-4 h-4 text-indigo-500" />
+              Today's Attendance
+            </h3>
+            <div className="space-y-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Present</span>
+                <span className="font-black text-emerald-600">892</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Absent</span>
+                <span className="font-black text-red-500">43</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Late</span>
+                <span className="font-black text-amber-500">21</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         {/* Recent Activity */}
         <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
