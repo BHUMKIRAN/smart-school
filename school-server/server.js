@@ -91,9 +91,7 @@ app.use("/applications", protect, applicationRoutes);
 
 app.use("/grades", protect, gradeRoutes);
 
-// Support both spellings
 app.use("/assignments", protect, assigmentRoutes);
-app.use("/assigments", protect, assigmentRoutes);
 
 app.use("/submissions", protect, submissionRoutes);
 

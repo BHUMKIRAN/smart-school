@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X, User, Mail, Lock, GraduationCap, Image as ImageIcon } from "lucide-react";
 import { useCreateStudent, useUpdateStudent } from "@/hooks/useStudent";
 import { api } from "@/Backend/axiosClientInstance";
+import Logo from "@/components/shared/logo";
 
 interface Grade {
   _id: string;
@@ -16,7 +17,7 @@ interface Student {
   name: string;
   email: string;
   password?: string;
-  grade: string | { _id: string; grade: number; section?: string }; // stores Grade _id or populated grade
+  grade: string | { _id: string; grade: number; section?: string };
   image?: string;
 }
 
@@ -35,10 +36,8 @@ const StudentModal: React.FC<StudentModalProps> = ({
   studentData,
   refreshStudents,
 }) => {
-
   const createStudent = useCreateStudent();
   const updateStudent = useUpdateStudent();
-
   const [grades, setGrades] = useState<Grade[]>([]);
 
   const initialState: Student = {
@@ -51,7 +50,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
 
   const [formData, setFormData] = useState<Student>(initialState);
 
-  // Fetch grades from backend
   useEffect(() => {
     const fetchGrades = async () => {
       try {
@@ -61,11 +59,9 @@ const StudentModal: React.FC<StudentModalProps> = ({
         console.error("Error fetching grades:", err);
       }
     };
+    if (isOpen) fetchGrades();
+  }, [isOpen]);
 
-    fetchGrades();
-  }, []);
-
-  // Prefill form in edit mode
   useEffect(() => {
     if (mode === "edit" && studentData) {
       setFormData({
@@ -78,24 +74,19 @@ const StudentModal: React.FC<StudentModalProps> = ({
     } else {
       setFormData(initialState);
     }
-  }, [mode, studentData]);
+  }, [mode, studentData, isOpen]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       if (mode === "create") {
         await createStudent.mutateAsync(formData);
-      }
-
-      if (mode === "edit" && studentData?._id) {
+      } else if (mode === "edit" && studentData?._id) {
         const payload = { ...formData };
         if (!payload.password) delete payload.password;
         await updateStudent.mutateAsync({
@@ -103,7 +94,6 @@ const StudentModal: React.FC<StudentModalProps> = ({
           data: payload,
         });
       }
-
       refreshStudents();
       onClose();
     } catch (err) {
@@ -114,104 +104,132 @@ const StudentModal: React.FC<StudentModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="dash-card w-full max-w-lg shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[var(--dash-border)]">
-          <h2 className="text-xl font-bold">
-            {mode === "create" ? "Add New Student" : "Edit Student"}
-          </h2>
-          <button onClick={onClose} className="text-[var(--dash-text-muted)] hover:text-[var(--primary)]">
-            <X className="w-5 h-5" />
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+      <div className="dash-card w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[95vh]">
+        
+        {/* HEADER */}
+        <div className="flex items-center justify-between p-6 border-b border-[var(--dash-border)] bg-primary-dark">
+          <div>
+            <Logo/>
+            <h2 className="text-xl font-bold text-white tracking-tight">
+              {mode === "create" ? "Enroll New Student" : "Update Student Profile"}
+            </h2>
+            <p className="text-xs text-white mt-1">
+              {mode === "create" ? "Register a student to a specific grade and section" : `Editing record for ${studentData?.name}`}
+            </p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-[var(--muted-bg)] rounded-full transition-colors"
+          >
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Name */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">Full Name</label>
-            <input
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="dash-input w-full"
-              placeholder="John Doe"
-              required
-            />
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="overflow-y-auto p-6 space-y-5">
+          <div className="grid grid-cols-1 gap-5">
+            
+            {/* FULL NAME */}
+            <div>
+              <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                <User className="w-4 h-4 text-[var(--primary)]" /> Full Name
+              </label>
+              <input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="dash-input w-full"
+                placeholder="e.g. Ayush Shrestha"
+                required
+              />
+            </div>
+
+            {/* EMAIL */}
+            <div>
+              <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-[var(--primary)]" /> Email Address
+              </label>
+              <input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="dash-input w-full"
+                placeholder="student@example.com"
+                required
+              />
+            </div>
+
+            {/* PASSWORD */}
+            <div>
+              <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                <Lock className="w-4 h-4 text-[var(--primary)]" /> 
+                Password {mode === "edit" && <span className="text-[var(--dash-text-muted)] font-normal">(leave blank to keep current)</span>}
+              </label>
+              <input
+                name="password"
+                type="password"
+                value={formData.password || ""}
+                onChange={handleChange}
+                className="dash-input w-full"
+                placeholder="••••••••"
+                required={mode === "create"}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+               {/* GRADE SELECTION */}
+              <div>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4 text-[var(--primary)]" /> Grade
+                </label>
+                <select
+                  name="grade"
+                  value={typeof formData.grade === "string" ? formData.grade : formData.grade?._id || ""}
+                  onChange={handleChange}
+                  className="dash-input w-full appearance-none"
+                  required
+                >
+                  <option value="">Select Grade</option>
+                  {grades.map((g) => (
+                    <option key={g._id} value={g._id}>
+                      Grade {g.grade} {g.section ? `- ${g.section}` : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* IMAGE URL */}
+              <div>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4 text-[var(--primary)]" /> Profile URL
+                </label>
+                <input
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  className="dash-input w-full"
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">Email</label>
-            <input
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="dash-input w-full"
-              required
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">
-              Password {mode === "edit" && "(optional)"}
-            </label>
-            <input
-              name="password"
-              type="password"
-              value={formData.password || ""}
-              onChange={handleChange}
-              className="dash-input w-full"
-              required={mode === "create"}
-            />
-          </div>
-
-          {/* Grade Dropdown */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">Grade</label>
-            <select
-              name="grade"
-              value={typeof formData.grade === "string" ? formData.grade : formData.grade?._id || ""}
-              onChange={handleChange}
-              className="dash-input w-full"
-              required
-            >
-              <option value="">Select Grade</option>
-              {grades.map((g) => (
-                <option key={g._id} value={g._id}>
-                  Grade {g.grade} - {g.section}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Image */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">Image URL</label>
-            <input
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="dash-input w-full"
-              placeholder="https://image-url.com"
-            />
-          </div>
-
-          {/* Footer */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-[var(--dash-border)]">
+          {/* FOOTER */}
+          <div className="flex justify-end gap-3 pt-6 mt-2 border-t border-[var(--dash-border)]">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 rounded-lg border border-[var(--dash-border)]"
+              className="px-6 py-2.5 font-medium border border-[var(--dash-border)] rounded-xl hover:bg-[var(--muted-bg)] transition-colors"
             >
               Cancel
             </button>
-
-            <button type="submit" className="btn-primary px-6 py-2">
-              {mode === "create" ? "Enroll Student" : "Save Changes"}
+            <button 
+              type="submit" 
+              className="btn-primary px-8 py-2.5 rounded-xl shadow-lg shadow-blue-500/20"
+            >
+              {mode === "create" ? "Enroll Student" : "Update Student"}
             </button>
           </div>
         </form>

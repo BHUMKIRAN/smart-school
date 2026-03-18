@@ -1,6 +1,7 @@
 'use client';
 
-import { X } from 'lucide-react';
+import React from 'react';
+import { X, Mail, Phone, Banknote, Building2, BookOpen, Calendar, User } from 'lucide-react';
 
 interface TeacherCardModalProps {
   isOpen: boolean;
@@ -21,85 +22,99 @@ export default function TeacherCardModal({ isOpen, onClose, teacher }: TeacherCa
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="bg-white dark:bg-slate-950 rounded-2xl w-full max-w-md relative p-6 shadow-lg">
-        {/* Close Button */}
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+      <div className="dash-card w-full max-w-md shadow-2xl overflow-hidden relative animate-modalSlideIn">
+        
+        {/* HEADER / COVER AREA */}
+        <div className="h-24 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] w-full" />
+        
+        {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+          className="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors z-10"
         >
-          <X className="w-5 h-5 text-slate-600 dark:text-slate-200" />
+          <X className="w-5 h-5" />
         </button>
 
-        {/* Profile */}
-        <div className="flex flex-col items-center gap-3 mb-6">
-          {teacher.profilePic ? (
-            <img
-              src={teacher.profilePic}
-              alt={teacher.name}
-              className="w-24 h-24 rounded-full object-cover"
+        {/* PROFILE SECTION */}
+        <div className="px-6 pb-6">
+          <div className="relative -mt-12 flex flex-col items-center">
+            {teacher.profilePic ? (
+              <img
+                src={teacher.profilePic}
+                alt={teacher.name}
+                className="w-24 h-24 rounded-2xl object-cover border-4 border-[var(--dash-surface)] shadow-lg"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-2xl bg-[var(--primary)] border-4 border-[var(--dash-surface)] flex items-center justify-center text-white shadow-lg">
+                <User className="w-12 h-12" />
+              </div>
+            )}
+            <h2 className="mt-4 text-2xl font-bold text-[var(--dash-text)]">{teacher.name}</h2>
+            <p className="text-[var(--primary)] font-medium text-sm">
+              {teacher.subject || "Faculty Member"}
+            </p>
+          </div>
+
+          {/* DETAILS LIST */}
+          <div className="mt-8 space-y-1">
+            <DetailRow 
+              icon={<Mail className="w-4 h-4" />} 
+              label="Email" 
+              value={teacher.email} 
             />
-          ) : (
-            <div className="w-24 h-24 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-3xl">
-              {teacher.name.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <h2 className="text-xl font-black text-slate-800 dark:text-slate-100">{teacher.name}</h2>
-        </div>
-
-        {/* Details */}
-        <div className="grid grid-cols-1 gap-3">
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Email</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">{teacher.email}</span>
+            <DetailRow 
+              icon={<Phone className="w-4 h-4" />} 
+              label="Phone" 
+              value={teacher.phone || "Not Provided"} 
+            />
+            <DetailRow 
+              icon={<Building2 className="w-4 h-4" />} 
+              label="Department" 
+              value={teacher.department || "General"} 
+            />
+            <DetailRow 
+              icon={<Banknote className="w-4 h-4" />} 
+              label="Salary" 
+              value={teacher.salary ? ` रू ${teacher.salary}` : "Not Assigned"} 
+            />
+            <DetailRow 
+              icon={<Calendar className="w-4 h-4" />} 
+              label="Schedule" 
+              value={teacher.schedule || "Regular Shift"} 
+            />
           </div>
 
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Phone</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {teacher.phone || "Not Provided"}
-            </span>
+          {/* ACTION BUTTON */}
+          <div className="mt-8">
+            <button
+              onClick={onClose}
+              className="w-full btn-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2"
+            >
+              Close Profile
+            </button>
           </div>
-
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Salary</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {teacher.salary || "Not Assigned"}
-            </span>
-          </div>
-
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Department</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {teacher.department || "Not Assigned"}
-            </span>
-          </div>
-
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Subject</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {teacher.subject || "Not Assigned"}
-            </span>
-          </div>
-
-          <div className="flex justify-between">
-            <span className="text-xs uppercase text-slate-400 font-bold">Schedule</span>
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              {teacher.schedule || "Not Assigned"}
-            </span>
-          </div>
-        </div>
-
-        {/* Close Button */}
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={onClose}
-            className="px-6 py-2 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition"
-          >
-            Close
-          </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* HELPER COMPONENT FOR ROWS */
+function DetailRow({ icon, label, value }: { icon: React.ReactNode, label: string, value: string }) {
+  return (
+    <div className="flex items-center justify-between p-3 rounded-xl hover:bg-[var(--dash-surface-2)] transition-colors border-b border-[var(--dash-border)] last:border-0">
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-lg bg-[var(--muted-bg)] text-[var(--primary)]">
+          {icon}
+        </div>
+        <span className="text-xs font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">
+          {label}
+        </span>
+      </div>
+      <span className="text-sm font-semibold text-[var(--dash-text)] text-right">
+        {value}
+      </span>
     </div>
   );
 }

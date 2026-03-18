@@ -41,7 +41,7 @@ export default function HomeworkTab({ onOpenModal, refreshFlag }: HomeworkTabPro
     const fetchData = async () => {
       setLoading(true);
       try {
-        const assignmentsRes = await api.get(`/assignments/grade`, { params: { grade: gradeId } });
+        const assignmentsRes = await api.get(`/assignments/grade/${gradeId}`);
         setAssignments(assignmentsRes.data);
 
         const submissionsRes = await api.get(`/submissions/student/${userId}`);

@@ -9,7 +9,7 @@ import {
 import {
   Users, GraduationCap, CheckCircle,
   TrendingUp, ArrowUpRight, Bell,
-  UserPlus, ClipboardCheck
+  PlusCircle, ClipboardCheck, History, X
 } from "lucide-react";
 import { api } from "@/Backend/axiosClientInstance";
 
@@ -27,180 +27,205 @@ const AdminHome = () => {
   const [section, setSection] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleGradeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGrade(event.target.value);
-  };
-
-  const handleSectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSection(event.target.value);
-  };
+  const stats = [
+    { label: "Students", value: "1,240", icon: <Users className="w-5 h-5" />, grow: "+12%" },
+    { label: "Teachers", value: "84", icon: <GraduationCap className="w-5 h-5" />, grow: "+3%" },
+    { label: "Attendance", value: "94.2%", icon: <CheckCircle className="w-5 h-5" />, grow: "+2.1%" },
+    { label: "Notices", value: "18", icon: <Bell className="w-5 h-5" />, grow: "Live" },
+  ];
 
   const createGrade = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!grade) {
-      alert("Grade is required");
-      return;
-    }
-
+    if (!grade) { alert("Grade is required"); return; }
     try {
-      const response = await api.post(`/grades`, {
-        grade: Number(grade),
-        section: section || null,
-      });
-
+      const response = await api.post(`/grades`, { grade: Number(grade), section: section || null });
       if (response.status === 201) {
-        alert("Grade created successfully");
-        setGrade("");
-        setSection("");
-        setOpen(false);
-      } else {
-        console.error("Failed to create grade", response.data);
+        setGrade(""); setSection(""); setOpen(false);
       }
-    } catch (error) {
-      console.error("Error creating grade:", error);
-    }
+    } catch (error) { console.error("Error creating grade:", error); }
   };
 
-  const stats = [
-    { label: "Students", value: "1,240", icon: <Users className="w-4 h-4" />, grow: "+12%" },
-    { label: "Teachers", value: "84", icon: <GraduationCap className="w-4 h-4" />, grow: "+3%" },
-    { label: "Attendance", value: "94.2%", icon: <CheckCircle className="w-4 h-4" />, grow: "+2.1%" },
-    { label: "Notices", value: "18", icon: <Bell className="w-4 h-4" />, grow: "Live" },
-  ];
-
   return (
-    <div className="space-y-8 animate-fadeIn">
-
-      {/* STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="p-6 space-y-8 animate-fadeIn">
+      
+      {/* STATS GRID */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm">
-            <div className="flex justify-between mb-2">
-              <div className="p-2 bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 rounded-lg">
+          <div key={i} className="dash-card p-5 relative overflow-hidden group hover:border-[var(--primary)] transition-colors">
+            <div className="flex justify-between items-start relative z-10">
+              <div className="p-3 rounded-xl bg-[var(--muted-bg)] text-[var(--primary)] group-hover:bg-[var(--primary)] group-hover:text-white transition-all duration-300">
                 {stat.icon}
               </div>
-              <span className="text-[10px] font-black text-emerald-500 flex items-center gap-1">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-[var(--success)]/10 text-[var(--success)] text-[10px] font-bold">
                 <ArrowUpRight className="w-3 h-3" />
                 {stat.grow}
-              </span>
+              </div>
             </div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase">{stat.label}</p>
-            <h3 className="text-2xl font-black text-slate-800 dark:text-white">{stat.value}</h3>
+            <div className="mt-4 relative z-10">
+              <p className="text-[11px] font-bold text-[var(--dash-text-muted)] uppercase tracking-wider">{stat.label}</p>
+              <h3 className="text-3xl font-black text-[var(--dash-text)] mt-1">{stat.value}</h3>
+            </div>
+            {/* Subtle background decoration */}
+            <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+               {React.cloneElement(stat.icon as React.ReactElement, { size: 100 })}
+            </div>
           </div>
         ))}
       </div>
-      {/* Quick Actions */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-          <h3 className="text-sm font-black mb-5">Quick Actions</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              className="p-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-bold flex items-center gap-2"
-              onClick={() => setOpen(true)}
-            >
-              <UserPlus className="w-4 h-4" />
-              Add Grade
-            </button>
 
-            {open && (
-              <form onSubmit={createGrade} className="col-span-2 flex flex-col gap-2 mt-2">
+      <div className="grid lg:grid-cols-3 gap-8">
+        
+        {/* CHART SECTION */}
+        <div className="lg:col-span-2 dash-card p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div>
+              <h3 className="text-lg font-bold flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-[var(--primary)]" />
+                Enrollment Analytics
+              </h3>
+              <p className="text-xs text-[var(--dash-text-muted)] mt-1">Student registration trends for the current year</p>
+            </div>
+            <div className="flex gap-2">
+               <span className="px-3 py-1 bg-[var(--dash-sidebar-hover)] rounded-full text-[10px] font-bold text-[var(--dash-text-muted)]">MONTHLY</span>
+            </div>
+          </div>
+          
+          <div className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data}>
+                <defs>
+                  <linearGradient id="enrollGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--dash-border)" />
+                <XAxis 
+                  dataKey="month" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 11, fontWeight: 600, fill: 'var(--dash-text-muted)' }} 
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 11, fontWeight: 600, fill: 'var(--dash-text-muted)' }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'var(--dash-surface)', 
+                    borderColor: 'var(--dash-border)',
+                    borderRadius: '12px',
+                    color: 'var(--dash-text)'
+                  }} 
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="students" 
+                  stroke="var(--primary)" 
+                  strokeWidth={4} 
+                  fillOpacity={1} 
+                  fill="url(#enrollGradient)" 
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* SIDE ACTIONS & SNAPSHOT */}
+        <div className="space-y-6">
+          
+          {/* Quick Actions Card */}
+          <div className="dash-card p-6 border-l-4 border-l-[var(--primary)]">
+            <h3 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-tighter">
+              <PlusCircle className="w-4 h-4" /> Management
+            </h3>
+            
+            {!open ? (
+              <button 
+                onClick={() => setOpen(true)}
+                className="w-full btn btn-primary flex items-center justify-center gap-2 text-sm"
+              >
+                Add New Grade
+              </button>
+            ) : (
+              <form onSubmit={createGrade} className="space-y-3 animate-fadeIn">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[10px] font-bold text-[var(--dash-text-muted)]">CREATE CLASS</span>
+                  <X className="w-4 h-4 cursor-pointer text-red-500" onClick={() => setOpen(false)} />
+                </div>
                 <input
                   type="number"
-                  placeholder="Grade Number"
-                  className="p-2 border rounded"
+                  placeholder="Grade (e.g. 10)"
+                  className="dash-input w-full text-sm"
                   value={grade}
-                  onChange={handleGradeChange}
+                  onChange={(e) => setGrade(e.target.value)}
                   required
                 />
                 <input
                   type="text"
-                  placeholder="Section (optional)"
-                  className="p-2 border rounded"
+                  placeholder="Section (e.g. A)"
+                  className="dash-input w-full text-sm"
                   value={section}
-                  onChange={handleSectionChange}
+                  onChange={(e) => setSection(e.target.value)}
                 />
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded bg-indigo-600 text-white font-bold"
-                >
-                  Submit
+                <button type="submit" className="w-full btn btn-primary py-2 text-sm">
+                  Save Grade
                 </button>
               </form>
             )}
           </div>
-        </div>
-
-        {/* CHART + ATTENDANCE */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Chart */}
-          <div className="lg:col-span-2 p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-sm font-black flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-indigo-500" />
-                Enrollment Growth
-              </h3>
-              <span className="text-[10px] font-bold text-slate-400">
-                Last 6 Months
-              </span>
-            </div>
-            <div className="h-[260px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 800, fill: '#94a3b8' }} />
-                  <YAxis hide />
-                  <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px rgba(0,0,0,0.1)' }} />
-                  <Area type="monotone" dataKey="students" stroke="#6366f1" strokeWidth={3} fillOpacity={1} fill="url(#chartGradient)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
 
           {/* Attendance Snapshot */}
-          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-            <h3 className="text-sm font-black mb-6 flex items-center gap-2">
-              <ClipboardCheck className="w-4 h-4 text-indigo-500" />
-              Today's Attendance
+          <div className="dash-card p-6">
+            <h3 className="text-sm font-bold mb-5 flex items-center gap-2 uppercase tracking-tighter">
+              <ClipboardCheck className="w-4 h-4 text-[var(--primary)]" /> Attendance Status
             </h3>
             <div className="space-y-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Present</span>
-                <span className="font-black text-emerald-600">892</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[var(--success)]"></div>
+                  <span className="text-xs font-medium text-[var(--dash-text-muted)]">Present</span>
+                </div>
+                <span className="text-sm font-black">892</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Absent</span>
-                <span className="font-black text-red-500">43</span>
+              <div className="w-full bg-[var(--muted-bg)] h-1.5 rounded-full overflow-hidden">
+                <div className="bg-[var(--success)] h-full w-[85%]"></div>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Late</span>
-                <span className="font-black text-amber-500">21</span>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[var(--error)]"></div>
+                  <span className="text-xs font-medium text-[var(--dash-text-muted)]">Absent</span>
+                </div>
+                <span className="text-sm font-black">43</span>
               </div>
             </div>
           </div>
-        </div>
 
-
-        {/* Recent Activity */}
-        <div className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
-          <h3 className="text-sm font-black mb-5">Recent Activity</h3>
-          <div className="space-y-3 text-sm">
-            <p className="text-slate-600">
-              New student <span className="font-bold">Ramesh Sharma</span> registered
-            </p>
-            <p className="text-slate-600">
-              Notice posted for <span className="font-bold">Exam Schedule</span>
-            </p>
-            <p className="text-slate-600">
-              Teacher <span className="font-bold">Ms. Karki</span> marked attendance
-            </p>
+          {/* Activity Log */}
+          <div className="dash-card p-6">
+            <h3 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-tighter">
+              <History className="w-4 h-4" /> Activity
+            </h3>
+            <div className="space-y-4">
+              {[
+                { user: "Admin", action: "Updated Notice", time: "2m ago" },
+                { user: "System", action: "Backup Complete", time: "1h ago" }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-3 items-start border-b border-[var(--dash-border)] pb-3 last:border-0 last:pb-0">
+                  <div className="w-7 h-7 rounded-lg bg-[var(--dash-sidebar-hover)] flex items-center justify-center text-[10px] font-bold">
+                    {item.user[0]}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[var(--dash-text)]">{item.action}</p>
+                    <p className="text-[10px] text-[var(--dash-text-muted)]">{item.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+
         </div>
       </div>
     </div>

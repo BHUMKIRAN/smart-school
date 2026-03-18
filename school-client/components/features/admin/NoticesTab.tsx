@@ -2,6 +2,8 @@
 
 import { API_BASE_URL } from "@/lib/endpoints";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Calendar, Trash2, Send, FileText, Info } from "lucide-react";
 
 export default function NoticesTab() {
   const [formData, setFormData] = useState({ title: "", message: "" });
@@ -29,9 +31,10 @@ export default function NoticesTab() {
       });
       if (!response.ok) throw new Error("Failed to create notice");
       setFormData({ title: "", message: "" });
+      toast.success("Notice published successfully");
       fetchNotices();
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -44,6 +47,7 @@ export default function NoticesTab() {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete notice");
+      toast.success("Notice removed");
       setNotices((prev) => prev.filter((notice: any) => notice._id !== id));
     } catch (error) {
       console.error("Failed to delete notice", error);
@@ -55,23 +59,24 @@ export default function NoticesTab() {
   }, []);
 
   return (
-    <div className="animate-fadeIn grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <div className="animate-fadeIn grid grid-cols-1 lg:grid-cols-5 gap-6">
       
-      {/* 1. Create Notice Form (Left Side - 2 Cols) */}
+      {/* 1. Create Notice Form */}
       <div className="lg:col-span-2">
-        <div className="dash-card p-6 sticky top-8">
+        <div className="dash-card p-6 border-t-4 border-t-[var(--warning)] sticky top-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center text-warning">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
+            <div className="w-10 h-10 rounded-lg bg-[var(--warning)]/10 flex items-center justify-center text-[var(--warning)] border border-[var(--warning)]/20">
+              <FileText className="w-5 h-5" />
             </div>
-            <h3 className="text-xl font-bold dash-text">Create Notice</h3>
+            <div>
+              <h3 className="text-lg font-bold text-[var(--dash-text)]">Create Notice</h3>
+              <p className="text-[10px] text-[var(--dash-text-muted)] uppercase font-bold tracking-tight">Post to public bulletin</p>
+            </div>
           </div>
 
-          <form className="space-y-5" onSubmit={createNotice}>
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-widest dash-text-muted mb-2">
+          <form className="space-y-4" onSubmit={createNotice}>
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--dash-text-muted)] ml-1">
                 Notice Title
               </label>
               <input
@@ -79,94 +84,94 @@ export default function NoticesTab() {
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="e.g., Weekly Assembly Update"
-                className="dash-input w-full focus:border-warning/50 focus:ring-warning/10"
+                placeholder="e.g., Examination Schedule Update"
+                className="dash-input w-full text-sm font-semibold"
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-widest dash-text-muted mb-2">
-                Detailed Message
+            <div className="space-y-1.5">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-[var(--dash-text-muted)] ml-1">
+                Content Details
               </label>
               <textarea
-                rows={6}
+                rows={5}
                 required
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                placeholder="Type the notice content here..."
-                className="dash-input w-full resize-none focus:border-warning/50 focus:ring-warning/10"
+                placeholder="Write the full notice content here..."
+                className="dash-input w-full text-sm resize-none leading-relaxed"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-3 rounded-xl font-bold text-white transition-all shadow-lg flex items-center justify-center gap-2 ${
-                isSubmitting ? 'bg-slate-400' : 'bg-warning hover:bg-warning-dark shadow-warning/20'
+              className={`w-full py-3.5 rounded-xl font-bold text-white transition-all shadow-md flex items-center justify-center gap-2 text-xs uppercase tracking-widest ${
+                isSubmitting ? 'bg-[var(--dash-border)] cursor-not-allowed' : 'bg-[var(--warning)] hover:scale-[1.02] active:scale-95'
               }`}
+              style={{ background: !isSubmitting ? 'var(--warning)' : '' }}
             >
+              <Send className="w-4 h-4" />
               {isSubmitting ? 'Publishing...' : 'Publish Notice'}
-              {!isSubmitting && (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                </svg>
-              )}
             </button>
           </form>
         </div>
       </div>
 
-      {/* 2. Recent Notices Feed (Right Side - 3 Cols) */}
-      <div className="lg:col-span-3 space-y-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xl font-bold dash-text">Recent Publications</h3>
-          <span className="text-xs font-medium px-2 py-1 bg-dash-surface-2 dash-text-muted rounded-md border dash-border">
-            Total: {notices.length}
+      {/* 2. Recent Notices Feed */}
+      <div className="lg:col-span-3 space-y-4">
+        <div className="flex items-center justify-between px-2">
+          <h3 className="text-sm font-black text-[var(--dash-text-muted)] uppercase tracking-widest flex items-center gap-2">
+            <Info className="w-4 h-4" /> Bulletin History
+          </h3>
+          <span className="text-[10px] font-bold px-2 py-1 bg-[var(--dash-surface-2)] text-[var(--dash-text-muted)] rounded border border-[var(--dash-border)]">
+            {notices.length} ACTIVE
           </span>
         </div>
 
-        <div className="space-y-4 max-h-[calc(100vh-250px)] overflow-y-auto pr-2 custom-scrollbar">
+        <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-1 custom-scrollbar">
           {notices.length === 0 ? (
-            <div className="dash-card p-12 text-center border-dashed border-2">
-              <p className="dash-text-muted italic">No notices published yet.</p>
+            <div className="dash-card p-12 text-center border-dashed border-2 flex flex-col items-center opacity-50">
+              <FileText className="w-10 h-10 mb-2 text-[var(--dash-text-muted)]" />
+              <p className="text-sm font-bold text-[var(--dash-text-muted)]">No notices published yet.</p>
             </div>
           ) : (
             notices.map((notice: any) => (
               <div
                 key={notice._id}
-                className="dash-card p-5 group hover:border-warning/30 transition-all duration-300 relative overflow-hidden"
+                className="dash-card p-5 group hover:border-[var(--warning)]/30 transition-all relative overflow-hidden"
               >
-                {/* Decorative Accent */}
-                <div className="absolute top-0 left-0 w-1 h-full bg-warning opacity-40"></div>
+                {/* Visual marker */}
+                <div className="absolute top-0 left-0 w-1 h-full bg-[var(--warning)]"></div>
                 
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-bold dash-text text-lg group-hover:text-warning transition-colors">
+                      <h4 className="font-bold text-[var(--dash-text)] group-hover:text-[var(--warning)] transition-colors">
                         {notice.title}
                       </h4>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-warning mb-3">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      {new Date(notice.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[var(--warning)] mb-3">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(notice.createdAt).toLocaleDateString(undefined, { 
+                        month: 'short', day: 'numeric', year: 'numeric' 
+                      })}
                     </div>
 
-                    <p className="text-sm dash-text-muted leading-relaxed whitespace-pre-line bg-dash-surface-2 p-3 rounded-lg border dash-border">
-                      {notice.message}
-                    </p>
+                    <div className="bg-[var(--dash-surface-2)] p-4 rounded-lg border border-[var(--dash-border)]">
+                      <p className="text-sm text-[var(--dash-text)] leading-relaxed whitespace-pre-line">
+                        {notice.message}
+                      </p>
+                    </div>
                   </div>
 
                   <button
                     onClick={() => deleteNotice(notice._id)}
-                    className="p-2 text-error bg-error/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-error hover:text-white"
-                    title="Delete Notice"
+                    className="p-2 text-[var(--dash-text-muted)] hover:text-[var(--error)] hover:bg-[var(--error)]/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                    title="Delete"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>

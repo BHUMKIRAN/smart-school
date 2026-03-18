@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { X, Check } from "lucide-react";
+import { X, Check, User, Mail, Phone, BookOpen, Building2, Banknote, GraduationCap } from "lucide-react";
 import { useCreateTeacher, useEditTeacher } from "@/hooks/useTeacher";
 import { useCreateTeacherAttendance } from "@/hooks/useTeacherAttendance";
 import { api } from "@/Backend/axiosClientInstance";
+import Logo from "@/components/shared/logo";
 
 interface TeacherModalProps {
   isOpen: boolean;
@@ -19,7 +20,6 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
   mode,
   teacherData,
 }) => {
-
   const createTeacher = useCreateTeacher();
   const editTeacher = useEditTeacher();
   const markAttendance = useCreateTeacherAttendance();
@@ -39,7 +39,6 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
     gradeId: "",
   });
 
-  // Fetch grades
   useEffect(() => {
     const fetchGrades = async () => {
       try {
@@ -49,10 +48,7 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
         console.error("Failed to fetch grades", err);
       }
     };
-
-    if (isOpen) {
-      fetchGrades();
-    }
+    if (isOpen) fetchGrades();
   }, [isOpen]);
 
   useEffect(() => {
@@ -71,14 +67,8 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
         setTab("info");
       } else {
         setForm({
-          name: "",
-          email: "",
-          password: "",
-          phone: "",
-          subject: "",
-          department: "",
-          salary: "",
-          gradeId: "",
+          name: "", email: "", password: "", phone: "",
+          subject: "", department: "", salary: "", gradeId: "",
         });
         setTab("info");
       }
@@ -87,10 +77,8 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       let savedTeacher;
-
       if (mode === "create") {
         savedTeacher = await createTeacher.mutateAsync(form);
       } else {
@@ -101,18 +89,14 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
       }
 
       if (tab === "att") {
-        const targetId =
-          mode === "create" ? savedTeacher?._id : teacherData?._id;
-
+        const targetId = mode === "create" ? savedTeacher?._id : teacherData?._id;
         await markAttendance.mutateAsync({
           teacherId: targetId,
           status,
           date: new Date().toISOString().split("T")[0],
         });
       }
-
       onClose();
-
     } catch (error) {
       console.error("Submission failed:", error);
     }
@@ -121,83 +105,88 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-
-      <div className="dash-card w-full max-w-lg shadow-2xl overflow-hidden rounded-2xl">
-
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
+      <div className="dash-card w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        
         {/* HEADER */}
-        <div className="flex items-center justify-between p-6 border-b border-[var(--dash-border)]">
-          <h2 className="text-xl font-bold">
-            {mode === "create" ? "Add New Faculty" : "Faculty Management"}
-          </h2>
-
-          <button onClick={onClose}>
-            <X className="w-5 h-5" />
+        <div className="flex items-center justify-between p-6 border-b border-[var(--dash-border)] bg-primary-dark">
+          <div>
+            <Logo/>
+            <h2 className="text-xl text-white font-bold tracking-tight">
+              {mode === "create" ? "Add New Faculty" : "Faculty Management"}
+            </h2>
+            <p className="text-xs text-white mt-1">
+              {mode === "create" ? "Register a new teacher to the system" : `Managing: ${teacherData?.name}`}
+            </p>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-[var(--muted-bg)]  rounded-full transition-colors"
+          >
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
-        {/* TABS */}
+        {/* TABS (Only shown in Edit mode) */}
         {mode === "edit" && (
-          <div className="px-6 mt-4 flex gap-2">
+          <div className="px-6 pt-4 flex gap-2 bg-[var(--dash-surface)]">
             <button
               onClick={() => setTab("info")}
-              className={`tab-button ${tab === "info" ? "tab-active" : ""}`}
+              className={`tab-button flex items-center gap-2 ${tab === "info" ? "tab-active" : "hover:bg-[var(--dash-sidebar-hover)]"}`}
             >
-              General Info
+              <User className="w-4 h-4" /> General Info
             </button>
-
             <button
               onClick={() => setTab("att")}
-              className={`tab-button ${tab === "att" ? "tab-active" : ""}`}
+              className={`tab-button flex items-center gap-2 ${tab === "att" ? "tab-active" : "hover:bg-[var(--dash-sidebar-hover)]"}`}
             >
-              Attendance
+              <Check className="w-4 h-4" /> Attendance
             </button>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-
+        {/* FORM CONTENT */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
           {tab === "info" ? (
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              
               {/* NAME */}
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium mb-1 block">Name</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <User className="w-4 h-4 text-[var(--primary)]" /> Full Name
+                </label>
                 <input
                   value={form.name}
-                  onChange={(e) =>
-                    setForm({ ...form, name: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className="dash-input w-full"
+                  placeholder="e.g. Dr. Jane Doe"
                   required
                 />
               </div>
 
               {/* EMAIL */}
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium mb-1 block">Email</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[var(--primary)]" /> Email Address
+                </label>
                 <input
                   type="email"
                   value={form.email}
-                  onChange={(e) =>
-                    setForm({ ...form, email: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="dash-input w-full"
+                  placeholder="jane.doe@school.edu"
                   required
                 />
               </div>
 
-              {/* PASSWORD */}
+              {/* PASSWORD (Create Only) */}
               {mode === "create" && (
                 <div className="sm:col-span-2">
-                  <label className="text-sm font-medium mb-1 block">Password</label>
+                  <label className="text-sm font-semibold mb-1.5 block">Default Password</label>
                   <input
                     type="password"
                     value={form.password}
-                    onChange={(e) =>
-                      setForm({ ...form, password: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
                     className="dash-input w-full"
                     required
                   />
@@ -206,142 +195,133 @@ const TeacherModal: React.FC<TeacherModalProps> = ({
 
               {/* PHONE */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Phone</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[var(--primary)]" /> Phone
+                </label>
                 <input
                   value={form.phone}
-                  onChange={(e) =>
-                    setForm({ ...form, phone: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   className="dash-input w-full"
                 />
               </div>
 
               {/* SUBJECT */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Subject</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-[var(--primary)]" /> Subject
+                </label>
                 <input
                   value={form.subject}
-                  onChange={(e) =>
-                    setForm({ ...form, subject: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
                   className="dash-input w-full"
                 />
               </div>
 
               {/* DEPARTMENT */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Department</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-[var(--primary)]" /> Department
+                </label>
                 <input
                   value={form.department}
-                  onChange={(e) =>
-                    setForm({ ...form, department: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, department: e.target.value })}
                   className="dash-input w-full"
                 />
               </div>
 
               {/* SALARY */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Salary</label>
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <Banknote className="w-4 h-4 text-[var(--primary)]" /> Monthly Salary
+                </label>
                 <input
                   value={form.salary}
-                  onChange={(e) =>
-                    setForm({ ...form, salary: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, salary: e.target.value })}
                   className="dash-input w-full"
+                  type="number"
                 />
               </div>
 
               {/* GRADE SELECT */}
               <div className="sm:col-span-2">
-                <label className="text-sm font-medium mb-1 block">
-                  Assign Grade
+                <label className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4 text-[var(--primary)]" /> Primary Grade Assignment
                 </label>
-
                 <select
                   value={form.gradeId}
-                  onChange={(e) =>
-                    setForm({ ...form, gradeId: e.target.value })
-                  }
-                  className="dash-input w-full"
+                  onChange={(e) => setForm({ ...form, gradeId: e.target.value })}
+                  className="dash-input w-full appearance-none bg-no-repeat bg-right pr-10"
                   required
                 >
-                  <option value="">Select Grade</option>
-
+                  <option value="">Choose a grade...</option>
                   {grades.map((g) => (
                     <option key={g._id} value={g._id}>
-                      Grade {g.grade}
-                      {g.section ? ` - ${g.section}` : ""}
+                      Grade {g.grade} {g.section ? `- ${g.section}` : ""}
                     </option>
                   ))}
                 </select>
               </div>
-
             </div>
-
           ) : (
-
-            <div className="py-4 space-y-6">
-
-              <div className="text-center p-4 bg-[var(--muted-bg)] rounded-xl border">
-                <p className="text-xs uppercase">Today's Date</p>
-                <h3 className="text-lg font-bold">
-                  {new Date().toDateString()}
+            /* ATTENDANCE TAB */
+            <div className="py-6 space-y-8">
+              <div className="text-center p-6 bg-[var(--dash-surface-2)] rounded-2xl border border-[var(--dash-border)]">
+                <p className="text-xs uppercase tracking-widest text-[var(--dash-text-muted)] font-bold mb-1">Today's Entry</p>
+                <h3 className="text-2xl font-bold">
+                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </h3>
               </div>
 
               <div className="flex gap-4">
-
                 <button
                   type="button"
                   onClick={() => setStatus("present")}
-                  className={`flex-1 p-4 rounded-xl border-2 flex flex-col items-center gap-2
+                  className={`flex-1 p-6 rounded-2xl border-2 flex flex-col items-center gap-3 transition-all
                   ${status === "present"
-                      ? "border-green-500 bg-green-50"
-                      : "border-gray-200"
+                      ? "border-[var(--success)] bg-green-500/10 text-[var(--success)]"
+                      : "border-[var(--dash-border)] text-[var(--dash-text-muted)] opacity-60 hover:opacity-100"
                     }`}
                 >
-                  <Check className="w-6 h-6" />
-                  <span>Present</span>
+                  <div className={`p-3 rounded-full ${status === 'present' ? 'bg-[var(--success)] text-white' : 'bg-[var(--muted-bg)]'}`}>
+                    <Check className="w-8 h-8" />
+                  </div>
+                  <span className="font-bold">Mark Present</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setStatus("absent")}
-                  className={`flex-1 p-4 rounded-xl border-2 flex flex-col items-center gap-2
+                  className={`flex-1 p-6 rounded-2xl border-2 flex flex-col items-center gap-3 transition-all
                   ${status === "absent"
-                      ? "border-red-500 bg-red-50"
-                      : "border-gray-200"
+                      ? "border-[var(--error)] bg-red-500/10 text-[var(--error)]"
+                      : "border-[var(--dash-border)] text-[var(--dash-text-muted)] opacity-60 hover:opacity-100"
                     }`}
                 >
-                  <X className="w-6 h-6" />
-                  <span>Absent</span>
+                  <div className={`p-3 rounded-full ${status === 'absent' ? 'bg-[var(--error)] text-white' : 'bg-[var(--muted-bg)]'}`}>
+                    <X className="w-8 h-8" />
+                  </div>
+                  <span className="font-bold">Mark Absent</span>
                 </button>
-
               </div>
-
             </div>
           )}
 
           {/* FOOTER */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
-
+          <div className="flex justify-end gap-3 pt-6 mt-4 border-t border-[var(--dash-border)]">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2 border rounded-lg"
+              className="px-6 py-2.5 font-medium border border-[var(--dash-border)] rounded-xl hover:bg-[var(--muted-bg)] transition-colors"
             >
               Cancel
             </button>
-
-            <button type="submit" className="btn-primary px-5 py-2">
-              {tab === "info"
-                ? "Save Details"
-                : "Confirm Attendance"}
+            <button 
+              type="submit" 
+              className="btn-primary px-8 py-2.5 rounded-xl shadow-lg shadow-blue-500/20"
+            >
+              {tab === "info" ? "Save Details" : "Confirm Attendance"}
             </button>
-
           </div>
-
         </form>
       </div>
     </div>

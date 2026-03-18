@@ -3,14 +3,15 @@
 import React, { useEffect, useState } from "react";
 import AttendanceClassModal from "@/modals/classAttendance";
 import { api } from "@/Backend/axiosClientInstance";
+import { Search, Users } from "lucide-react";
 
 export default function AttendanceTab() {
   const [grades, setGrades] = useState<any[]>([]);
   const [selectedGrade, setSelectedGrade] = useState<any>(null);
   const [students, setStudents] = useState<any[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Load grades
   useEffect(() => {
     const loadGrades = async () => {
       try {
@@ -23,7 +24,6 @@ export default function AttendanceTab() {
     loadGrades();
   }, []);
 
-  // Fetch students of a grade
   const fetchStudents = async (grade: any) => {
     setSelectedGrade(grade);
     try {
@@ -39,7 +39,6 @@ export default function AttendanceTab() {
     }
   };
 
-  // Toggle attendance locally
   const toggleAttendance = (id: string) => {
     setStudents(prev =>
       prev.map(student =>
@@ -50,7 +49,6 @@ export default function AttendanceTab() {
     );
   };
 
-  // Save attendance
   const saveAttendance = async () => {
     try {
       const payload = {
@@ -60,56 +58,82 @@ export default function AttendanceTab() {
           status: student.status,
         })),
       };
-
       await api.post(`/attendance/student/mark`, payload);
-      alert("Attendance Saved");
       setIsOpen(false);
     } catch (err) {
       console.error("Attendance error", err);
     }
   };
 
+  const filteredGrades = grades.filter(g => 
+    `${g.grade} ${g.section}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="animate-fadeIn space-y-8">
-
-      {/* Grade Table */}
-      <div className="dash-card overflow-hidden">
-        <div className="px-6 py-5 border-b dash-border">
-          <h3 className="font-bold">Grades</h3>
+    <div className="animate-fadeIn space-y-4">
+      
+      {/* Search Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[var(--dash-surface)] p-4 rounded-xl border border-[var(--dash-border)]">
+        <h2 className="font-bold text-[var(--dash-text)] flex items-center gap-2">
+          <Users className="w-5 h-5 text-[var(--primary)]" />
+          Class List
+        </h2>
+        <div className="relative w-full sm:w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--dash-text-muted)]" />
+          <input 
+            type="text"
+            placeholder="Search grade..."
+            className="w-full pl-9 py-2 bg-[var(--dash-bg)] border border-[var(--dash-border)] rounded-lg text-sm outline-none focus:border-[var(--primary)]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-
-        <table className="w-full dash-table">
-          <thead>
-            <tr className="text-left text-xs uppercase border-b dash-border">
-              <th className="px-6 py-4">Class</th>
-              <th className="px-6 py-4">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {grades.map((grade) => (
-              <tr key={grade._id} className="hover:bg-dash-surface-2/50">
-                {/* Combined Grade & Section */}
-                <td className="px-6 py-4 font-bold">
-                  {grade.grade} {grade.section ? `- ${grade.section}` : ""}
-                </td>
-
-                {/* Button to see students */}
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => fetchStudents(grade)}
-                    className="px-4 py-1 rounded bg-indigo-600 text-white text-sm hover:bg-indigo-700"
-                  >
-                    See Students
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
 
-      {/* Modal for student attendance */}
+      {/* Basic Table */}
+      <div className="dash-card">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-[var(--dash-border)] bg-[var(--dash-surface-2)]">
+                <th className="px-6 py-4 text-[var(--dash-text-muted)] font-semibold text-xs uppercase">Class / Grade</th>
+                <th className="px-6 py-4 text-[var(--dash-text-muted)] font-semibold text-xs uppercase text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y border-[var(--dash-border)]">
+              {filteredGrades.map((grade) => (
+                <tr key={grade._id} className="hover:bg-[var(--dash-sidebar-hover)] transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-[var(--dash-text)]">Grade {grade.grade}</span>
+                      {grade.section && (
+                        <span className="text-[var(--dash-text-muted)]">| Section {grade.section}</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <button
+                      onClick={() => fetchStudents(grade)}
+                      className="px-4 py-1.5 bg-[var(--primary)] text-white text-xs font-bold rounded-md hover:opacity-90 transition-opacity"
+                    >
+                      Mark Attendance
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {filteredGrades.length === 0 && (
+                <tr>
+                  <td colSpan={2} className="px-6 py-10 text-center text-[var(--dash-text-muted)] text-sm">
+                    No grades found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Modal */}
       <AttendanceClassModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
