@@ -70,7 +70,7 @@ export default function AttendanceTab({ onMarked }: AttendanceTabProps) {
       <Toaster position="top-center" richColors />
 
       {/* Action Card */}
-      <div className="md:col-span-7 bg-accent dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
+      <div className="md:col-span-7 bg-dash-bg dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
         <div className="flex items-center gap-4 mb-10">
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 border border-emerald-100 dark:border-emerald-900/20">
             <Fingerprint className="w-6 h-6" />

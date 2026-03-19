@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { API_BASE_URL } from '@/lib/endpoints';
 import { api } from '@/Backend/axiosClientInstance';
+import { FileText, Clock, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
 
 interface HomeworkTabProps {
   onOpenModal: (assignmentId: string, subject: string) => void;
@@ -65,78 +66,101 @@ export default function HomeworkTab({ onOpenModal, refreshFlag }: HomeworkTabPro
   };
 
   return (
-    <div className="animate-fadeIn space-y-6">
+    <div className="animate-fadeIn space-y-6 p-1">
       {/* Header */}
-      <div className="flex items-center justify-between px-1">
-        <h3 className="text-xl font-bold text-[var(--foreground)]">Current Assignments</h3>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase tracking-widest font-bold opacity-50">Pending:</span>
-          <span className="px-3 py-1 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full text-xs font-bold">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="text-xl font-bold text-[var(--dash-text)]">Academic Assignments</h3>
+          <p className="text-xs text-[var(--dash-text-muted)]">Track and submit your homework</p>
+        </div>
+        
+        <div className="flex items-center gap-3 bg-[var(--dash-surface)] border border-[var(--dash-border)] px-4 py-2 rounded-xl shadow-sm">
+          <span className="text-[10px] uppercase tracking-widest font-bold text-[var(--dash-text-muted)]">Pending Tasks:</span>
+          <span className="px-2.5 py-0.5 bg-[var(--primary)] text-white rounded-full text-xs font-bold animate-pulse">
             {assignments.filter(a => getAssignmentStatus(a._id) === 'Pending').length}
           </span>
         </div>
       </div>
 
-      {loading && <p className="text-sm text-[var(--dash-text-muted)]">Loading assignments...</p>}
+      {loading ? (
+        <div className="flex items-center justify-center py-20 text-[var(--dash-text-muted)]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary)]"></div>
+          <span className="ml-3 font-medium">Loading assignments...</span>
+        </div>
+      ) : assignments.length === 0 ? (
+        <div className="dash-card py-20 flex flex-col items-center justify-center text-[var(--dash-text-muted)] opacity-60">
+          <FileText className="w-12 h-12 mb-3" />
+          <p>No assignments posted for your grade yet.</p>
+        </div>
+      ) : (
+        /* Assignment Grid */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+          {assignments.map((assignment) => {
+            const status = getAssignmentStatus(assignment._id);
+            const isPending = status === 'Pending';
 
-      {/* Assignment Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {assignments.map((assignment) => {
-          const status = getAssignmentStatus(assignment._id);
-          const isPending = status === 'Pending';
-
-          return (
-            <div
-              key={assignment._id}
-              className="dash-card group p-5 flex flex-col justify-between hover:border-[var(--primary)]/50 transition-all duration-300"
-            >
-              <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="px-2.5 py-1 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-md text-[10px] font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">
-                    {formatDate(assignment.dueDate)}
-                  </span>
-                  <div className="text-xs font-bold text-[var(--dash-text-muted)]">
-                    Status: <span className="text-[var(--primary)]">{status}</span>
+            return (
+              <div
+                key={assignment._id}
+                className="dash-card group flex flex-col justify-between hover:border-[var(--primary)] hover:shadow-lg hover:shadow-[var(--primary)]/5 transition-all duration-300 overflow-hidden"
+              >
+                <div className="p-5">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-tight text-[var(--dash-text-muted)]  px-2 py-1 rounded border border-[var(--dash-border)]">
+                      <Clock className="w-3 h-3 text-[var(--primary)]" />
+                      Due: {formatDate(assignment.dueDate)}
+                    </div>
+                    
+                    <div className={`flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full border ${
+                      isPending 
+                      ? "bg-[color-mix(in_srgb,var(--warning)_15%,transparent)] text-[var(--warning)] border-[color-mix(in_srgb,var(--warning)_30%,transparent)]" 
+                      : "bg-[color-mix(in_srgb,var(--success)_15%,transparent)] text-[var(--success)] border-[color-mix(in_srgb,var(--success)_30%,transparent)]"
+                    }`}>
+                      {isPending ? <AlertCircle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
+                      {status}
+                    </div>
                   </div>
+
+                  <h4 className="text-lg font-bold text-[var(--dash-text)] leading-tight mb-2 group-hover:text-[var(--primary)] transition-colors">
+                    {assignment.title}
+                  </h4>
+                  <p className="text-sm text-[var(--dash-text-muted)] mb-4 line-clamp-2 italic">
+                    {assignment.description}
+                  </p>
+                  
+                  {assignment.fileUrl && (
+                    <a
+                      href={`${API_BASE_URL}${assignment.fileUrl}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[var(--primary)] font-bold text-xs hover:text-[var(--primary-dark)] transition-colors p-2 bg-[var(--primary)]/5 rounded-lg border border-[var(--primary)]/10"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Reference Materials (PDF)
+                    </a>
+                  )}
                 </div>
 
-                <h4 className="text-lg font-bold text-[var(--foreground)] leading-tight mb-2 group-hover:text-[var(--primary)] transition-colors">
-                  {assignment.title}
-                </h4>
-                <p className="text-sm text-[var(--dash-text-muted)] mb-2">{assignment.description}</p>
-                {assignment.fileUrl && (
-                  <a
-                    href={`${API_BASE_URL}${assignment.fileUrl}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--primary)] font-bold text-sm hover:underline"
-                  >
-                    View PDF
-                  </a>
-                )}
+                <div className="px-5 pb-5 mt-auto">
+                  {isPending ? (
+                    <button
+                      onClick={() => onOpenModal(assignment._id, assignment.title)}
+                      className="w-full py-3 hero-gradient text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all"
+                    >
+                      Submit Assignment
+                    </button>
+                  ) : (
+                    <div className="flex items-center justify-center gap-2 py-3 bg-[color-mix(in_srgb,var(--success)_10%,transparent)] text-[var(--success)] border border-[color-mix(in_srgb,var(--success)_20%,transparent)] rounded-xl text-sm font-bold">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Assignment Turned In
+                    </div>
+                  )}
+                </div>
               </div>
-
-              <div className="mt-6">
-                {isPending ? (
-                  <button
-                    onClick={() => onOpenModal(assignment._id, assignment.title)}
-                    className="w-full py-3 hero-gradient text-white rounded-xl font-bold text-sm shadow-lg shadow-[var(--primary)]/10 hover:scale-[1.02] active:scale-[0.98] transition-all"
-                  >
-                    Submit Assignment
-                  </button>
-                ) : (
-                  <div className="flex items-center justify-center gap-2 py-3 bg-success/10 text-success rounded-xl text-sm font-bold">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Turned In
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -11,7 +11,8 @@ import {
   CheckCircle2, 
   XCircle, 
   AlertCircle,
-  FileText 
+  History,
+  Zap
 } from "lucide-react";
 
 interface ApplicationsTabProps {
@@ -37,7 +38,7 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
       const res = await api.get(`/applications`, { params: { student: user.id } });
       setApplications(res.data);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to fetch applications");
+      toast.error("Failed to fetch history");
     }
   }, [user?.id]);
 
@@ -54,13 +55,13 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await api.post(`/applications`, data);
-      toast.success(res.data.message || "Application submitted successfully");
+      await api.post(`/applications`, data);
+      toast.success("Application sent");
       setData({ type: "", priority: "", reason: "", student: user.id });
       fetchApplications();
       onSubmit?.();
     } catch (err: any) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.message || "Error submitting");
     } finally {
       setLoading(false);
     }
@@ -68,48 +69,28 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
 
   const getStatusStyles = (status: string) => {
     switch (status) {
-      case "Accepted":
-        return "bg-[color-mix(in_srgb,var(--primary)_12%,var(--secondary))] text-[var(--primary)] border-[color-mix(in_srgb,var(--primary)_30%,transparent)]";
-      case "Rejected":
-        return "bg-[color-mix(in_srgb,var(--accent)_16%,var(--secondary))] text-[var(--accent)] border-[color-mix(in_srgb,var(--accent)_35%,transparent)]";
-      default:
-        return "bg-[var(--secondary)] text-[var(--dash-text-muted)] border-[var(--dash-border)]";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Accepted": return <CheckCircle2 className="w-3 h-3" />;
-      case "Rejected": return <XCircle className="w-3 h-3" />;
-      default: return <Clock className="w-3 h-3" />;
+      case "Accepted": return "text-[var(--success)] bg-[var(--success)]/10 border-[var(--success)]/20";
+      case "Rejected": return "text-[var(--error)] bg-[var(--error)]/10 border-[var(--error)]/20";
+      default: return "text-[var(--dash-text-muted)] bg-[var(--dash-surface-2)] border-[var(--dash-border)]";
     }
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 max-w-6xl mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-2 animate-fadeIn max-w-[1600px] mx-auto">
       
-      {/* Form Section */}
-      <div className="lg:col-span-5">
-        <div className="bg-[var(--dash-surface)] rounded-xl shadow-sm border border-[var(--dash-border)] overflow-hidden">
-          <div className="bg-[var(--secondary)] border-b border-[var(--dash-border)] p-4">
-            <h3 className="text-lg font-semibold text-[var(--dash-text)] flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-[var(--primary)]" />
-              New Application
-            </h3>
-            <p className="text-xs text-[var(--dash-text-muted)] mt-1">Fill in the details to submit your request</p>
+      {/* Compact Form Section - Narrower on XL screens */}
+      <div className="lg:col-span-4 xl:col-span-3">
+        <div className="dash-card border-[var(--dash-border)] sticky top-4">
+          <div className="bg-[var(--dash-surface-2)] px-4 py-3 border-b border-[var(--dash-border)] flex items-center gap-2 rounded-t-xl">
+            <ClipboardList className="w-4 h-4 text-[var(--primary)]" />
+            <h3 className="text-sm font-bold text-[var(--dash-text)]">New Request</h3>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-5">
-            <div className="space-y-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">Application Type</label>
-                <select
-                  name="type"
-                  value={data.type}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2.5 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-sm text-[var(--dash-text)]"
-                >
+          <form onSubmit={handleSubmit} className="p-4 space-y-4">
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-[var(--dash-text-muted)] tracking-widest ml-1">Type</label>
+                <select name="type" value={data.type} onChange={handleChange} required className="dash-input w-full text-xs py-2">
                   <option value="">Select type</option>
                   <option value="Leave Certificate">Leave Certificate</option>
                   <option value="Transfer Certificate">Transfer Certificate</option>
@@ -118,30 +99,24 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
                 </select>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">Urgency Level</label>
-                <select
-                  name="priority"
-                  value={data.priority}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2.5 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-sm text-[var(--dash-text)]"
-                >
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-[var(--dash-text-muted)] tracking-widest ml-1">Urgency</label>
+                <select name="priority" value={data.priority} onChange={handleChange} required className="dash-input w-full text-xs py-2">
                   <option value="">Select priority</option>
-                  <option value="Normal">Normal - Standard Processing</option>
-                  <option value="High">High - Urgent Requirement</option>
+                  <option value="Normal">Normal</option>
+                  <option value="High">High (Urgent)</option>
                 </select>
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-[var(--dash-text-muted)]">Reason / Justification</label>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase text-[var(--dash-text-muted)] tracking-widest ml-1">Reason</label>
                 <textarea
                   name="reason"
                   value={data.reason}
                   onChange={handleChange}
                   required
-                  placeholder="Provide a detailed explanation..."
-                  className="w-full px-3 py-2.5 bg-[var(--secondary)] border border-[var(--dash-border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all outline-none text-sm min-h-[120px] resize-none text-[var(--dash-text)]"
+                  placeholder="Justification..."
+                  className="dash-input w-full text-xs min-h-[100px] py-2 resize-none"
                 />
               </div>
             </div>
@@ -149,71 +124,82 @@ const ApplicationsTab = ({ onSubmit }: ApplicationsTabProps) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-[var(--primary)] hover:bg-[var(--primary-dark)] disabled:bg-[var(--primary)]/70 text-white rounded-lg text-sm font-bold shadow-sm shadow-[var(--primary)]/20 transition-all active:scale-[0.98]"
+              className="w-full py-3 hero-gradient text-white rounded-lg text-xs font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? "Submitting..." : <><Send className="w-4 h-4" /> Submit Application</>}
+              {loading ? "Sending..." : <><Send className="w-3.5 h-3.5" /> Submit Request</>}
             </button>
           </form>
         </div>
       </div>
 
-      {/* List Section */}
-      <div className="lg:col-span-7">
-        <div className="bg-[var(--dash-surface)] rounded-xl shadow-sm border border-[var(--dash-border)] flex flex-col h-full">
-          <div className="p-4 border-b border-[var(--dash-border)] flex justify-between items-center">
-            <h4 className="font-semibold text-[var(--dash-text)] flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[var(--dash-text-muted)]" />
-              Application History
-            </h4>
-            <span className="text-[10px] bg-[var(--secondary)] px-2 py-1 rounded text-[var(--dash-text-muted)] font-bold uppercase">
-              {applications.length} Total
-            </span>
+      {/* History Section - Multi-column grid on XL screens */}
+      <div className="lg:col-span-8 xl:col-span-9">
+        <div className="dash-card flex flex-col h-full bg-transparent border-none shadow-none">
+          <div className="px-1 py-3 mb-2 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <History className="w-5 h-5 text-[var(--primary)]" />
+              <h4 className="text-base font-bold text-[var(--dash-text)]">Request History</h4>
+            </div>
+            <div className="flex items-center gap-3">
+               <span className="text-[10px] font-bold text-[var(--dash-text-muted)] uppercase bg-[var(--dash-surface)] border border-[var(--dash-border)] px-3 py-1 rounded-full">
+                {applications.length} Submissions
+              </span>
+            </div>
           </div>
 
-          <div className="p-4 overflow-y-auto max-h-[550px] space-y-3 custom-scrollbar">
+          <div className="overflow-y-auto max-h-[calc(100vh-250px)] custom-scrollbar pr-1">
             {applications.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 text-[var(--dash-text-muted)]">
-                <AlertCircle className="w-12 h-12 mb-2 opacity-20" />
-                <p className="text-sm">No records found</p>
+              <div className="dash-card flex flex-col items-center justify-center py-24 opacity-40">
+                <AlertCircle className="w-10 h-10 mb-2" />
+                <p className="text-sm font-medium">No application records found</p>
               </div>
             ) : (
-              applications.map((app) => (
-                <div
-                  key={app._id}
-                  className="group p-4 bg-[var(--dash-surface)] border border-[var(--dash-border)] hover:border-[var(--primary)]/40 hover:shadow-md hover:shadow-[var(--primary)]/10 transition-all rounded-xl"
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="space-y-0.5">
-                      <span className="text-[10px] font-bold text-[var(--primary)] uppercase tracking-tight">
-                        {app.type}
-                      </span>
-                      <h5 className="text-sm font-semibold text-[var(--dash-text)]">
-                        {new Date(app.createdAt).toLocaleDateString('en-US', { 
-                          month: 'short', day: 'numeric', year: 'numeric' 
-                        })}
-                      </h5>
-                    </div>
-                    <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-bold ${getStatusStyles(app.status)}`}>
-                      {getStatusIcon(app.status)}
-                      {app.status}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                {applications.map((app) => (
+                  <div
+                    key={app._id}
+                    className="dash-card group p-4 border border-[var(--dash-border)] hover:border-[var(--primary)]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2.5 rounded-xl border ${getStatusStyles(app.status)}`}>
+                            {app.status === "Accepted" ? <CheckCircle2 className="w-4 h-4" /> : 
+                             app.status === "Rejected" ? <XCircle className="w-4 h-4" /> : 
+                             <Clock className="w-4 h-4" />}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-bold text-[var(--dash-text)]">{app.type}</span>
+                              {app.priority === "High" && (
+                                <span className="flex items-center gap-0.5 text-[9px] font-black text-[var(--error)] uppercase bg-[var(--error)]/10 px-1.5 py-0.5 rounded animate-pulse">
+                                  <Zap className="w-2.5 h-2.5 fill-current" /> Urgent
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[10px] text-[var(--dash-text-muted)] font-medium mt-0.5">
+                              Submitted: {new Date(app.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+                            </p>
+                          </div>
+                        </div>
+                        <div className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border shadow-sm ${getStatusStyles(app.status)}`}>
+                           {app.status}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-[var(--dash-surface-2)] p-3 rounded-lg border border-[var(--dash-border)] mt-1">
+                        <p className="text-[11px] text-[var(--dash-text-muted)] leading-relaxed italic line-clamp-2 group-hover:line-clamp-none transition-all">
+                          "{app.reason}"
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-xs text-[var(--dash-text-muted)] line-clamp-2 leading-relaxed italic">
-                    "{app.reason}"
-                  </p>
-                  {app.priority === "High" && (
-                    <div className="mt-3 flex items-center gap-1 text-[10px] font-bold text-[var(--accent)] uppercase">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-                      High Priority
-                    </div>
-                  )}
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         </div>
       </div>
-
     </div>
   );
 };

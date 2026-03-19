@@ -50,7 +50,7 @@ export default function TeacherHeader() {
   return (
     <div className="w-full mb-8 ">
       {/* Top Section: Greeting & Quick Info */}
-      <div className="flex flex-col  lg:flex-row lg:items-center justify-between gap-6 bg-accent dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-[2rem] shadow-sm overflow-hidden relative">
+      <div className="flex flex-col  lg:flex-row lg:items-center justify-between gap-6 bg-dash-bg dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-[2rem] shadow-sm overflow-hidden relative">
         
         {/* Decorative background blur */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl rounded-full -mr-16 -mt-16"></div>

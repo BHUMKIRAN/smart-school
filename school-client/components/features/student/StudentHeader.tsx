@@ -44,10 +44,11 @@ export default function StudentHeader({ toggleLogout }: StudentHeaderProps) {
             )}
 
             {/* Notification Bell */}
-            <button className="relative p-2.5 text-[var(--dash-text-muted)] hover:text-[var(--primary)] hover:bg-[var(--dash-sidebar-hover)] rounded-xl transition-all group border border-transparent hover:border-[var(--dash-border)]">
-              <Bell className="w-5 h-5 transition-transform group-hover:rotate-12" />
-              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-[var(--error)] rounded-full border-2 border-[var(--dash-surface)]"></span>
+            <button className="p-2 text-[var(--dash-text-muted)] hover:scale-110 active:scale-95 rounded-full transition-all duration-200 relative">
+              <Bell className="w-5 h-5 text-[var(--accent)]" />
+              <span className="absolute top-2 right-2.5 w-2 h-2 bg-[var(--info)] animate-bounce rounded-full border-2 border-[var(--nav-bg)]"></span>
             </button>
+
 
             {/* Vertical Divider */}
             <div className="h-8 w-[1px] bg-[var(--dash-border)] hidden sm:block"></div>
