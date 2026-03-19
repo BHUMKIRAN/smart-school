@@ -71,9 +71,9 @@ app.use("/", authRoutes);
 
 app.use("/public", protect, publicRoutes);
 
-app.use("/students", protect, studentRoutes);
+app.use("/students",  studentRoutes);
 
-app.use("/teachers", protect, teacherRoutes);
+app.use("/teachers", teacherRoutes);
 
 app.use("/notices", noticeRoutes);
 
