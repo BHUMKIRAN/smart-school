@@ -18,6 +18,8 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true, // must store hashed password
     },
+    resetPasswordToken : String ,
+    resetPasswordExpire : Date,
   },
   { timestamps: true }, // Automatically adds createdAt & updatedAt
 );

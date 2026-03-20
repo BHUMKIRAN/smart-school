@@ -20,6 +20,7 @@ import assigmentRoutes from "./routes/assigment.js";
 import submissionRoutes from "./routes/submission.js";
 import applicationRoutes from "./routes/application.js";
 import gradeRoutes from "./routes/grade.js";
+import resetRoutes from "./routes/resetPassword.js";
 
 import { protect } from "./middleware/authMiddleware.js";
 
@@ -94,6 +95,8 @@ app.use("/grades", protect, gradeRoutes);
 app.use("/assignments", protect, assigmentRoutes);
 
 app.use("/submissions", protect, submissionRoutes);
+
+app.use("/" , resetRoutes)
 
 /* -------------------------
    SERVER START

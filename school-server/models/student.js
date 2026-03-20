@@ -11,6 +11,8 @@ const studentSchema = new Schema(
       required: true,
     },
     image: String,
+    resetPasswordToken : String,
+    resetPasswordExpire : Date,
   },
   { timestamps: true },
 );

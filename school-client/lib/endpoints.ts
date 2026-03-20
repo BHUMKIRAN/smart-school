@@ -1,8 +1,8 @@
 // lib/endpoints.ts
 const rawBaseUrl =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  process.env.NEXT_PUBLIC_API_URL
 // Normalize to avoid double slashes when concatenating paths
-export const API_BASE_URL = rawBaseUrl.replace(/\/+$/, "");
+export const API_BASE_URL = rawBaseUrl
 
 export const ENDPOINTS = {
   LOGIN: `${API_BASE_URL}/auth/login`,
