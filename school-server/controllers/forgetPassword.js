@@ -50,10 +50,12 @@ export const forgetPassword = async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
-        user: emailUser,
-        pass: emailPass,
+        user: emailUser.trim(),
+        pass: emailPass.trim(),
       },
     });
 
