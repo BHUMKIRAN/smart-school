@@ -43,7 +43,8 @@ startCodeGenerator();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://smart-school-pearl.vercel.app"],
+    origin: ["http://localhost:3000", "https://smart-school-pearl.vercel.app" , process.env.CLIENT_URL,
+    ],
 
     credentials: true,
   }),
