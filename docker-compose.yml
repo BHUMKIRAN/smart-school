@@ -1,0 +1,49 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "mongodb://127.0.0.1:27017/admin", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  school-server:
+    build:
+      context: ./school-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./school-server/.env.docker
+    environment:
+      # Ensure the server never tries to connect to localhost from inside Docker.
+      MONGO_URI: mongodb://mongo:27017/smart-school
+    ports:
+      - "8080:8080"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  school-client:
+    build:
+      context: ./school-client
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NEXT_PUBLIC_CONTENTFUL_SPACE_ID: ${NEXT_PUBLIC_CONTENTFUL_SPACE_ID:-}
+        NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN: ${NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN:-}
+    restart: unless-stopped
+    env_file:
+      - ./school-client/.env.docker
+    ports:
+      - "3000:3000"
+    depends_on:
+      - school-server
+
+volumes:
+  mongo_data:
+

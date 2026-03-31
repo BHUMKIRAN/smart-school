@@ -31,78 +31,86 @@ import startCodeGenerator from "./service/CodeAt10.js";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 dotenv.config();
 
-connectDB();
+const start = async () => {
+  await connectDB();
 
-const app = express();
-const server = http.createServer(app);
-const PORT = process.env.PORT || 8080;
+  const app = express();
+  const server = http.createServer(app);
+  const PORT = process.env.PORT || 8080;
 
-initSocket(server);
+  initSocket(server);
+  startCodeGenerator();
 
-startCodeGenerator();
+  app.use(
+    cors({
+      origin: [
+        "http://localhost:3000",
+        "https://smart-school-pearl.vercel.app",
+        process.env.CLIENT_URL,
+      ],
+      credentials: true,
+    }),
+  );
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://smart-school-pearl.vercel.app" , process.env.CLIENT_URL,
-    ],
+  app.use(express.json());
 
-    credentials: true,
-  }),
-);
+  // Static files
+  app.use("/uploads", express.static("public/uploads"));
 
-app.use(express.json());
+  // Health check / root
+  app.get("/", (req, res) => {
+    res.status(200).json({ status: "ok", service: "smart-school-api" });
+  });
 
-// Static files
-app.use("/uploads", express.static("public/uploads"));
+  //test middleware
+  app.use("/test", protect, (req, res) => {
+    res.status(200).json({ message: "protected route is running " });
+  });
 
-// Health check / root
-app.get("/", (req, res) => {
-  res.status(200).json({ status: "ok", service: "smart-school-api" });
-});
+  /* -------------------------
+     ROUTES
+  ------------------------- */
 
-//test middleware
-app.use("/test", protect, (req, res) => {
-  res.status(200).json({ message: "protected route is running " });
-});
+  app.use("/", authRoutes);
 
-/* -------------------------
-   ROUTES
-------------------------- */
+  app.use("/public", protect, publicRoutes);
 
-app.use("/", authRoutes);
+  app.use("/students", studentRoutes);
 
-app.use("/public", protect, publicRoutes);
+  app.use("/teachers", teacherRoutes);
 
-app.use("/students",  studentRoutes);
+  app.use("/notices", noticeRoutes);
 
-app.use("/teachers", teacherRoutes);
+  app.use("/emergencyNotices", emergencyNoticeRoutes);
 
-app.use("/notices", noticeRoutes);
+  app.use("/attendance", attendanceRoutes);
 
-app.use("/emergencyNotices", emergencyNoticeRoutes);
+  app.use("/attendanceCode", protect, attendanceCodeRoutes);
 
-app.use("/attendance",  attendanceRoutes);
+  app.use("/attendanceTeacher", protect, adminRoutes);
 
-app.use("/attendanceCode", protect, attendanceCodeRoutes);
+  app.use("/schedule", protect, scheduleRoutes);
 
-app.use("/attendanceTeacher", protect, adminRoutes);
+  app.use("/applications", protect, applicationRoutes);
 
-app.use("/schedule", protect, scheduleRoutes);
+  app.use("/grades", protect, gradeRoutes);
 
-app.use("/applications", protect, applicationRoutes);
+  app.use("/assignments", protect, assigmentRoutes);
 
-app.use("/grades", protect, gradeRoutes);
+  app.use("/submissions", protect, submissionRoutes);
 
-app.use("/assignments", protect, assigmentRoutes);
+  app.use("/", resetRoutes);
 
-app.use("/submissions", protect, submissionRoutes);
+  /* -------------------------
+     SERVER START
+  ------------------------- */
 
-app.use("/" , resetRoutes)
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
 
-/* -------------------------
-   SERVER START
-------------------------- */
-
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+start().catch((error) => {
+  console.error("Server startup failed", error);
+  process.exit(1);
 });
